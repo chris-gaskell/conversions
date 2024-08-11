@@ -1,0 +1,28 @@
+Package: conversions
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person("Chris", "Gaskell", , "chris-gaskell@hotmail.co.uk", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: This package provides a comprehensive set of functions designed to assist with psychometric analysis and scoring in neuropsychology. It includes tools for calculating score deviations, evaluating statistical significance, applying corrections for multiple comparisons, and generating detailed reports of test results. The package is particularly useful for analyzing cognitive test scores, assessing abnormality rates, and interpreting neuropsychological test data with advanced statistical methods. It is tailored for professionals and researchers in the field of neuropsychology who require accurate and reliable psychometric computations.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports: 
+    glue,
+    stats,
+    MASS,
+    stringr,
+    dplyr,
+    bayestestR,
+    knitr,
+    ggplot2,
+    forcats
+Depends: 
+    R (>= 2.10)
+Config/testthat/edition: 3
+Suggests: 
+    testthat,
+    rmarkdown
+VignetteBuilder: knitr
