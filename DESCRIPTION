@@ -1,5 +1,5 @@
-Package: conversions
-Title: What the Package Does (One Line, Title Case)
+Package: neuropsy-tools
+Title: Tools for neuropsychology
 Version: 0.0.0.9000
 Authors@R: 
     person("Chris", "Gaskell", , "chris-gaskell@hotmail.co.uk", role = c("aut", "cre"),
@@ -26,3 +26,5 @@ Suggests:
     testthat,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://github.com/chris-gaskell/conversions
+BugReports: https://github.com/chris-gaskell/conversions/issues
