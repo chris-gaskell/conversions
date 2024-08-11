@@ -21,7 +21,7 @@ utils::globalVariables(c("change"))
 #' @importFrom ggplot2 geom_segment geom_point geom_errorbar coord_cartesian theme_bw scale_x_continuous scale_y_discrete facet_grid scale_color_manual
 #' @importFrom glue glue
 #' @importFrom stats pnorm
-#' @importFrom conversions convert_standard
+#' @importFrom neuropsytools convert_standard
 plot_reliable_change <- function(data, metric = "z", group, test, t1.score, t2.expected, t2.score,
                                  t2.ci.lb, t2.ci.ub, axis.label.metric = metric, abbreviations = TRUE) {
   # Check if group or test is missing
@@ -39,21 +39,21 @@ plot_reliable_change <- function(data, metric = "z", group, test, t1.score, t2.e
 
   # Convert inputs to z scores
   data <- data |> dplyr::mutate(
-    t1.score = conversions::convert_standard({{t1.score}}, metric = metric, metric.new = "z"),
-    t2.expected = conversions::convert_standard({{t2.expected}}, metric = metric, metric.new = "z"),
-    t2.score = conversions::convert_standard({{t2.score}}, metric = metric, metric.new = "z"),
-    t2.ci.lb = conversions::convert_standard({{t2.ci.lb}}, metric = metric, metric.new = "z"),
-    t2.ci.ub = conversions::convert_standard({{t2.ci.ub}}, metric = metric, metric.new = "z"),
+    t1.score = neuropsytools::convert_standard({{t1.score}}, metric = metric, metric.new = "z"),
+    t2.expected = neuropsytools::convert_standard({{t2.expected}}, metric = metric, metric.new = "z"),
+    t2.score = neuropsytools::convert_standard({{t2.score}}, metric = metric, metric.new = "z"),
+    t2.ci.lb = neuropsytools::convert_standard({{t2.ci.lb}}, metric = metric, metric.new = "z"),
+    t2.ci.ub = neuropsytools::convert_standard({{t2.ci.ub}}, metric = metric, metric.new = "z"),
   )
 
   # axis labels and title
   label_types <- c("percentile", "t", "index", "scaled", "z")
   label_names <- c("Percentile", "T Score", "Index Score", "Scaled Score", "Z Score")
   labeling_functions <- list(
-    percentile = function(x) paste0(format(conversions::convert_standard(x, metric = "z", metric.new = "t")), "%"),
-    t = function(x) format(conversions::convert_standard(x, metric = "z", metric.new = "t")),
-    index = function(x) format(conversions::convert_standard(x, metric = "z", metric.new = "index")),
-    scaled = function(x) format(conversions::convert_standard(x, metric = "z", metric.new = "scaled")),
+    percentile = function(x) paste0(format(neuropsytools::convert_standard(x, metric = "z", metric.new = "t")), "%"),
+    t = function(x) format(neuropsytools::convert_standard(x, metric = "z", metric.new = "t")),
+    index = function(x) format(neuropsytools::convert_standard(x, metric = "z", metric.new = "index")),
+    scaled = function(x) format(neuropsytools::convert_standard(x, metric = "z", metric.new = "scaled")),
     z = function(x) as.character(x)
   )
   labeling_function <- labeling_functions[[match(axis.label.metric, label_types)]]
@@ -97,7 +97,7 @@ plot_reliable_change <- function(data, metric = "z", group, test, t1.score, t2.e
     ggplot2::theme_bw(base_size = 12) +
     ggplot2::scale_x_continuous(n.breaks = 10, expand = c(0, 0), labels = labeling_function) +
     ggplot2::scale_y_discrete(labels = abbreviate_test_names) +
-    #conversions::plot_theme() +
+    #neuropsytools::plot_theme() +
     ggplot2::theme(
       strip.text.y.right = ggplot2::element_text(size = 12),
       plot.title.position = "plot",

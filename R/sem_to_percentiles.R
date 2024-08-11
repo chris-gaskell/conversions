@@ -42,15 +42,15 @@ sem_to_percentiles <- function(x, R = NULL, sem, dp = 2, names = NULL, conf.leve
   z.sd <- qnorm(1 - ((1 - conf.level) / 2))
   ci.lb <- x - sem * z.sd
   ci.ub <- x + sem * z.sd
-  rank <- conversions::convert_standard(score = x, metric = "index", metric.new = "percentile")
-  rank.ci.lb <- conversions::convert_standard(score = ci.lb, metric = "index", metric.new = "percentile")
-  rank.ci.ub <- conversions::convert_standard(score = ci.ub, metric = "index", metric.new = "percentile")
+  rank <- neuropsytools::convert_standard(score = x, metric = "index", metric.new = "percentile")
+  rank.ci.lb <- neuropsytools::convert_standard(score = ci.lb, metric = "index", metric.new = "percentile")
+  rank.ci.ub <- neuropsytools::convert_standard(score = ci.ub, metric = "index", metric.new = "percentile")
 
   abn.k <- sum(rank < abnorm_level)
 
   if (abnormality) {
     if (is.null(R)) stop("Correlation matrix R is required when abnormality is TRUE.")
-    abn.rates <- conversions::prevalence_of_j_abnormal_scores(R = R, threshold = threshold)
+    abn.rates <- neuropsytools::prevalence_of_j_abnormal_scores(R = R, threshold = threshold)
     abn <- abn.rates$props[abn.k]
     if (abn.k == 0) {
       abn <- 100

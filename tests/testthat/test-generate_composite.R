@@ -1,4 +1,6 @@
 library(testthat)
+library(neuropsytools)
+
 
 test_that("generate_composite returns expected results", {
   result <- generate_composite(

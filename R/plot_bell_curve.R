@@ -17,7 +17,7 @@ plot_bell_curve <- function(input, metric = "z", score.label.text = "test", axis
   if (!is.numeric(input)) stop("Input must be numeric.")
   valid.labels <- c("percentile", "t", "index", "scaled", "z")
   if (!axis.label.metric %in% valid.labels) stop(glue::glue("{axis.label.metric} is invalid. Choose from: {paste(valid.labels, collapse = ', ')}"))
-  if (metric != "z") input <- conversions::convert_standard(input, metric = metric, metric.new = "z")
+  if (metric != "z") input <- neuropsytools::convert_standard(input, metric = metric, metric.new = "z")
   input[input >= 3.5] <- 3.49
   input[input < -3.5] <- -3.49
 
@@ -31,10 +31,10 @@ plot_bell_curve <- function(input, metric = "z", score.label.text = "test", axis
   label.types <- c("percentile", "t", "index", "scaled", "z")
   label.names <- c("Percentile", "T Score", "Index Score", "Scaled Score", "Z Score")
   labeling.functions <- list(
-    percentile = function(x) paste0(conversions::convert_standard(x, metric = "z", metric.new = "percentile"), "%"),
-    t = function(x) format(conversions::convert_standard(x, metric = "z",  metric.new = "t")),
-    index = function(x) format(conversions::convert_standard(x, metric = "z", metric.new = "index")),
-    scaled = function(x) format(conversions::convert_standard(x, metric = "z", metric.new = "scaled")),
+    percentile = function(x) paste0(neuropsytools::convert_standard(x, metric = "z", metric.new = "percentile"), "%"),
+    t = function(x) format(neuropsytools::convert_standard(x, metric = "z",  metric.new = "t")),
+    index = function(x) format(neuropsytools::convert_standard(x, metric = "z", metric.new = "index")),
+    scaled = function(x) format(neuropsytools::convert_standard(x, metric = "z", metric.new = "scaled")),
     z = function(x) as.character(x)
   )
 

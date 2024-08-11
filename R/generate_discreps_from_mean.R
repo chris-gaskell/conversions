@@ -93,7 +93,7 @@ generate_discreps_from_mean <- function(x, R = NULL, sem, sd = 15, dp = 2, names
     abn.k <- sum(abn.2t < 5)
 
     # Assuming abnormal_rate_j_battery function is defined elsewhere
-    abn.rates <- conversions::prevalence_of_j_abnormal_scores(R = R, threshold = threshold)
+    abn.rates <- neuropsytools::prevalence_of_j_abnormal_scores(R = R, threshold = threshold)
     abn <- abn.rates$props[abn.k]
 
     # Add additional items to the result

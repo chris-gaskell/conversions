@@ -1,5 +1,5 @@
 library(testthat)
-library(conversions)
+library(neuropsytools)
 
 test_that("percentile function returns correct generate_generate_percentile", {
   data <- c(1, 2, 3, 4, 5)

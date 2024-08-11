@@ -40,7 +40,7 @@ dissociation_single <- function(score,
 
   # Calculate c1 and its normalized value
   zcc <- (score - ctrl.mean) / ctrl.sd  # also the c1
-  ncp <- conversions::prevalence_intervals_t(c = zcc, n = ctrl.n)
+  ncp <- neuropsytools::prevalence_intervals_t(c = zcc, n = ctrl.n)
   zcc.ci.lb <- ncp$delta.lb$root/sqrt(ctrl.n)
   zcc.ci.ub <- ncp$delta.ub$root/sqrt(ctrl.n)
 

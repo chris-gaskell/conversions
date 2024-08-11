@@ -65,13 +65,13 @@ plot_forest <- function(data, score, metric = "z", test, group, ci.lb, ci.ub, ax
   }
 
   # Convert to z
-  data <- dplyr::mutate(data, z = conversions::convert_standard({{score}}, metric = metric, metric.new = "z"))
+  data <- dplyr::mutate(data, z = neuropsytools::convert_standard({{score}}, metric = metric, metric.new = "z"))
 
   if (metric != "z" && !missing(ci.lb)) {
-    data <- dplyr::mutate(data, ci.lb = conversions::convert_standard({{ci.lb}}, metric = metric, metric.new = "z"))
+    data <- dplyr::mutate(data, ci.lb = neuropsytools::convert_standard({{ci.lb}}, metric = metric, metric.new = "z"))
   }
   if (metric != "z" && !missing(ci.ub)) {
-    data <- dplyr::mutate(data, ci.ub = conversions::convert_standard({{ci.ub}}, metric = metric, metric.new = "z"))
+    data <- dplyr::mutate(data, ci.ub = neuropsytools::convert_standard({{ci.ub}}, metric = metric, metric.new = "z"))
   }
 
   # Axis labels
@@ -79,9 +79,9 @@ plot_forest <- function(data, score, metric = "z", test, group, ci.lb, ci.ub, ax
   label_names <- c("Percentile", "T Score", "Index Score", "Scaled Score", "Z Score")
   labeling_functions <- list(
     percentile = function(x) paste0(format(stats::pnorm(x) * 100, digits = 2), "%"),
-    t = function(x) format(conversions::convert_standard(x, metric = "z", metric.new = "t")),
-    index = function(x) format(conversions::convert_standard(x, metric = "z", metric.new = "index")),
-    scaled = function(x) format(conversions::convert_standard(x, metric = "z", metric.new = "scaled")),
+    t = function(x) format(neuropsytools::convert_standard(x, metric = "z", metric.new = "t")),
+    index = function(x) format(neuropsytools::convert_standard(x, metric = "z", metric.new = "index")),
+    scaled = function(x) format(neuropsytools::convert_standard(x, metric = "z", metric.new = "scaled")),
     z = function(x) as.character(x)
   )
 

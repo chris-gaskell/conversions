@@ -1,5 +1,5 @@
 library(testthat)
-library(conversions)
+library(neuropsytools)
 
 test_that("z_to_derived function converts correctly", {
   actual_output <- convert_standard(2, metric = "z", metric.new = "index")

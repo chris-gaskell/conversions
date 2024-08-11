@@ -41,7 +41,7 @@ dissociation_double <- function(ctrl.mean.x,
   if (direction == "higher") {p <- pt(t, df = df, lower.tail = FALSE)}
 
   zdcc <- (z.x-z.y)/ sqrt(2-(2*ctrl.r.xy))
-  ncp <- conversions::prevalence_intervals_t(c = zdcc, n = ctrl.n)
+  ncp <- neuropsytools::prevalence_intervals_t(c = zdcc, n = ctrl.n)
   zdcc.ci.lb <- ncp$delta.lb$root/sqrt(ctrl.n)
   zdcc.ci.ub <- ncp$delta.ub$root/sqrt(ctrl.n)
 
@@ -50,7 +50,7 @@ dissociation_double <- function(ctrl.mean.x,
 
   abn <- (abs(p)) * 100
 
-  abn_ci <- conversions::prevalence_intervals_t(c = c2, n = ctrl.n)
+  abn_ci <- neuropsytools::prevalence_intervals_t(c = c2, n = ctrl.n)
   abn.ci.lb <- round(as.numeric(abn_ci$`2.5%`), digits = 5)
   abn.ci.ub <- round(as.numeric(abn_ci$`97.5%`), digits = 5)
 
