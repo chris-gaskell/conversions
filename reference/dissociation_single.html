@@ -100,15 +100,15 @@ include:</p><ul><li><p>t value: The t-value calculated for the test.</p></li>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Perform a dissociation between a single test score and a control
 sample using the modified paired samples t-test approach of Crawford et al.
-(1998). Unlike earlier (e.g. Payne &amp; Jones) this method treats data from
-the normative as sample statistics and not population parameters. The
-result provided is a t score and associated p value. This approach helps to
+(1998). Unlike earlier (e.g. Payne &amp; Jones) this method treats data from the
+normative as sample statistics and not population parameters. The result
+provided is a t score and associated p value. This approach helps to
 reconcile the problem associated with small control samples.</p>
 <p>In addition to determining whether a difference exists it is also important
 to understand the magnitude of that difference. Therefore, it is often
 recommended that effect sizes are provided alongside p-values to estimate
 the size of the observed effect. To this effect, Crawford et al. (1998)
-provde a method for deriving an effect-size in single-case studies using
+provide a method for deriving an effect-size in single-case studies using
 the case-controls design, where a single patient's cognitive performance is
 compared to a matched control group. The modified z-score (z-cc) is
 provided as both point and interval estimates.</p>
@@ -141,6 +141,105 @@ estimate of abnormality (Crawford &amp; Garthwaite, 2002) which are included.</p
 </ul></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Example 1: Basic usage</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">dissociation_single</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  score <span class="op">=</span> <span class="fl">75</span>,</span></span>
+<span class="r-in"><span>  ctrl.mean <span class="op">=</span> <span class="fl">70</span>,</span></span>
+<span class="r-in"><span>  ctrl.sd <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>  ctrl.n <span class="op">=</span> <span class="fl">30</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Frequentist Single Dissociation Between a Test Score and a Control Sample.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INPUTS:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable             Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ------------------  ------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample mean             70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample SD               10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size             30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Case's test score       75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> OUTPUTS:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable                   Value     95% Confidence Interval </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------  --------  ------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t value                    0.49                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-val (lower)              0.69                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-val (either direction)   0.63                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (Z-CC)         0.50      0.12 to 0.88            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Abnormality                68.67 %   54.62  % to 80.96 %     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> see documentation for further information on computation.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 2: With a higher direction and different confidence level</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">dissociation_single</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  score <span class="op">=</span> <span class="fl">85</span>,</span></span>
+<span class="r-in"><span>  ctrl.mean <span class="op">=</span> <span class="fl">70</span>,</span></span>
+<span class="r-in"><span>  ctrl.sd <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>  ctrl.n <span class="op">=</span> <span class="fl">30</span>,</span></span>
+<span class="r-in"><span>  direction <span class="op">=</span> <span class="st">"higher"</span>,</span></span>
+<span class="r-in"><span>  conf.level <span class="op">=</span> <span class="fl">0.99</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Frequentist Single Dissociation Between a Test Score and a Control Sample.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INPUTS:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable             Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ------------------  ------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample mean             70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample SD               10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size             30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Case's test score       85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> OUTPUTS:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable                   Value    99% Confidence Interval </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------  -------  ------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t value                    1.48                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-val (higher)             0.08                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-val (either direction)   0.15                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (Z-CC)         1.50     0.97 to 2.02            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Abnormality                7.54 %   16.63  % to 2.18 %      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> see documentation for further information on computation.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 3: Using more decimal places</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">dissociation_single</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  score <span class="op">=</span> <span class="fl">85</span>,</span></span>
+<span class="r-in"><span>  ctrl.mean <span class="op">=</span> <span class="fl">70</span>,</span></span>
+<span class="r-in"><span>  ctrl.sd <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>  ctrl.n <span class="op">=</span> <span class="fl">30</span>,</span></span>
+<span class="r-in"><span>  dp <span class="op">=</span> <span class="fl">4</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Frequentist Single Dissociation Between a Test Score and a Control Sample.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INPUTS:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable             Value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ------------------  ------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample mean             70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample SD               10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size             30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Case's test score       85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> OUTPUTS:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable                   Value       95% Confidence Interval </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------  ----------  ------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t value                    1.4756                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-val (lower)              0.9246                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-val (either direction)   0.1508                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (Z-CC)         1.5000      0.9688 to 2.0188        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Abnormality                92.4587 %   83.3675  % to 97.8248 % </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> see documentation for further information on computation.</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
