@@ -74,8 +74,9 @@ reliable_change_discreps <- function(
   tab <- as.data.frame(t(tab))
   tab$method <- row.names(tab)
   tab$z <- round((tab$actual - tab$expected) / tab$sem, 2)
+  tab$discrep <- tab$actual - tab$expected
   rownames(tab) <- NULL
-  tab <- tab |> dplyr::relocate(method, expected, actual)
+  tab <- tab |> dplyr::relocate(method, expected, actual, discrep)
 
   result <- list(
     tab = tab,
@@ -94,28 +95,40 @@ reliable_change_discreps <- function(
   return(result)
 }
 
+
 #' @export
 print.reliable_change_discreps <- function(x, ...) {
   header <- "Comparison of Stability Methods\n\n"
 
-  input <- glue::glue(
-    "INPUT: Data from the normative sample", "\n\n",
-    "Time 1 mean:  {x$norm.t1.mean}", "\n",
-    "Time 1 sd:    {x$norm.t1.sd}", "\n",
-    "Time 2 mean:  {x$norm.t2.mean}", "\n",
-    "Time 2 sd:    {x$norm.t2.sd}", "\n",
-    "Reliability:  {x$norm.r}", "\n",
-    "N:            {x$norm.n}", "\n",
-    "Time 1 score: {x$t1.score}"
+  # Input Data Frame with customizable names
+  input_df <- data.frame(
+    Variable = c("Time 1", "Time 2"),
+    Mean = c(x$norm.t1.mean, x$norm.t2.mean),
+    SD = c(x$norm.t1.sd, x$norm.t2.sd),
+    `Case's Score` = c(x$t1.score, x$t2.score),
+    n = c(x$norm.n, ""),
+    r = c(x$norm.r, ""),
+    stringsAsFactors = FALSE,
+    check.names = FALSE
+  )
+
+  input_table <- knitr::kable(input_df, format = "simple", col.names = c("Variable", "Mean", "SD", "Case's Score", "n", "r"))
+
+  input <- paste(
+    "INPUT:",
+    paste(capture.output(input_table), collapse = "\n"), "\n",
+    sep = ""
   )
 
   params <- paste(
     "\n\nPARAMS:", "\n",
-    "Confidence level: ", x$conf.level, "\n\n",
+    "Confidence level: ", x$conf.level*100, "%\n\n",
     sep = ""
   )
 
-  output_table <- knitr::kable(x$tab, format = "simple")
+  output_table <- knitr::kable(x$tab, format = "simple", col.names = c(
+    "Method", "Predicted", "Observed", "Discrepency", "Error", "CI lb", "CI ub", "Z"
+  ))
 
   output <- paste(
     "OUTPUT:",

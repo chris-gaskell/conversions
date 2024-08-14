@@ -247,10 +247,10 @@ se_n1 <- function(sd.1, sd.2, r, n, t1.score, t2.score, norm.t1.mean) {
 #'
 #' @return Returns the estimate of the time 2 score.
 #' @examples
-#' stability_reg_est(0.5, 10, 3)
+#' stability_regression_estimate(0.5, 10, 3)
 #'
 #' @export
-stability_reg_est <- function(b, score, c) {
+stability_regression_estimate <- function(b, score, c) {
   round(b * (score + c), 2)
 }
 

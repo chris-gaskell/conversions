@@ -13,9 +13,10 @@ dissociation_double(
   ctrl.n,
   score.x,
   score.y,
-  conf.level = 0.05,
+  conf.level = 0.95,
   direction = "lower",
-  dp = 5
+  dp = 4,
+  test.names = c("X", "Y")
 )
 }
 \arguments{
@@ -39,7 +40,9 @@ dissociation_double(
 
 \item{direction}{Direction of the test, either "lower" or "higher" (default is "lower").}
 
-\item{dp}{Number of decimal places for rounding the results (default is 5).}
+\item{dp}{Number of decimal places for rounding the results (default is 2).}
+
+\item{test.names}{A vector of two strings representing the names of the tests (default is c("X", "Y")).}
 }
 \value{
 A list containing the z-scores for both tests, control group means and standard deviations, correlation between tests, control group size, scores for both tests, confidence level, direction of the test, t-value, p-value, two-tailed p-value, zdcc, zdcc confidence interval lower bound, zdcc confidence interval upper bound, abnormality percentage, abnormality confidence interval lower bound, and abnormality confidence interval upper bound.
@@ -48,5 +51,5 @@ A list containing the z-scores for both tests, control group means and standard 
 Calculate abnormality of two test scores with confidence intervals using the modified t-test.
 }
 \examples{
-dissociation_double(100, 15, 110, 10, 0.5, 30, 130, 120)
+dissociation_double(100, 15, 110, 10, 0.5, 30, 130, 120, test.names = c("Test A", "Test B"))
 }

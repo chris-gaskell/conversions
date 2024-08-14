@@ -98,6 +98,7 @@ generate_discreps_from_mean <- function(x, R = NULL, sem, sd = 15, dp = 2, names
 
     # Add additional items to the result
     result <- c(result, list(
+      conf.level = conf.level,
       prev.1t = round(abn.1t, dp),
       prev.2t = round(abn.2t, dp),
       pval.1t = round(p.vals.1t, dp),
@@ -143,7 +144,13 @@ print.mean_devs <- function(x, ...) {
   cat(header)
 
   # Use knitr::kable to print the data frame as a table
-  output_table <- knitr::kable(result_df, format = "simple", align = "c")
+  output_table <- knitr::kable(result_df, format = "simple", align = "c",
+                               col.names = c("Test",
+                                             "Discrep",
+                                             paste(x$conf.level*100, "% CI"),
+                                             "p-val 2t", "p-val 1t",
+                                             "Abnormal 2d", "Abnormal 1d")
+                               )
   cat(output_table, sep = "\n")
 
   # Additional information about abnormality
@@ -155,7 +162,7 @@ print.mean_devs <- function(x, ...) {
 }
 
 
-# # Example Usage
+# # # Example Usage
 # sem <- c(3.000000, 3.354102, 3.674235, 4.743416)
 # R <- matrix(c(1.00, 0.61, 0.64, 0.45,
 #               0.61, 1.00, 0.62, 0.52,
@@ -169,7 +176,7 @@ print.mean_devs <- function(x, ...) {
 # # Generate the results
 # results <- generate_discreps_from_mean(x = c(60, 100, 100, 100), R = R, sem = sem,
 #                                        conf.level = 0.95, names = names,
-#                                        apply_bonferroni = F, dp = 3
+#                                        apply_bonferroni = F, dp = 3, direction = "higher"
 #                                        )
 #
 # # Print the results using the custom print method

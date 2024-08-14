@@ -125,21 +125,29 @@ print.reliable_change <- function(x, ...) {
     sep = ""
   )
 
-  input <- paste(
-    "INPUT: Data from the normative sample", "\n",
-    "Time 1 mean:  ", x$norm.t1.mean, "\n",
-    "Time 1 sd:    ",   x$norm.t1.sd, "\n",
-    "Time 2 mean:  ", x$norm.t2.mean, "\n",
-    "Time 2 sd:    ",   x$norm.t2.sd, "\n",
-    "reliability:  ", x$norm.r, "\n",
-    "N:            ", x$norm.n, "\n\n",
-    "Time 1 score: ", x$t1.score, "\n\n",
+  # Input Data Frame with customizable names
+  input_df <- data.frame(
+    Variable = c("Time 1", "Time 2"),
+    Mean = c(x$norm.t1.mean, x$norm.t2.mean),
+    SD = c(x$norm.t1.sd, x$norm.t2.sd),
+    `Case's Score` = c(x$t1.score, ""),
+    n = c(x$norm.n, ""),
+    r = c(x$norm.r, ""),
+    stringsAsFactors = FALSE,
+    check.names = FALSE
+  )
 
+  input_table <- knitr::kable(input_df, format = "simple", col.names = c("Variable", "Mean", "SD", "Case's Score", "n", "r"))
+
+  input <- paste(
+    "INPUT:",
+    paste(capture.output(input_table), collapse = "\n"), "\n\n",
     sep = ""
   )
 
+
   params <- paste(
-    "PARAMS:", "\n",
+    "PARAMS:", "\n\n",
     "Change method:    ", x$method, "\n",
     "Confidence level: ", x$conf.level, "\n\n",
     sep = ""
@@ -158,4 +166,4 @@ print.reliable_change <- function(x, ...) {
 }
 
 
-#reliable_change(method = "crawford", 100, 103, 10, 109, 8, 0.76, 100, .95)
+reliable_change(method = "crawford", 100, 103, 10, 109, 8, 0.76, 100, .95)

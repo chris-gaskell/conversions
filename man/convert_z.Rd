@@ -2,26 +2,80 @@
 % Please edit documentation in R/convert_z.R
 \name{convert_z}
 \alias{convert_z}
-\title{Convert a z score to an alternative derived score.}
+\title{Convert Z Score to Alternative Standardized Score.}
 \usage{
-convert_z(z, metric = "index", dp = 2)
+convert_z(z, metric = "index", mean.new = NULL, sd.new = NULL, dp = 2)
 }
 \arguments{
-\item{z}{numeric input (or vector) specifying the Z score for conversion.}
+\item{z}{Numeric input (or vector) specifying the Z score for conversion.}
 
-\item{metric}{Character string specifying the metric to convert input scores to. Choose from "z", "t", "index", "scaled", "sten", "stanine", "sat", or "percentile". Default is "index".}
+\item{metric}{Character string specifying the metric to convert Z scores to.
+Choose from "z", "t", "index", "scaled", "sten", "stanine", "sat", or
+"percentile". Default is "z".}
 
-\item{dp}{Integer specifying the number of decimal places to round the input scores to. Default is 2.}
+\item{mean.new}{Optional numeric value specifying the mean of the new metric.
+If provided, this takes precedence over \code{metric}.}
+
+\item{sd.new}{Optional numeric value specifying the standard deviation of the
+new metric. If provided, this takes precedence over \code{metric}.}
+
+\item{dp}{Integer specifying the number of decimal places to round the
+converted scores to. Default is 2.}
 }
 \value{
-a numeric value
+A numeric value or vector of converted scores.
+
+A numeric value
 }
 \description{
-This function takes a z score and converts it to one of a number of alternative
-derived scores (e.g., T score, index score, scaled score, sten score, stanine score, percentile).
+This function takes a Z score and converts it to one of a number of alternative
+derived scores (e.g., T score, index score, scaled score, sten score, stanine score, SAT score, percentile).
+}
+\details{
+The function is flexible, allowing for custom mean and standard deviation
+inputs for the new metric, making it suitable for a wide range of
+standardised testing applications.
+
+The conversion process uses a linear transformation based on the
+properties of the normal distribution. Specifically, the conversion is
+performed using the formula (as described in Crawford, 2004):
+
+\deqn{
+X_{\text{new}} = \frac{\sigma_{\text{new}}}{\sigma_{\text{old}}} \times
+(X_{\text{old}} - \bar{X}_{\text{old}}) + \bar{X}_{\text{new}}
+}
+
+Where:
+
+\eqn{X_{\text{new}}} is the converted score,
+
+\eqn{X_{\text{old}}} is the original score,
+
+\eqn{\bar{X}_{\text{old}}} and \eqn{\sigma_{\text{old}}} are the mean and
+standard deviation of the original metric.
+
+\eqn{\bar{X}_{\text{new}}} and \eqn{\sigma_{\text{new}}} are the mean and
+standard deviation of the new metric.
+
+Below is a table summarizing the default mean and standard deviation for each
+metric:\tabular{lll}{
+   Metric \tab Mean \tab Standard Deviation \cr
+   Z-score \tab 0 \tab 1 \cr
+   T-score \tab 50 \tab 10 \cr
+   Index Score \tab 100 \tab 15 \cr
+   Scaled Score \tab 10 \tab 3 \cr
+   Sten Score \tab 5.5 \tab 2 \cr
+   Stanine \tab 5 \tab 2 \cr
+   SAT Score \tab 500 \tab 100 \cr
+   Percentile \tab 50 \tab N/A (non-linear) \cr
+}
 }
 \examples{
 convert_z(z = 2, metric = "index")
 convert_z(z = 0.32, metric = "sten")
 convert_z(z = 1, metric = "percentile")
+convert_z(z = 1, mean.new = 60, sd.new = 15)
+}
+\seealso{
+\code{\link[=convert_standard]{convert_standard()}}
 }

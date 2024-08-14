@@ -87,6 +87,7 @@ generate_composite <- function(r,
 }
 
 
+
 #' Custom Print Method for 'gen_comp' Class
 #'
 #' This method formats and prints the output for objects of class 'gen_comp'.
@@ -97,44 +98,58 @@ generate_composite <- function(r,
 #' @export
 print.gen_comp <- function(x, ...) {
 
-  header <- paste("Generate Composite Score", "\n")
-
-  input_table <- paste(
-    "Input Data:\n\n",
-    "number of tests included:  ", x$k, "\n",
-    "r for included tests:      ", paste(round(x$r, 4), collapse = ", "), "\n",
-    "r between included tests:  ", paste(round(x$r.between, 4), collapse = ", "), "\n",
-    sep = ""
+  # Create input data frame
+  input_df <- data.frame(
+    Item = c("Number of tests included", "r for included tests", "r between included tests"),
+    Value = c(x$k,
+              paste(round(x$r, 4), collapse = ", "),
+              paste(round(x$r.between, 4), collapse = ", ")),
+    stringsAsFactors = FALSE
   )
 
-  result_table <- paste(
-    "Output Data:\n\n",
-    "Composite prior to transformation:\n",
-    "r:                         ", x$composite_r, "\n",
-    "Mean:                      ", x$original_mean, "\n",
-    "SD:                        ", x$original_sd, "\n",
-    "SEM:                       ", x$original_sem, "\n",
-    "SEMt (of the  score) true: ", x$original_semt, "\n\n",
-
-    "Composite following transformation:\n",
-    "r:                         ", x$composite_r, "\n",
-    "Mean:                      ", x$transformed.mean, "\n",
-    "SD:                        ", x$transformed.sd, "\n",
-    "SEM:                       ", x$transformed.sem, "\n",
-    "SEMt (of the  score) true: ", x$transformed.semt, "\n",
-    sep = ""
+  # Create output data frame with original and transformed values in separate columns
+  output_df <- data.frame(
+    Item = c("Composite r",
+             "Mean",
+             "SD",
+             "SEM",
+             "SEMt (true)"),
+    Original = c(format(x$composite_r, nsmall = 4),
+                 format(x$original_mean, nsmall = 4),
+                 format(x$original_sd, nsmall = 4),
+                 format(x$original_sem, nsmall = 4),
+                 format(x$original_semt, nsmall = 4)),
+    Transformed = c("", #format(x$composite_r, nsmall = 4),  # Composite r remains the same
+                    format(x$transformed.mean, nsmall = 4),
+                    format(x$transformed.sd, nsmall = 4),
+                    format(x$transformed.sem, nsmall = 4),
+                    format(x$transformed.semt, nsmall = 4)),
+    stringsAsFactors = FALSE
   )
 
-  output <- paste(header, input_table, result_table, sep = "\n")
-  cat(output)
+  # Create the input and output tables
+  input_table <- knitr::kable(input_df, format = "simple", col.names = c("Inputs", "Value"))
+  output_table <- knitr::kable(output_df, format = "simple", col.names = c("Outputs", "Original", "Transformed"))
+
+  # Define the header
+  header <- "Generate Composite Score"
+
+  # Combine all parts into the final result
+  result <- paste(header, "\n\n",
+                  "INPUTS:\n", paste(capture.output(input_table), collapse = "\n"), "\n\n",
+                  "OUTPUTS:\n", paste(capture.output(output_table), collapse = "\n"), "\n",
+                  sep = "")
+
+  # Print the result
+  cat(result)
 }
 
 
 
 
 # # Example usage
-# result <- generate_composite(r = c(.87, .94, .94),
-#                              r.between = c(0.74, 0.64, 0.73),
-#                              dp = 3)
-# result
+result <- generate_composite(r = c(.87, .94, .94, .94),
+                             r.between = c(0.74, 0.64, 0.73, 0.73, 0.73, 0.73),
+                             dp = 3)
+result
 

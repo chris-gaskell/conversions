@@ -15,7 +15,9 @@ generate_regression_norms_single_var(
   y,
   conf.level = 0.05,
   direction = "lower",
-  dp = 4
+  dp = 4,
+  x.name = "X",
+  y.name = "Y"
 )
 }
 \arguments{
@@ -40,20 +42,13 @@ generate_regression_norms_single_var(
 \item{direction}{Direction for the significance test. Options are "lower" or "upper". Default is "lower".}
 
 \item{dp}{Number of decimal places.}
+
+\item{x.name}{Name for the predictor variable. Default is "X".}
+
+\item{y.name}{Name for the criterion variable. Default is "Y".}
 }
 \value{
-A formatted character string containing:
-\item{b}{Slope of the regression line.}
-\item{a}{Intercept of the regression line.}
-\item{s.yx}{Standard error of the estimate for the regression equation.}
-\item{se.n.1}{Standard error of estimate with one entering.}
-\item{y.est}{Predicted score based on the regression equation.}
-\item{disc}{Discrepancy between obtained and predicted scores.}
-\item{z.op}{Effect size (Z-OP).}
-\item{t}{t-value for the significance test.}
-\item{p.1t}{One-tailed p-value for the significance test.}
-\item{p.two.tailed}{Two-tailed p-value for the significance test.}
-\item{abn}{Estimated percentage of the population with a discrepancy more extreme than the individual's score.}
+A list containing calculated values and results.
 }
 \description{
 This function generates regression norms and performs significance testing for an individual's score on a predictor variable. It calculates the regression equation, standard errors, and significance levels based on summary statistics from a control sample.
@@ -67,6 +62,8 @@ generate_regression_norms_single_var(
   r = -0.58,
   n = 160,
   x = 26,
-  y = 41
+  y = 41,
+  x.name = "Predictor",
+  y.name = "Criterion"
 )
 }

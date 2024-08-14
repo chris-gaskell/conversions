@@ -2,20 +2,21 @@
 % Please edit documentation in R/dissociation_single.R
 \name{dissociation_single}
 \alias{dissociation_single}
-\title{Calculate abnormality of a test score with confidence intervals using the modified t-test.}
+\title{Assessing For a Frequentist Single Dissociation Between a Test Score and a
+Control Sample.}
 \usage{
 dissociation_single(
   score,
   ctrl.mean,
   ctrl.sd,
   ctrl.n,
-  conf.level = 0.05,
+  conf.level = 0.95,
   direction = "lower",
-  dp = 5
+  dp = 2
 )
 }
 \arguments{
-\item{score}{Test score of the individual.}
+\item{score}{Test score for the individual case.}
 
 \item{ctrl.mean}{Mean of the control group.}
 
@@ -23,18 +24,70 @@ dissociation_single(
 
 \item{ctrl.n}{Size of the control group.}
 
-\item{conf.level}{Confidence level for the interval (default is 0.05).}
+\item{conf.level}{Confidence level (default is 0.95 for 95\%).}
 
-\item{direction}{Direction of the test, either "lower" or "higher" (default is "lower").}
+\item{direction}{Direction of the test, either "lower" or "higher" (default
+is "lower").}
 
-\item{dp}{Number of decimal places for rounding the results (default is 5).}
+\item{dp}{Number of decimal places for rounding the results (default is 2).}
 }
 \value{
-A list containing the score, control group mean, control group standard deviation, control group size, confidence level, direction of the test, number of decimal places, t-value, p-value, two-tailed p-value, zcc, zcc confidence interval lower bound, zcc confidence interval upper bound, abnormality percentage, abnormality confidence interval lower bound, and abnormality confidence interval upper bound.
+A list of statistical input, parameters, and results. Key outputs
+include:
+\itemize{
+\item t value: The t-value calculated for the test.
+\item p value: The p-value for the test, indicating statistical significance.
+\item effect-size (zcc): The z-score (effect-size) corrected for the control group.
+\item abnormality: The percentage of the population expected to score a more extreme score.
+}
 }
 \description{
-Calculate abnormality of a test score with confidence intervals using the modified t-test.
+Assess for a dissociation between a single test score and a control sample
+using a modified t-test and estimate the abnormality of the test score,
+including confidence intervals.
 }
-\examples{
-dissociation_single(130, 100, 15, 30)
+\details{
+Perform a dissociation between a single test score and a control
+sample using the modified paired samples t-test approach of Crawford et al.
+(1998). Unlike earlier (e.g. Payne & Jones) this method treats data from
+the normative as sample statistics and not population parameters. The
+result provided is a t score and associated p value. This approach helps to
+reconcile the problem associated with small control samples.
+
+In addition to determining whether a difference exists it is also important
+to understand the magnitude of that difference. Therefore, it is often
+recommended that effect sizes are provided alongside p-values to estimate
+the size of the observed effect. To this effect, Crawford et al. (1998)
+provde a method for deriving an effect-size in single-case studies using
+the case-controls design, where a single patient's cognitive performance is
+compared to a matched control group. The modified z-score (z-cc) is
+provided as both point and interval estimates.
+
+Neuropsychologists often need to determine how abnormal a patient's test
+score is. In this context, the abnormality can be easily estimated by
+multiplying the t-value from the modified t-test by 100, as suggested by
+Crawford and Howell (1998). This estimate quantifies the percentage of the
+population expected to exhibit a more extreme score. It can be calculated
+for a specific direction (i.e., a higher or lower score), or alternatively,
+the abnormality in 'either' direction can be determined by dividing the
+percentage by two.
+
+Methods have also been provided to calculate confidence limits on the
+estimate of abnormality (Crawford & Garthwaite, 2002) which are included.
+}
+\references{
+\itemize{
+\item Crawford, J.R., & Garthwaite, P.H. (2002). Investigation of the single case in neuropsychology: confidence limits on the abnormality of test scores and test score differences. \emph{Neuropsychologia, 40}(2002), 1196–1208.
+\item Crawford, J.R., Howell, D.C., & Garthwaite, P.H. (1998). Payne and Jones Revisited: Estimating the Abnormality of Test Score Differences Using a Modified Paired Samples t Test. \emph{Journal of Clinical and Experimental Neuropsychology, 20}(6), 898-905.
+\item Crawford, J.R., & Howell, D.C. (1998). Comparing an individual’s test score against norms derived from small samples. \emph{The Clinical Neuropsychologist, 12}(4), 482-486.
+\item Crawford, J.R., Garthwaite, P.H., & Porter, S. (2010). Point and interval estimates of effect sizes for the case-controls design in neuropsychology: Rationale, methods, implementations, and proposed reporting standards. \emph{Cognitive Neuropsychology, 27}(3), 245-260.
+\item Payne, R. W., & Jones, G. (1957). Statistics for the investigation of individual cases. Journal of Clinical Psychology, 13, 115-121.
+}
+}
+\seealso{
+\itemize{
+\item \code{\link[=dissociation_double]{dissociation_double()}}: For assessing a dissociation between two test scores for a single case.
+\item \code{\link[=dissociation_bayes_single]{dissociation_bayes_single()}}: For a Bayesian approach to assessing for a dissociation between a single test score and a control sample for a single case.
+\item \code{\link[=prevalence_intervals_t]{prevalence_intervals_t()}}: For generating interval estimates for abnormality using the modified t test.
+}
 }

@@ -81,60 +81,55 @@ sem_to_percentiles <- function(x, R = NULL, sem, dp = 2, names = NULL, conf.leve
 
 #' @export
 print.sem_to_percentiles <- function(x, ...) {
-  width_test <- 10
-  width_score <- 10
-  width_ci <- 18
-  width_rank <- 10
-  width_rank_ci <- 10
-  dp <- 2
 
-  header <- "Confidence Intervals as Percentile Ranks\n"
-  line <- "________________________________________________________________________________\n"
-
-  column_headers <- paste(
-    sprintf('%-*s', width_test, "Test"),
-    sprintf('%-*s', width_score + 4, "Score"),
-    sprintf('%-*s', width_ci - 6, "Score CI"),
-    sprintf('%-*s', width_rank, "Rank"),
-    sprintf('%-*s', width_rank_ci, "Rank CI"),
-    "\n"
+  # Create input data frame
+  input_df <- data.frame(
+    stringsAsFactors = FALSE
   )
 
-  abnorms_text <- if (x$abnormality) {
-    paste("\n",
-          "NUMBER of case's Index scores classified as abnormally low = ",
-          x$abn.k, ".",
-          "\n",
-          "\nPERCENTAGE of normal population expected to exhibit this number or more of abnormally low scores = ", x$abn, "%", "\n", sep = ""
+  # Create output data frame
+  output_df <- data.frame(
+    Test = x$names,
+    Score = format(round(x$x, 2), nsmall = 2),
+    CI = paste0(format(round(x$ci.lb, 2), nsmall = 2), " - ", format(round(x$ci.ub, 2), nsmall = 2)),
+    Rank = format(round(x$rank, 2), nsmall = 2),
+    `Rank CI` = paste0(format(round(x$rank.ci.lb, 2), nsmall = 2), " - ", format(round(x$rank.ci.ub, 2), nsmall = 2)),
+    stringsAsFactors = FALSE
+  )
+
+  # Create abnormality data frame if abnormality is TRUE
+  if (x$abnormality) {
+    abnorms_text <- data.frame(
+      Item = "Number of abnormally low scores",
+      Value = x$abn.k,
+      Abnormality = paste(format(x$abn, nsmall = 2), "%"),
+      stringsAsFactors = FALSE
     )
   } else {
-    paste("\n",
-          "NUMBER of case's Index scores classified as abnormally low = ",
-          x$abn.k, ".",
-          "\n", sep = "")
-  }
-
-  # Initialize output as an empty string
-  output <- ""
-
-  # Loop over the data to create the rows of output
-  for (i in seq_along(x$names)) {
-    output <- paste(
-      output,
-      sprintf('%-*s', width_test, x$names[i]),
-      sprintf('%-*s', width_score, format(round(x$x[i], dp), nsmall = dp)),
-      sprintf('%-*s', width_ci, paste0(format(round(x$ci.lb[i], dp), nsmall = dp), " - ", format(round(x$ci.ub[i], dp), nsmall = dp))),
-      sprintf('%-*s', width_rank, format(round(x$rank[i], dp), nsmall = dp)),
-      sprintf('%-*s', width_rank_ci, paste0(format(round(x$rank.ci.lb[i], dp), nsmall = dp), " - ", format(round(x$rank.ci.ub[i], dp), nsmall = dp))),
-      "\n",
-      sep = ""
+    abnorms_text <- data.frame(
+      Item = "Number of abnormally low scores",
+      Value = x$abn.k,
+      stringsAsFactors = FALSE
     )
   }
 
-  # Combine everything into the final result string
-  formatted_output <- paste(header, line, column_headers, line, output, abnorms_text, sep = "")
-  cat(formatted_output)
+  #input_table <- knitr::kable(input_df, format = "simple", col.names = c("Test", "Score", "Score CI"))
+  output_table <- knitr::kable(output_df, format = "simple", col.names = c("Test",  "Score", paste(x$conf.level*100, "% CI", sep = ""), "Rank",  paste(x$conf.level*100, "% CI", sep = "")))
+  abnorm_table <- knitr::kable(abnorms_text, format = "simple", col.names = c("", "Value", ifelse(x$abnormality, "Population Abnormality (%)", "")))
+
+  header <- "Confidence Intervals as Percentile Ranks"
+
+  result <- paste(
+    header, "\n\n",
+    #"INPUTS:\n", paste(capture.output(input_table), collapse = "\n"), "\n\n",
+    "OUTPUTS:", paste(capture.output(output_table), collapse = "\n"), "\n\n",
+    if (x$abnormality) "ABNORMALITY:" else "", paste(capture.output(abnorm_table), collapse = "\n"), "\n\n",
+    sep = ""
+  )
+
+  cat(result)
 }
+
 
 # Example usage
 # sem <- c(3.000000, 3.354102, 3.674235, 4.743416)
