@@ -114,14 +114,7 @@ generate_discreps_from_mean <- function(x, R = NULL, sem, sd = 15, dp = 2, names
   return(result)
 }
 
-#' Print Method for Mean Deviances
-#'
-#' Custom print method for objects of class 'mean_devs'. This function
-#' formats and prints the calculated deviances, confidence intervals,
-#' p-values, and other related statistics using knitr::kable for better formatting.
-#'
-#' @param x An object of class 'mean_devs'.
-#' @param ... Additional arguments passed to other methods.
+
 #' @export
 print.mean_devs <- function(x, ...) {
   # Create a data frame with all the relevant statistics

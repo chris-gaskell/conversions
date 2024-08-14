@@ -13,9 +13,7 @@
 #' properties of the normal distribution. Specifically, the conversion is
 #' performed using the formula (as described in Crawford, 2004):
 #'
-#' \deqn{
-#' X_{\text{new}} = \frac{\sigma_{\text{new}}}{\sigma_{\text{old}}} \times (X_{\text{old}} - \bar{X}_{\text{old}}) + \bar{X}_{\text{new}}
-#' }
+#' \deqn{X_{\text{new}} = \frac{\sigma_{\text{new}}}{\sigma_{\text{old}}} \times (X_{\text{old}} - \bar{X}_{\text{old}}) + \bar{X}_{\text{new}}}
 #'
 #'Where:
 #'

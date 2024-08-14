@@ -49,16 +49,16 @@ including confidence intervals.
 \details{
 Perform a dissociation between a single test score and a control
 sample using the modified paired samples t-test approach of Crawford et al.
-(1998). Unlike earlier (e.g. Payne & Jones) this method treats data from
-the normative as sample statistics and not population parameters. The
-result provided is a t score and associated p value. This approach helps to
+(1998). Unlike earlier (e.g. Payne & Jones) this method treats data from the
+normative as sample statistics and not population parameters. The result
+provided is a t score and associated p value. This approach helps to
 reconcile the problem associated with small control samples.
 
 In addition to determining whether a difference exists it is also important
 to understand the magnitude of that difference. Therefore, it is often
 recommended that effect sizes are provided alongside p-values to estimate
 the size of the observed effect. To this effect, Crawford et al. (1998)
-provde a method for deriving an effect-size in single-case studies using
+provide a method for deriving an effect-size in single-case studies using
 the case-controls design, where a single patient's cognitive performance is
 compared to a matched control group. The modified z-score (z-cc) is
 provided as both point and interval estimates.
@@ -74,6 +74,37 @@ percentage by two.
 
 Methods have also been provided to calculate confidence limits on the
 estimate of abnormality (Crawford & Garthwaite, 2002) which are included.
+}
+\examples{
+# Example 1: Basic usage
+result <- dissociation_single(
+  score = 75,
+  ctrl.mean = 70,
+  ctrl.sd = 10,
+  ctrl.n = 30
+)
+print(result)
+
+# Example 2: With a higher direction and different confidence level
+result <- dissociation_single(
+  score = 85,
+  ctrl.mean = 70,
+  ctrl.sd = 10,
+  ctrl.n = 30,
+  direction = "higher",
+  conf.level = 0.99
+)
+print(result)
+
+# Example 3: Using more decimal places
+result <- dissociation_single(
+  score = 85,
+  ctrl.mean = 70,
+  ctrl.sd = 10,
+  ctrl.n = 30,
+  dp = 4
+)
+print(result)
 }
 \references{
 \itemize{

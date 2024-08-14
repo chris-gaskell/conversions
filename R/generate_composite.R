@@ -87,14 +87,6 @@ generate_composite <- function(r,
 }
 
 
-
-#' Custom Print Method for 'gen_comp' Class
-#'
-#' This method formats and prints the output for objects of class 'gen_comp'.
-#'
-#' @param x An object of class 'gen_comp'.
-#' @param ... Additional arguments (not used).
-#'
 #' @export
 print.gen_comp <- function(x, ...) {
 
