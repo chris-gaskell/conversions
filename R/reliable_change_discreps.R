@@ -1,3 +1,5 @@
+utils::globalVariables(c("discrep"))
+
 #' Compare Stability Methods
 #'
 #' This function compares stability methods given the scores of two tests.

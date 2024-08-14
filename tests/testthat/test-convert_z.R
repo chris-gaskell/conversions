@@ -2,7 +2,7 @@ library(testthat)
 library(neuropsytools)
 
 test_that("convert_z function converts correctly", {
-  actual_output <- neuropsytools::convert_z(2, metric = "index")
+  actual_output <- neuropsytools::convert_z(z = 2, metric = "index")
   # Verify the result
   expect_equal(actual_output, 130)
 })

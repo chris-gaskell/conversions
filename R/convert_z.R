@@ -73,17 +73,14 @@ convert_z <- function(z, metric = "index", mean.new = NULL, sd.new = NULL, dp = 
     "stanine" = 2, "sat" = 100
   )
 
-  # Check if input types are valid
   if (!(metric %in% c(names(mean_tab), "percentile"))) {
     stop(glue::glue("'{metric}' is not a valid derived score. Please select from: {glue::glue_collapse(c(names(mean_tab), 'percentile'), ', ', last = ', or ')}."))
   }
 
-  # Check if score is numeric
   if (!is.numeric(z)) {
     stop("Invalid z-score. Please provide a numeric score.")
   }
 
-  # Use custom mean and sd if provided
   if (is.null(mean.new) || is.null(sd.new)) {
     if (metric == "percentile") {
       result <- as.numeric(round(pnorm(z) * 100, dp))
@@ -98,6 +95,6 @@ convert_z <- function(z, metric = "index", mean.new = NULL, sd.new = NULL, dp = 
     }
   }
 
-  result <- as.numeric(round((sd.new / sd_tab[metric]) * (z - mean_tab[metric]) + mean.new, dp))
+  result <- as.numeric(round( (sd.new / 1) * (z - 0) + mean.new, dp))
   return(result)
 }
