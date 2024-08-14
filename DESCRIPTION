@@ -26,5 +26,5 @@ Suggests:
     testthat,
     rmarkdown
 VignetteBuilder: knitr
-URL: https://github.com/chris-gaskell/conversions
+URL: https://github.com/chris-gaskell/conversions, https://chris-gaskell.github.io/neuropsytools/
 BugReports: https://github.com/chris-gaskell/conversions/issues
