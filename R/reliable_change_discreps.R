@@ -1,6 +1,6 @@
 utils::globalVariables(c("discrep"))
 
-#' Compare Stability Methods
+#' Discrepncy Between Predicted and Observed Time 2 Test Scores (Reliable Change).
 #'
 #' This function compares stability methods given the scores of two tests.
 #'
@@ -51,10 +51,10 @@ utils::globalVariables(c("discrep"))
 utils::globalVariables(c("method", "expected", "actual"))
 
 reliable_change_discreps <- function(
-    t1.score, t2.score,
+    t1.score, t2.score = NULL,
     norm.t1.mean, norm.t1.sd, norm.t2.mean, norm.t2.sd,
     norm.r, norm.n, conf.level = .9,
-    methods = "all") {
+    methods = "all", predictions_only = FALSE) {
 
   all_methods <- c("jacobson", "speer", "chelune", "mcsweeny", "charter", "CH", "temkin", "iverson", "maassen", "crawford")
 
@@ -63,51 +63,61 @@ reliable_change_discreps <- function(
   }
 
   tab <- sapply(methods, function(method) {
-    rci.tab <- reliable_change(method, t1.score,
-                               norm.t1.mean, norm.t1.sd, norm.t2.mean, norm.t2.sd,
-                               norm.r, norm.n, conf.level = conf.level)
+    rci.tab <- predict_retest(method, t1.score,
+                              norm.t1.mean, norm.t1.sd, norm.t2.mean, norm.t2.sd,
+                              norm.r, norm.n, conf.level = conf.level)
     c(expected = rci.tab$t2.expected,
       sem = rci.tab$t2.sem,
       ci.lb = rci.tab$t2.ci.lb,
       ci.ub = rci.tab$t2.ci.ub)
   })
 
-  tab <- rbind(tab, actual = t2.score)
   tab <- as.data.frame(t(tab))
   tab$method <- row.names(tab)
-  tab$z <- round((tab$actual - tab$expected) / tab$sem, 2)
-  tab$discrep <- tab$actual - tab$expected
+
+  if (!predictions_only) {
+    tab$actual <- t2.score
+    tab$z <- round((tab$actual - tab$expected) / tab$sem, 2)
+    tab$discrep <- tab$actual - tab$expected
+    tab <- tab |> dplyr::relocate(method, expected, ci.lb, ci.ub, actual, discrep)
+  } else {
+    tab <- tab |> dplyr::relocate(method, expected, ci.lb, ci.ub)
+  }
+
   rownames(tab) <- NULL
-  tab <- tab |> dplyr::relocate(method, expected, actual, discrep)
 
   result <- list(
     tab = tab,
     t1.score = t1.score,
-    t2.score = t2.score,
     norm.t1.mean = norm.t1.mean,
     norm.t1.sd = norm.t1.sd,
     norm.t2.mean = norm.t2.mean,
     norm.t2.sd = norm.t2.sd,
     norm.r = norm.r,
     norm.n = norm.n,
-    conf.level = conf.level
+    conf.level = conf.level,
+    predictions_only = predictions_only
   )
+
+  if (!predictions_only) {
+    result$t2.score <- t2.score
+  }
 
   class(result) <- 'reliable_change_discreps'
   return(result)
 }
 
-
 #' @export
 print.reliable_change_discreps <- function(x, ...) {
-  header <- "Comparison of Stability Methods\n\n"
+  header <- "Discrepncy Between Predicted and Observed Time 2 Test Scores (Reliable Change)\n\n"
+  footnote <- "\nSee documentation for further information on how scores are computed."
 
   # Input Data Frame with customizable names
   input_df <- data.frame(
     Variable = c("Time 1", "Time 2"),
     Mean = c(x$norm.t1.mean, x$norm.t2.mean),
     SD = c(x$norm.t1.sd, x$norm.t2.sd),
-    `Case's Score` = c(x$t1.score, x$t2.score),
+    `Case's Score` = c(x$t1.score, if (!x$predictions_only) x$t2.score else ""),
     n = c(x$norm.n, ""),
     r = c(x$norm.r, ""),
     stringsAsFactors = FALSE,
@@ -128,9 +138,15 @@ print.reliable_change_discreps <- function(x, ...) {
     sep = ""
   )
 
-  output_table <- knitr::kable(x$tab, format = "simple", col.names = c(
-    "Method", "Predicted", "Observed", "Discrepency", "Error", "CI lb", "CI ub", "Z"
-  ))
+  output_table <- if (x$predictions_only) {
+    knitr::kable(x$tab, format = "simple",
+                 col.names = c("Method", "Predicted", "CI lb", "CI ub", "Error")
+    )
+  } else {
+    knitr::kable(x$tab, format = "simple",
+                 col.names = c("Method", "Predicted", "CI lb", "CI ub", "Observed", "Discrepency", "Error", "Z")
+    )
+  }
 
   output <- paste(
     "OUTPUT:",
@@ -138,23 +154,38 @@ print.reliable_change_discreps <- function(x, ...) {
     sep = ""
   )
 
-  result <- paste(header, input, params, output, sep = "")
+  result <- paste(header,
+                  input,
+                  params,
+                  output,
+                  footnote,
+                  sep = "")
   cat(result)
 }
 
-# # Example usage
-# t1.score <- 88
-# norm.t1.mean <- 113
-# norm.t1.sd <- 7.2
-# norm.t2.mean <- 118.7
-# norm.t2.sd <- 8.3
-# norm.r <- 0.93
-# norm.n <- 821
-# t2.score <- 103
-# ci <- 0.95
-#
-# result <- reliable_change_discreps(t1.score, t2.score,
-#                                    norm.t1.mean, norm.t1.sd, norm.t2.mean, norm.t2.sd,
-#                                    norm.r, norm.n, ci, methods = c("crawford", "maassen"))
-#
-# print(result)
+# Example usage
+t1.score <- 88
+norm.t1.mean <- 113
+norm.t1.sd <- 7.2
+norm.t2.mean <- 118.7
+norm.t2.sd <- 8.3
+norm.r <- 0.73
+norm.n <- 821
+t2.score <- 103
+ci <- 0.95
+
+# Example with predictions only
+result_pred_only <- reliable_change_discreps(t1.score, norm.t1.mean = norm.t1.mean, norm.t1.sd = norm.t1.sd,
+                                             norm.t2.mean = norm.t2.mean, norm.t2.sd = norm.t2.sd,
+                                             norm.r = norm.r, norm.n = norm.n, conf.level = ci, methods = c("crawford", "all"),
+                                             predictions_only = TRUE)
+
+print.default(result_pred_only)
+print(result_pred_only)
+
+# Example with full comparison
+result_full <- reliable_change_discreps(t1.score, t2.score,
+                                        norm.t1.mean, norm.t1.sd, norm.t2.mean, norm.t2.sd,
+                                        norm.r, norm.n, conf.level = ci, methods = "all")
+
+print(result_full)

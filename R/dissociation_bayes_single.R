@@ -6,56 +6,44 @@
 #' standard deviation, and sample size, and provides Bayesian credible
 #' intervals, p-values, and abnormality percentages.
 #'
-#' @param score Numeric value representing the score of the single case.
-#' @param ctrl.mean Numeric value representing the mean of the control group.
-#' @param ctrl.sd Numeric value representing the standard deviation of the control group.
-#' @param ctrl.n Integer value representing the sample size of the control group.
-#' @param conf.level Numeric value specifying the confidence level for the credible interval. Default is 0.95.
-#' @param direction Character string indicating the direction of the test, either "lower" or "higher". Default is "lower".
-#' @param dp Integer specifying the number of decimal places to round the results. Default is 4.
+#' @details NEEDS WRITING
+#'
+#' @inheritParams dissociation_single
+#' @param conf.level Numeric value specifying the confidence level for the credible interval (default is 0.95 for 95%).
 #' @param sims Integer specifying the number of simulations to perform. Default is 10000.
 #' @param treshold Numeric value for the abnormality threshold. Default is 0.1.
-#' @return A list containing:
-#' \describe{
-#'   \item{score}{The original score provided.}
-#'   \item{ctrl.mean}{The mean of the control group.}
-#'   \item{ctrl.sd}{The standard deviation of the control group.}
-#'   \item{ctrl.n}{The sample size of the control group.}
-#'   \item{conf.level}{The confidence level used for the credible interval.}
-#'   \item{sims}{The number of simulations performed.}
-#'   \item{treshold}{The abnormality threshold used.}
-#'   \item{direction}{The direction of the test ("lower" or "higher").}
-#'   \item{dp}{The number of decimal places used for rounding.}
-#'   \item{df}{The degrees of freedom of the control group (n-1).}
-#'   \item{ctrl.var}{The variance of the control group.}
-#'   \item{z}{The calculated z-score of the single case.}
-#'   \item{z.ci.lb}{The lower bound of the Bayesian credible interval for the z-score.}
-#'   \item{z.ci.ub}{The upper bound of the Bayesian credible interval for the z-score.}
-#'   \item{percentile}{The percentile rank of the score in the control group.}
-#'   \item{p}{The p-value based on the direction of the test.}
-#'   \item{p.two.tailed}{The two-tailed p-value.}
-#'   \item{abn}{The percentage of abnormality.}
-#'   \item{abn.ci.lb}{The lower bound of the Bayesian credible interval for abnormality percentage.}
-#'   \item{abn.ci.ub}{The upper bound of the Bayesian credible interval for abnormality percentage.}
-#' }
+#'
+#' @return A list of statistical input, parameters, and results. Key outputs
+#'   include:
+#'   - t value: The t-value calculated for the test.
+#'   - p value: The p-value for the test, indicating statistical significance.
+#'   - effect-size (z-cc): The z-score (effect-size) corrected for the control group.
+#'   - abnormality: The percentage of the population expected to score a more extreme score.
+#'
+#' @importFrom bayestestR hdi
+#' @importFrom stats rchisq rnorm pnorm
+#'
+#' @references
+#'   - Crawford, J.R., & Garthwaite, P.H. (2007). Comparison of a single case to a control or normative sample in neuropsychology: Development of a Bayesian approach. *Cognitive Neuropsychology, 24*(4), 343-372.
+#'   - NEEDS WRITING.
+#'   - NEEDS WRITING.
+#'   - NEEDS WRITING.
+#'   - NEEDS WRITING.
+#' @seealso
+#'   - [dissociation_single()]: Assessing For a frequentist single dissociation between a test score and a control sample.
+#'   - [dissociation_double()]: For assessing a dissociation between two test scores for a single case.
+#'   - [prevalence_intervals_t()]: For generating interval estimates for abnormality using the modified t test.
+#'   - [bayestestR::hdi()]
+#'
 #' @examples
-#' \dontrun{
-#' result <- dissociation_bayes_single(
+#' dissociation_bayes_single(
 #'   score = 90,
 #'   ctrl.mean = 100,
 #'   ctrl.sd = 15,
 #'   ctrl.n = 30,
 #'   conf.level = 0.95,
-#'   direction = "lower",
-#'   dp = 4,
-#'   sims = 10000,
-#'   treshold = 0.1
 #' )
-#' print(result)
-#' }
-#' @seealso [bayestestR::hdi()]
-#' @importFrom bayestestR hdi
-#' @importFrom stats rchisq rnorm pnorm
+#'
 #' @export
 dissociation_bayes_single <- function(
     score,
@@ -64,7 +52,7 @@ dissociation_bayes_single <- function(
     ctrl.n,
     conf.level = .95,
     direction = "lower",
-    dp = 4,
+    dp = 2,
     sims = 10000,
     treshold = 0.1) {
 
@@ -154,40 +142,44 @@ print.dissociation_bayes_single <- function(x, ...) {
     Item = c(
       paste("p-val (", x$direction, ")", sep = ""),
       "p-val (either direction)",
-      "Effect size (Z-CC)",
+      "Effect size (z-cc)",
       "Abnormality"
     ),
     Value = c(
-      format(x$p, nsmall = 4),
-      format(x$p.two.tailed, nsmall = 4),
-      format(x$z, nsmall = 4),
-      paste(format(x$abn, nsmall = 4), "%", sep = "")
+      format(x$p, nsmall = x$dp),
+      format(x$p.two.tailed, nsmall = x$dp),
+      format(x$z, nsmall = x$dp),
+      paste(format(x$abn, nsmall = x$dp), "%", sep = "")
     ),
     CI = c(
       "",
       "",
-      paste(x$z.ci.lb, "to", x$z.ci.ub, sep = " "),
+      paste(format(x$z.ci.lb, x$dp), "to", format(x$z.ci.ub, x$dp), sep = " "),
       paste(x$abn.ci.lb, "% to", x$abn.ci.ub, "%", sep = " ")
     ),
     stringsAsFactors = FALSE
   )
 
   input_table <- knitr::kable(input_df, format = "simple", col.names = c("Inputs", "Value"))
-  output_table <- knitr::kable(output_df, format = "simple", col.names = c("Outputs", "Value", glue::glue("{x$conf.level*100}% Confidence Interval")))
+  output_table <- knitr::kable(output_df, format = "simple", col.names = c("Outputs", "Value", glue::glue("{x$conf.level*100}% Credible Interval")))
 
-  header <- "Bayesian Single Dissociation"
-  description <- "Bayesian estimation of effect size and abnormality for a patient's score."
-  reference <- "Based on Bayesian methods for abnormality testing."
+  header <- "Bayesian Dissociation Between a Test Score and a Control Sample."
+  footnote <- "See documentation for further information on how scores are computed."
 
   result <- paste(header, "\n\n",
-                  description, "\n\n",
                   "INPUTS:", paste(capture.output(input_table), collapse = "\n"), "\n\n",
                   "OUTPUTS:", paste(capture.output(output_table), collapse = "\n"), "\n\n",
-                  reference, "\n",
+                  footnote, "\n",
                   sep = "")
 
   cat(result)
 }
 
 # Example usage:
-# print.dissociation_bayes_single(list(ctrl.mean = 100, ctrl.sd = 15, ctrl.n = 30, score = 130, z = 2.5, p = 0.02, p.two.tailed = 0.04, z.ci.lb = 1.5, z.ci.ub = 3.5, abn = 5.5, abn.ci.lb = 3.5, abn.ci.ub = 7.5, direction = "lower"))
+# dissociation_bayes_single(
+#   score = 90,
+#   ctrl.mean = 100,
+#   ctrl.sd = 15,
+#   ctrl.n = 30,
+#   conf.level = 0.95,
+# )

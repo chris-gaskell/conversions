@@ -1,4 +1,34 @@
-#' Calculate abnormality of two test scores with confidence intervals using the modified t-test.
+#' Assessing For a Frequentist Dissociation Between Two Test Scores for an
+#' Individual Case.
+#'
+#' Assess for a dissociation between two test scores a for single case using a
+#' modified t-test. An estimate of the abnormality of the test score is also
+#' provided.
+#'
+#' @details Assess for a dissociation between two test scores for a single case
+#'   using the modified paired samples t-test approach of Crawford et al. (1998)
+#'   by comparison to a normative sample. Unlike earlier methods (e.g. Payne &
+#'   Jones) this method treats data from the normative same as sample statistics
+#'   and not population parameters. The result provided is a t score and
+#'   associated p value. This approach helps to reconcile the problem associated
+#'   with small normative samples.
+#'
+#'   In addition to determining whether a difference exists it is also important
+#'   to understand the magnitude of that difference. Therefore, it is often
+#'   recommended that effect sizes are provided alongside p-values to estimate
+#'   the size of the observed effect. To this effect, Crawford et al. (1998) has
+#'   provided a method for deriving an effect-size in single-case studies using
+#'   the case-controls design (z-cc), where a single patient's cognitive
+#'   performance is compared to a matched control group. The modified z-score
+#'   (z-cc) is provided as both point and interval estimates.
+#'
+#'   Finally, neuropsychologists often need to determine how abnormal a
+#'   patient's test score is. In the case of the modified t-test, the
+#'   abnormality can be easily estimated by multiplying the t-value by 100
+#'   (Crawford & Howell, 1998). This estimate quantifies the percentage of the
+#'   population expected to exhibit a more extreme score. Confidence limits on
+#'   the estimate of abnormality are also provided (Crawford & Garthwaite,
+#'   2002).
 #'
 #' @param ctrl.mean.x Mean of the control group for the first test.
 #' @param ctrl.sd.x Standard deviation of the control group for the first test.
@@ -6,18 +36,34 @@
 #' @param ctrl.sd.y Standard deviation of the control group for the second test.
 #' @param ctrl.r.xy Correlation between the two tests in the control group.
 #' @param ctrl.n Size of the control group.
-#' @param score.x Test score of the individual for the first test.
-#' @param score.y Test score of the individual for the second test.
-#' @param conf.level Confidence level for the interval (default is 0.05).
-#' @param direction Direction of the test, either "lower" or "higher" (default is "lower").
+#' @param score.x Test score of the individual case for the first test.
+#' @param score.y Test score of the individual case for the second test.
+#' @param conf.level Confidence level (default is 0.95 for 95%).
+#' @param direction Direction of the test, either "lower" or "higher" (default
+#'   is "lower").
 #' @param dp Number of decimal places for rounding the results (default is 2).
-#' @param test.names A vector of two strings representing the names of the tests (default is c("X", "Y")).
+#' @param test.names A vector of two strings representing the names of the tests
+#'   (default is c("X", "Y")).
 #'
-#' @return A list containing the z-scores for both tests, control group means and standard deviations, correlation between tests, control group size, scores for both tests, confidence level, direction of the test, t-value, p-value, two-tailed p-value, zdcc, zdcc confidence interval lower bound, zdcc confidence interval upper bound, abnormality percentage, abnormality confidence interval lower bound, and abnormality confidence interval upper bound.
+#' @return A list of statistical input, parameters, and results. Key outputs
+#'   include:
+#'   - t value: The t-value calculated for the test.
+#'   - p value: The p-value for the test, indicating statistical significance.
+#'   - effect-size (z-cc): The z-score (effect-size) corrected for the control group.
+#'   - abnormality: The percentage of the population expected to score a more extreme score.
+#' @references
+#'   - Crawford, J.R., & Garthwaite, P.H. (2002). Investigation of the single case in neuropsychology: confidence limits on the abnormality of test scores and test score differences. *Neuropsychologia, 40*(2002), 1196–1208.
+#'   - Crawford, J.R., Howell, D.C., & Garthwaite, P.H. (1998). Payne and Jones Revisited: Estimating the Abnormality of Test Score Differences Using a Modified Paired Samples t Test. *Journal of Clinical and Experimental Neuropsychology, 20*(6), 898-905.
+#'   - Crawford, J.R., & Howell, D.C. (1998). Comparing an individual’s test score against norms derived from small samples. *The Clinical Neuropsychologist, 12*(4), 482-486.
+#'   - Crawford, J.R., Garthwaite, P.H., & Porter, S. (2010). Point and interval estimates of effect sizes for the case-controls design in neuropsychology: Rationale, methods, implementations, and proposed reporting standards. *Cognitive Neuropsychology, 27*(3), 245-260.
+#'   - Payne, R. W., & Jones, G. (1957). Statistics for the investigation of individual cases. Journal of Clinical Psychology, 13, 115-121.
+#' @seealso
+#'   - [dissociation_double()]: For assessing a dissociation between two test scores for a single case.
+#'   - [dissociation_bayes_single()]: For a Bayesian approach to assessing for a dissociation between a single test score and a control sample for a single case.
+#'   - [prevalence_intervals_t()]: For generating interval estimates for abnormality using the modified t test.
 #' @export
-#'
 #' @examples
-#' dissociation_double(100, 15, 110, 10, 0.5, 30, 130, 120, test.names = c("Test A", "Test B"))
+#' dissociation_double(100, 15, 110, 10, 0.5, 30, 130, 120, test.names = c("Fluency", "Sequencing"))
 dissociation_double <- function(ctrl.mean.x,
                                 ctrl.sd.x,
                                 ctrl.mean.y,
@@ -28,7 +74,7 @@ dissociation_double <- function(ctrl.mean.x,
                                 score.y,
                                 conf.level = 0.95,
                                 direction = "lower",
-                                dp = 4,
+                                dp = 2,
                                 test.names = c("X", "Y")) {
 
   z.x <- (score.x - ctrl.mean.x) / ctrl.sd.x
@@ -55,19 +101,12 @@ dissociation_double <- function(ctrl.mean.x,
   p.two.tailed <- 2 * min(p.one.tailed, 1 - p.one.tailed)
 
   abn <- (abs(p.one.tailed)) * 100
-
-
   abn_ci <- neuropsytools::prevalence_intervals_t(c = c2, n = ctrl.n)
-  abn.ci.lb <- round(as.numeric(abn_ci$`2.5%`), digits = 5)
-  abn.ci.ub <- round(as.numeric(abn_ci$`97.5%`), digits = 5)
-
+  abn.ci.lb <- min(as.numeric(ncp$`2.5%`), as.numeric(ncp$`97.5%`))
+  abn.ci.ub <- max(as.numeric(ncp$`2.5%`), as.numeric(ncp$`97.5%`))
   #if (direction == "higher") { abn <- 100 - abn }
   if (direction == "higher") { abn.ci.lb <- 100 - abn.ci.lb }
   if (direction == "higher") { abn.ci.ub <- 100 - abn.ci.ub }
-
-  abn.ci.lb.check <- min(abn.ci.lb, abn.ci.ub)
-  abn.ci.ub.check <- max(abn.ci.lb, abn.ci.ub)
-
 
   result <- list(
     test.names = test.names,
@@ -90,8 +129,10 @@ dissociation_double <- function(ctrl.mean.x,
     zdcc.ci.lb = round(zdcc.ci.lb, dp),
     zdcc.ci.ub = round(zdcc.ci.ub, dp),
     abn = round(abn, dp),
-    abn.ci.lb = round(abn.ci.lb.check, dp),
-    abn.ci.ub = round(abn.ci.ub.check, dp)
+    abn.ci.lb = round(abn.ci.lb, dp),
+    abn.ci.ub = round(abn.ci.ub, dp),
+    direction = direction,
+    dp = dp
   )
 
   class(result) <- 'dissociation_double'
@@ -101,7 +142,6 @@ dissociation_double <- function(ctrl.mean.x,
 #' @export
 print.dissociation_double <- function(x, ...) {
 
-  # Define input data frame
   input_df <- data.frame(
     test =  x$test.names,
     mean =  c(x$ctrl.mean.x, x$ctrl.mean.y),
@@ -112,10 +152,8 @@ print.dissociation_double <- function(x, ...) {
     stringsAsFactors = FALSE
   )
 
-
-  # Define output data frame with a separate column for confidence intervals
   output_df <- data.frame(
-    Item = c(paste("Effect size (z) for test", x$test.names[1]),
+    item = c(paste("Effect size (z) for test", x$test.names[1]),
              paste("Effect size (z) for test", x$test.names[2]),
              paste("Effect size (z-dcc) between", x$test.names[1], "and", x$test.names[2]),
              "t value",
@@ -123,17 +161,17 @@ print.dissociation_double <- function(x, ...) {
              "Two-tailed p-value",
              "Abnormality"
     ),
-    Value = c(format(x$z.x, nsmall = 3),
-              format(x$z.y, nsmall = 3),
-              format(x$zdcc, nsmall = 3),
-              format(x$t, nsmall = 3),
-              format(x$p.one.tailed, nsmall = 4),
-              format(x$p.two.tailed, nsmall = 4),
-              paste(format(x$abn, nsmall = 4), " %", sep = "")
+    value = c(format(x$z.x, nsmall = x$dp),
+              format(x$z.y, nsmall = x$dp),
+              format(x$zdcc, nsmall = x$dp),
+              format(x$t, nsmall = x$dp),
+              format(x$p.one.tailed, nsmall = x$dp),
+              format(x$p.two.tailed, nsmall = x$dp),
+              paste(format(x$abn, nsmall = x$dp), " %", sep = "")
     ),
-    CI = c("",
+    ci = c("",
            "",
-           paste(x$zdcc.ci.lb, " to ", x$zdcc.ci.ub, sep = ""),
+           paste(format(x$zdcc.ci.lb, nsmall = x$dp), " to ", format(x$zdcc.ci.ub, nsmall = x$dp), sep = ""),
            "",
            "",
            "",
@@ -141,24 +179,18 @@ print.dissociation_double <- function(x, ...) {
     ), stringsAsFactors = FALSE
   )
 
-  # Create the input and output tables
   input_table <- knitr::kable(input_df, format = "simple", col.names = c("Test", "Mean", "SD", "Sample size", "r", "Case score"))
   output_table <- knitr::kable(output_df, format = "simple", col.names = c("Variable", "Value", paste0(x$conf.level * 100, "% Confidence Interval")))
+  header <- "Frequentist Dissociation Between Two Test Scores Compared to a Control Sample."
+  footnote <- "See documentation for further information on how scores are computed."
 
-  # Define the header and description
-  header <- "Frequentist Double Dissociation"
-  description <- "Frequentist point estimate and confidence limits on the abnormality of test score differences within a single case."
-  reference <- "Based on: Crawford, Garthwaite & Howell (1998)."
-
-  # Combine all parts into the final result
   result <- paste(header, "\n\n",
-                  description, "\n\n",
                   "INPUTS:", paste(capture.output(input_table), collapse = "\n"), "\n\n",
                   "OUTPUTS:", paste(capture.output(output_table), collapse = "\n"), "\n\n",
-                  reference, "\n",
+                  footnote, "\n",
                   sep = "")
 
-  # Print the result
   cat(result)
 }
 
+dissociation_double(100, 15, 110, 10, 0.5, 30, 130, 120, test.names = c("Fluency", "Sequencing"))

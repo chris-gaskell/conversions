@@ -76,7 +76,7 @@
 #' @references
 #' - Crawford, J. R. (2013). Quantitative aspects of neuropsychological assessment. In L. H. Goldstein & J. E. McNeil (Eds.), Clinical neuropsychology: A practical guide to assessment and management for clinicians (2nd ed., pp. 97-121). Wiley-Blackwell.
 #'
-#' @seealso [convert_z()]
+#' @seealso [convert_z()] for converting z scores to other standardised metrics.
 #'
 #' @export
 convert_standard <- function(score, metric = "z", metric.new = "index", mean.new = NULL, sd.new = NULL, dp = 2) {

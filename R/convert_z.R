@@ -61,7 +61,7 @@
 #' @return A numeric value
 #' @importFrom stats pnorm
 #'
-#' @seealso [convert_standard()]
+#' @seealso [convert_standard()] for converting between different standardised metrics.
 #' @export
 convert_z <- function(z, metric = "index", mean.new = NULL, sd.new = NULL, dp = 2) {
   mean_tab <- c(

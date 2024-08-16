@@ -2,41 +2,37 @@
 #' Control Sample.
 #'
 #' Assess for a dissociation between a single test score and a control sample
-#' using a modified t-test and estimate the abnormality of the test score,
-#' including confidence intervals.
+#' using a modified t-test. An estimate of the abnormality of the test score is
+#' also provided.
 #'
-#' @details Perform a dissociation between a single test score and a control
+#' @details Assess for a dissociation between a single test score and a control
 #'   sample using the modified paired samples t-test approach of Crawford et al.
-#'   (1998). Unlike earlier (e.g. Payne & Jones) this method treats data from the
-#'   normative as sample statistics and not population parameters. The result
-#'   provided is a t score and associated p value. This approach helps to
-#'   reconcile the problem associated with small control samples.
+#'   (1998). Unlike earlier methods (e.g. Payne & Jones) this method treats data
+#'   from the normative same as sample statistics and not population parameters.
+#'   The result provided is a t score and associated p value. This approach
+#'   helps to reconcile the problem associated with small normative samples.
 #'
 #'   In addition to determining whether a difference exists it is also important
 #'   to understand the magnitude of that difference. Therefore, it is often
 #'   recommended that effect sizes are provided alongside p-values to estimate
-#'   the size of the observed effect. To this effect, Crawford et al. (1998)
-#'   provide a method for deriving an effect-size in single-case studies using
-#'   the case-controls design, where a single patient's cognitive performance is
-#'   compared to a matched control group. The modified z-score (z-cc) is
-#'   provided as both point and interval estimates.
+#'   the size of the observed effect. To this effect, Crawford et al. (1998) has
+#'   provided a method for deriving an effect-size in single-case studies using
+#'   the case-controls design (z-cc), where a single patient's cognitive
+#'   performance is compared to a matched control group. The modified z-score
+#'   (z-cc) is provided as both point and interval estimates.
 #'
-#'   Neuropsychologists often need to determine how abnormal a patient's test
-#'   score is. In this context, the abnormality can be easily estimated by
-#'   multiplying the t-value from the modified t-test by 100, as suggested by
-#'   Crawford and Howell (1998). This estimate quantifies the percentage of the
-#'   population expected to exhibit a more extreme score. It can be calculated
-#'   for a specific direction (i.e., a higher or lower score), or alternatively,
-#'   the abnormality in 'either' direction can be determined by dividing the
-#'   percentage by two.
+#'   Finally, neuropsychologists often need to determine how abnormal a
+#'   patient's test score is. In the case of the modified t-test, the
+#'   abnormality can be easily estimated by multiplying the t-value by 100
+#'   (Crawford & Howell, 1998). This estimate quantifies the percentage of the
+#'   population expected to exhibit a more extreme score. Confidence limits on
+#'   the estimate of abnormality are also provided (Crawford & Garthwaite,
+#'   2002).
 #'
-#'   Methods have also been provided to calculate confidence limits on the
-#'   estimate of abnormality (Crawford & Garthwaite, 2002) which are included.
-#'
-#' @param score Test score for the individual case.
-#' @param ctrl.mean Mean of the control group.
-#' @param ctrl.sd Standard deviation of the control group.
-#' @param ctrl.n Size of the control group.
+#' @param Numeric value representing the score of the single case.
+#' @param ctrl.mean Numeric value representing the mean of the control group.
+#' @param ctrl.sd Numeric value representing the standard deviation of the control group.
+#' @param ctrl.n Integer value representing the sample size of the control group.
 #' @param conf.level Confidence level (default is 0.95 for 95%).
 #' @param direction Direction of the test, either "lower" or "higher" (default
 #'   is "lower").
@@ -46,8 +42,9 @@
 #'   include:
 #'   - t value: The t-value calculated for the test.
 #'   - p value: The p-value for the test, indicating statistical significance.
-#'   - effect-size (zcc): The z-score (effect-size) corrected for the control group.
+#'   - effect-size (z-cc): The z-score (effect-size) corrected for the control group.
 #'   - abnormality: The percentage of the population expected to score a more extreme score.
+#'
 #' @importFrom stats qt pt
 #'
 #' @references
@@ -166,7 +163,7 @@ print.dissociation_single <- function(x, ...) {
   )
 
   output_df <- data.frame(
-    item = c("t value", paste("p-val (", x$direction, ")", sep = ""), "p-val (either direction)", "Effect size (Z-CC)", "Abnormality"),
+    item = c("t value", paste("p-val (", x$direction, ")", sep = ""), "p-val (either direction)", "Effect size (z-cc)", "Abnormality"),
     value = c(format(x$t, nsmall = x$dp), format(x$p.one.tailed, nsmall = x$dp), format(x$p.two.tailed, nsmall = x$dp), format(x$zcc, nsmall = x$dp), paste(format(x$abn, nsmall = x$dp), " %", sep = "")),
     ci = c("", "","", paste(format(round(x$zcc.ci.lb, x$dp), nsmall = x$dp), "to",    format(round(x$zcc.ci.ub, x$dp), nsmall = x$dp), sep = " "), paste(format(round(x$abn.ci.lb, x$dp), nsmall = x$dp), " % to", format(round(x$abn.ci.ub, x$dp), nsmall = x$dp), "%", sep = " ")),
     stringsAsFactors = FALSE
@@ -175,7 +172,7 @@ print.dissociation_single <- function(x, ...) {
   input_table <- knitr::kable(input_df, format = "simple", col.names = c("Variable", "Value"))
   output_table <- knitr::kable(output_df, format = "simple", col.names = c("Variable", "Value", glue::glue("{x$conf.level*100}% Confidence Interval")))
   header <- "Frequentist Single Dissociation Between a Test Score and a Control Sample."
-  footnote <- "see documentation for further information on computation."
+  footnote <- "See documentation for further information on how scores are computed."
 
   result <- paste(header, "\n\n",
                   "INPUTS:",  paste(capture.output(input_table), collapse = "\n"), "\n\n",
