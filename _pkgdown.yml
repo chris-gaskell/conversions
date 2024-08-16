@@ -18,34 +18,34 @@ reference:
     contents:
       - convert_z
       - convert_standard
-      - generate_descriptor
-      - generate_prevalence
-      - generate_percentile
-      - generate_percentile_vector
+      - score_descriptor
+      - prevalence
+      - percentile
+      - percentile_vector
 
   - title: Dissociations
     desc: >
       Analyse single-case dissociations to explore individual cognitive processes.
     contents:
-      - dissociation_bayes_single
-      - dissociation_double
-      - dissociation_single
+      - dissoc_bayes_single
+      - dissoc_discrep
+      - dissoc_single
 
   - title: Supplementary Analyses
     desc: >
       Extend your analysis with composite scores and discrepancy assessments.
     contents:
-      - generate_composite
-      - generate_discreps_from_mean
+      - composite
+      - discreps_from_mean
       - sem_to_percentiles
-      - prevalence_of_j_abnormal_scores
+      - aborm_j_battery
 
   - title: Normative Data
     desc: >
       Generate and apply normative data for contextualising test results.
     contents:
-      - generate_regression_norms_single_var
-      - generate_percentile_norms
+      - cont_norms_single_pred
+      - percentile_norms
 
   - title: Error Estimation
     desc: >
@@ -61,22 +61,22 @@ reference:
     desc: >
       Create visualisations like bell curves and forest plots to illustrate results.
     contents:
-      - plot_bell_curve
+      - plot_bell
       - plot_forest
-      - plot_reliable_change
+      - plot_change
       - plot_theme
 
   - title: Serial Assessment
     desc: >
       Analyse changes over time in longitudinal studies.
     contents:
-      - predict_retest
-      - reliable_change_discreps
+      - predict_t2
+      - reliable_change
 
   - title: Miscellaneous & Intermediary Functions
     desc: >
       Supplementary functions for intervals, corrections, and stability checks.
     contents:
-      - prevalence_intervals_t
-      - sequential_bonferroni
-      - stability_regression_estimate
+      - abnorm_ci_t
+      - sequen_bonf
+      - stability_reg_est
