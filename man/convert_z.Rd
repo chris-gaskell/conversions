@@ -9,15 +9,15 @@ convert_z(z, metric = "index", mean.new = NULL, sd.new = NULL, dp = 2)
 \arguments{
 \item{z}{Numeric input (or vector) specifying the Z score for conversion.}
 
-\item{metric}{Character string specifying the metric to convert Z scores to.
-Choose from "z", "t", "index", "scaled", "sten", "stanine", "sat", or
-"percentile". Default is "z".}
+\item{metric}{Character string specifying the metric of the input scores.
+("z", "t", "index", "scaled", "sten", "stanine", "sat", "percentile").
+Default is "z".}
 
 \item{mean.new}{Optional numeric value specifying the mean of the new metric.
-If provided, this takes precedence over \code{metric}.}
+If provided, this takes precedence over \code{metric.new}.}
 
 \item{sd.new}{Optional numeric value specifying the standard deviation of the
-new metric. If provided, this takes precedence over \code{metric}.}
+new metric. If provided, this takes precedence over \code{metric.new}.}
 
 \item{dp}{Integer specifying the number of decimal places to round the
 converted scores to. Default is 2.}
@@ -77,5 +77,5 @@ convert_z(z = 1, metric = "percentile")
 convert_z(z = 1, mean.new = 60, sd.new = 15)
 }
 \seealso{
-\code{\link[=convert_standard]{convert_standard()}}
+\code{\link[=convert_standard]{convert_standard()}} for converting between different standardised metrics.
 }

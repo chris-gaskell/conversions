@@ -1,4 +1,82 @@
 url: https://chris-gaskell.github.io/neuropsytools/
+
 template:
   bootstrap: 5
+  bootswatch: flatly
+  pkgdown-nav-height: 100px
+  light-switch: true
+  math-rendering: katex
+  bslib:
+    bg: "#202123"
+    fg: "#B8BCC2"
+    primary: "#306cc9"
 
+reference:
+  - title: Data Conversion
+    desc: >
+      Convert and standardise test scores, making them easier to interpret and compare.
+    contents:
+      - convert_z
+      - convert_standard
+      - generate_descriptor
+      - generate_prevalence
+      - generate_percentile
+      - generate_percentile_vector
+
+  - title: Dissociations
+    desc: >
+      Analyse single-case dissociations to explore individual cognitive processes.
+    contents:
+      - dissociation_bayes_single
+      - dissociation_double
+      - dissociation_single
+
+  - title: Supplementary Analyses
+    desc: >
+      Extend your analysis with composite scores and discrepancy assessments.
+    contents:
+      - generate_composite
+      - generate_discreps_from_mean
+      - sem_to_percentiles
+      - prevalence_of_j_abnormal_scores
+
+  - title: Normative Data
+    desc: >
+      Generate and apply normative data for contextualising test results.
+    contents:
+      - generate_regression_norms_single_var
+      - generate_percentile_norms
+
+  - title: Error Estimation
+    desc: >
+      Estimate error metrics to assess reliability and precision.
+    contents:
+      - se_difference
+      - se_mean
+      - se_measurement
+      - se_n1
+      - se_prediction
+
+  - title: Data Visualisation
+    desc: >
+      Create visualisations like bell curves and forest plots to illustrate results.
+    contents:
+      - plot_bell_curve
+      - plot_forest
+      - plot_reliable_change
+      - plot_theme
+
+  - title: Serial Assessment
+    desc: >
+      Analyse changes over time in longitudinal studies.
+    contents:
+      - predict_retest
+      - reliable_change_discreps
+
+  - title: Miscellaneous & Intermediary Functions
+    desc: >
+      Supplementary functions for intervals, corrections, and stability checks.
+    contents:
+      - prevalence_intervals_t
+      - sequential_bonferroni
+      - stability_regression_estimate

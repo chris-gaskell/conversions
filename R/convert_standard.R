@@ -38,7 +38,6 @@
 #' | SAT Score    | 500            | 100                            |
 #' | Percentile   | 50             | N/A (non-linear)               |
 #'
-#'
 #' @param score Numeric value (or vector) containing the standardised scores to
 #'   be converted.
 #' @param metric Character string specifying the metric of the input scores.

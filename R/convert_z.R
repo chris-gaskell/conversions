@@ -42,16 +42,8 @@
 #' | SAT Score    | 500            | 100                            |
 #' | Percentile   | 50             | N/A (non-linear)               |
 #'
+#' @inheritParams convert_standard
 #' @param z Numeric input (or vector) specifying the Z score for conversion.
-#' @param metric Character string specifying the metric to convert Z scores to.
-#'   Choose from "z", "t", "index", "scaled", "sten", "stanine", "sat", or
-#'   "percentile". Default is "z".
-#' @param mean.new Optional numeric value specifying the mean of the new metric.
-#'   If provided, this takes precedence over `metric`.
-#' @param sd.new Optional numeric value specifying the standard deviation of the
-#'   new metric. If provided, this takes precedence over `metric`.
-#' @param dp Integer specifying the number of decimal places to round the
-#'   converted scores to. Default is 2.
 #' @return A numeric value or vector of converted scores.
 #' @examples
 #' convert_z(z = 2, metric = "index")

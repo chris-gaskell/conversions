@@ -2,48 +2,54 @@
 % Please edit documentation in R/reliable_change.R
 \name{reliable_change}
 \alias{reliable_change}
-\title{Calculate reliable_change using various methods}
-\usage{
-reliable_change(
-  method = "crawford",
-  t1.score,
-  norm.t1.mean,
-  norm.t1.sd,
-  norm.t2.mean,
-  norm.t2.sd,
-  norm.r,
-  norm.n,
-  conf.level = 0.9
-)
-}
+\title{Discrepncy Between Predicted and Observed Time 2 Test Scores (Reliable
+Change).}
 \arguments{
-\item{method}{The method used for reliable_change calculation. Default is "crawford".}
+\item{t1.score}{Scores of the first test.}
 
-\item{t1.score}{The score at time 1.}
+\item{t2.score}{Scores of the second test.}
 
-\item{norm.t1.mean}{Mean of the normative data at time 1.}
+\item{norm.t1.mean}{Mean of the normative sample at time 1.}
 
-\item{norm.t1.sd}{Standard deviation of the normative data at time 1.}
+\item{norm.t1.sd}{Standard deviation of the normative sample at time 1.}
 
-\item{norm.t2.mean}{Mean of the normative data at time 2.}
+\item{norm.t2.mean}{Mean of the normative sample at time 2.}
 
-\item{norm.t2.sd}{Standard deviation of the normative data at time 2.}
+\item{norm.t2.sd}{Standard deviation of the normative sample at time 2.}
 
-\item{norm.r}{Pearson correlation coefficient between time 1 and time 2 scores.}
+\item{norm.r}{Reliability of the normative sample.}
 
-\item{norm.n}{Sample size of the normative data.}
+\item{norm.n}{Sample size of the normative sample.}
 
-\item{conf.level}{Confidence level for the confidence interval calculation. Default is 0.9.}
-}
-\value{
-A list containing the expected score at time 2, standard error of the mean,
-lower and upper bounds of the confidence interval.
+\item{conf.level}{Confidence level for stability assessment.}
+
+\item{methods}{A character vector specifying which methods to calculate.
+Default is "all" methods.}
 }
 \description{
-This function calculates reliable_change using different methods such as Crawford,
-Jacobson, Speer, and others.
+This function compares stability methods given the scores of two tests.
 }
 \examples{
-reliable_change(method = "jacobson", 100, 103, 10, 109, 8, 0.76, 100, .95)
+# Example data
+t1.score <- 88
+norm.t1.mean <- 113
+norm.t1.sd <- 7.2
+norm.t2.mean <- 118.7
+norm.t2.sd <- 8.3
+norm.r <- 0.93
+norm.n <- 821
+t2.score <- 103
+ci <- 0.95
 
+# Using all methods
+result_all <- reliable_change(t1.score, t2.score,
+norm.t1.mean, norm.t1.sd, norm.t2.mean, norm.t2.sd, norm.r, norm.n,
+ci)
+print(result_all)
+
+# Using selected methods
+result_selected <- reliable_change(t1.score, t2.score,
+norm.t1.mean, norm.t1.sd,norm.t2.mean, norm.t2.sd, norm.r,
+norm.n, ci, methods = c("crawford", "maassen"))
+print(result_selected)
 }

@@ -50,7 +50,7 @@ sem_to_percentiles <- function(x, R = NULL, sem, dp = 2, names = NULL, conf.leve
 
   if (abnormality) {
     if (is.null(R)) stop("Correlation matrix R is required when abnormality is TRUE.")
-    abn.rates <- neuropsytools::prevalence_of_j_abnormal_scores(R = R, threshold = threshold)
+    abn.rates <- neuropsytools::aborm_j_battery(R = R, threshold = threshold)
     abn <- abn.rates$props[abn.k]
     if (abn.k == 0) {
       abn <- 100

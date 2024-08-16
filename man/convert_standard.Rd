@@ -102,5 +102,5 @@ convert_standard(score = c(50, 55, 60), metric = "t", metric.new = "scaled", dp 
 }
 }
 \seealso{
-\code{\link[=convert_z]{convert_z()}}
+\code{\link[=convert_z]{convert_z()}} for converting z scores to other standardised metrics.
 }
