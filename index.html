@@ -6,11 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Tools for neuropsychology • neuropsytools</title>
-<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="lightswitch.js"></script><script src="katex-auto.js"></script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Tools for neuropsychology">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><link href="deps/KaTex-0.16.10/katex.min.css" rel="stylesheet">
+<script src="deps/KaTex-0.16.10/katex.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Tools for neuropsychology">
 <meta name="description" content="This package provides a comprehensive set of functions designed to assist with psychometric analysis and scoring in neuropsychology. It includes tools for calculating score deviations, evaluating statistical significance, applying corrections for multiple comparisons, and generating detailed reports of test results. The package is particularly useful for analyzing cognitive test scores, assessing abnormality rates, and interpreting neuropsychological test data with advanced statistical methods. It is tailored for professionals and researchers in the field of neuropsychology who require accurate and reliable psychometric computations.">
 <meta property="og:description" content="This package provides a comprehensive set of functions designed to assist with psychometric analysis and scoring in neuropsychology. It includes tools for calculating score deviations, evaluating statistical significance, applying corrections for multiple comparisons, and generating detailed reports of test results. The package is particularly useful for analyzing cognitive test scores, assessing abnormality rates, and interpreting neuropsychological test data with advanced statistical methods. It is tailored for professionals and researchers in the field of neuropsychology who require accurate and reliable psychometric computations.">
 </head>
@@ -18,7 +19,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="index.html">neuropsytools</a>
 
@@ -38,6 +39,14 @@
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/chris-gaskell/conversions/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
+<li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul>
+</li>
       </ul>
 </div>
 
@@ -45,8 +54,32 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9">
-This package provides a comprehensive set of functions designed to assist with psychometric analysis and scoring in neuropsychology. It includes tools for calculating score deviations, evaluating statistical significance, applying corrections for multiple comparisons, and generating detailed reports of test results. The package is particularly useful for analyzing cognitive test scores, assessing abnormality rates, and interpreting neuropsychological test data with advanced statistical methods. It is tailored for professionals and researchers in the field of neuropsychology who require accurate and reliable psychometric computations.
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header"><h1 id="neuropsytools">neuropsytools<a class="anchor" aria-label="anchor" href="#neuropsytools"></a>
+</h1></div>
+<p><strong>neuropsytools</strong> is an R package designed with clinical neuropsychology in mind. However, its utility extends beyond neuropsychologists, catering to a broader audience of clinicians and academics frequently working with psychometric tests.</p>
+<p>Currently, <strong>neuropsytools</strong> offers a range of functions including:</p>
+<ul>
+<li>Standardized Score Conversion: Convert between various standardized test scores (e.g., z-scores, index scores, T-scores, percentiles).</li>
+<li>Dissociation Assessment: Evaluate dissociations between different cognitive functions.</li>
+<li>Reliable Change Index (RCI): Assess statistically reliable change between two time points.</li>
+<li>Extended Neuropsychological Testing: Additional functions to enhance the interpretation of common neuropsychological tests.</li>
+<li>Visualization: A variety of plotting functions to visualize test scores effectively.</li>
+<li>Many functions within this package are inspired by or adapted from existing software and methodologies. We encourage users to acknowledge the original developers by citing the appropriate references. We have made efforts to include all relevant citations, and we welcome any corrections or additions.</li>
+</ul>
+<div class="section level3">
+<h3 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h3>
+<p>We are always looking for contributors to help improve neuropsytools! If you have feature requests or want to contribute, please submit a request or reach out via email at <a href="mailto:chris-gaskell@hotmail.co.uk" class="email">chris-gaskell@hotmail.co.uk</a>.</p>
+</div>
+<div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
+<p>neuropsytools is currently in the development phase. To install the latest development version from GitHub, use the following command in R:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"chris-gaskell/neuropsytools"</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
