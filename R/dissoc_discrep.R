@@ -1,9 +1,11 @@
 #' Assessing For a Frequentist Dissociation Between Two Test Scores for an
 #' Individual Case.
 #'
-#' Assess for a dissociation between two test scores a for single case using a
-#' modified t-test. An estimate of the abnormality of the test score is also
-#' provided.
+#' Using the modified t-test approach Assesses whether the difference in scores
+#' between two tests for a patient is significantly larger than the differences
+#' found in a control or normative sample. The analysis yields a significance
+#' test, a point estimate of the abnormality of the score difference, and
+#' confidence intervals for the abnormality of the difference.
 #'
 #' @details Assess for a dissociation between two test scores for a single case
 #'   using the modified paired samples t-test approach of Crawford et al. (1998)
@@ -69,24 +71,40 @@ dissoc_discrep <- function(ctrl.mean.x,
                                 ctrl.n,
                                 score.x,
                                 score.y,
-                                conf.level = 0.95,
                                 direction = "lower",
-                                dp = 2,
-                                test.names = c("X", "Y")) {
+                                tail = "one.tailed",
+                                test.names = c("X", "Y"),
+                                conf.level = 0.95,
+                                dp = 2
+                           ) {
 
   z.x <- (score.x - ctrl.mean.x) / ctrl.sd.x
   z.y <- (score.y - ctrl.mean.y) / ctrl.sd.y
   t <- round((z.x - z.y) / sqrt((2 - (2 * ctrl.r.xy)) * ((ctrl.n + 1) / ctrl.n)), 3)
   df <- ctrl.n - 1
 
-  if (direction == "lower") {
-    p.one.tailed <- pt(t, df = df, lower.tail = TRUE)
-  } else if (direction == "higher") {
-    p.one.tailed <- pt(t, df = df, lower.tail = FALSE)
+  # Determine p-value based on direction and tail
+  if (tail == "one.tailed") {
+    if (direction == "lower") {
+      p.value <- pt(t, df = df, lower.tail = TRUE)
+    } else if (direction == "higher") {
+      p.value <- pt(t, df = df, lower.tail = FALSE)
+    } else {
+      stop("Invalid direction. Use 'lower' or 'higher'.")
+    }
+  } else if (tail == "two.tailed") {
+    p.value <- 2 * pt(-abs(t), df = df)
   } else {
-    stop("Invalid direction. Use 'lower' or 'higher'.")
+    stop("Invalid tail. Use 'one.tailed' or 'two.tailed'.")
   }
-  p.two.tailed <- 2 * min(p.one.tailed, 1 - p.one.tailed)
+
+  # Calculate abnormality based on one-tailed p-value
+  if (direction == "lower") {
+    abn <- pt(t, df = df, lower.tail = TRUE) * 100
+  } else if (direction == "higher") {
+    abn <- pt(t, df = df, lower.tail = FALSE) * 100
+  }
+
   crit.value <- qt(p = (1 - conf.level), df)
 
   zdcc <- (z.x - z.y) / sqrt(2 - (2 * ctrl.r.xy))
@@ -95,15 +113,12 @@ dissoc_discrep <- function(ctrl.mean.x,
   zdcc.ci.ub <- ncp$delta.ub$root / sqrt(ctrl.n)
 
   c2 <- (z.x - z.y) / sqrt(2 - (2 * ctrl.r.xy))
-  p.two.tailed <- 2 * min(p.one.tailed, 1 - p.one.tailed)
 
-  abn <- (abs(p.one.tailed)) * 100
-  abn_ci <- neuropsytools::abnorm_ci_t(c = c2, n = ctrl.n)
-  abn.ci.lb <- min(as.numeric(ncp$`2.5%`), as.numeric(ncp$`97.5%`))
-  abn.ci.ub <- max(as.numeric(ncp$`2.5%`), as.numeric(ncp$`97.5%`))
-  #if (direction == "higher") { abn <- 100 - abn }
-  if (direction == "higher") { abn.ci.lb <- 100 - abn.ci.lb }
-  if (direction == "higher") { abn.ci.ub <- 100 - abn.ci.ub }
+  abn.ci <- c(as.numeric(ncp$`2.5%`), as.numeric(ncp$`97.5%`))
+  if (direction == "higher") {abn.ci <- 100 - abn.ci}
+  abn.ci.lb <- min(abn.ci)
+  abn.ci.ub <- max(abn.ci)
+
 
   result <- list(
     test.names = test.names,
@@ -120,8 +135,7 @@ dissoc_discrep <- function(ctrl.mean.x,
     conf.level = conf.level,
     direction = direction,
     t = round(t, dp),
-    p.one.tailed = round(p.one.tailed, dp),
-    p.two.tailed = round(p.two.tailed, dp),
+    p.value = round(p.value, dp),
     zdcc = round(zdcc, dp),
     zdcc.ci.lb = round(zdcc.ci.lb, dp),
     zdcc.ci.ub = round(zdcc.ci.ub, dp),
@@ -154,22 +168,19 @@ print.dissoc_discrep <- function(x, ...) {
              paste("Effect size (z) for test", x$test.names[2]),
              paste("Effect size (z-dcc) between", x$test.names[1], "and", x$test.names[2]),
              "t value",
-             "One-tailed p-value",
-             "Two-tailed p-value",
+             "p-value",
              "Abnormality"
     ),
     value = c(format(x$z.x, nsmall = x$dp),
               format(x$z.y, nsmall = x$dp),
               format(x$zdcc, nsmall = x$dp),
               format(x$t, nsmall = x$dp),
-              format(x$p.one.tailed, nsmall = x$dp),
-              format(x$p.two.tailed, nsmall = x$dp),
+              format(x$p.value, nsmall = x$dp),
               paste(format(x$abn, nsmall = x$dp), " %", sep = "")
     ),
     ci = c("",
            "",
            paste(format(x$zdcc.ci.lb, nsmall = x$dp), " to ", format(x$zdcc.ci.ub, nsmall = x$dp), sep = ""),
-           "",
            "",
            "",
            paste(x$abn.ci.lb, " % to ", x$abn.ci.ub, " %", sep = "")

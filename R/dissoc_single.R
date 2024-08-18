@@ -1,9 +1,9 @@
-#' Assessing For a Frequentist Single Dissociation Between a Test Score and a
-#' Control Sample.
+#' Assessing For a Dissociation Between a Test Score and a Control Sample.
 #'
-#' Assess for a dissociation between a single test score and a control sample
-#' using a modified t-test. An estimate of the abnormality of the test score is
-#' also provided.
+#' Utilises classical (frequentist) statistical methods to compare a single
+#' case’s score with scores from a control sample. It also provides an interval
+#' estimate of the effect size for the difference between the case and the
+#' control group.
 #'
 #' @details Assess for a dissociation between a single test score and a control
 #'   sample using the modified paired samples t-test approach of Crawford et al.
@@ -31,11 +31,16 @@
 #'
 #' @param score Numeric value representing the score of the single case.
 #' @param ctrl.mean Numeric value representing the mean of the control group.
-#' @param ctrl.sd Numeric value representing the standard deviation of the control group.
-#' @param ctrl.n Integer value representing the sample size of the control group.
+#' @param ctrl.sd Numeric value representing the standard deviation of the
+#'   control group.
+#' @param ctrl.n Integer value representing the sample size of the control
+#'   group.
 #' @param conf.level Confidence level (default is 0.95 for 95%).
-#' @param direction Direction of the test, either "lower" or "higher" (default
-#'   is "lower").
+#' @param direction Character. Specifies the direction of the hypothesis.
+#'   Options are "lower" (one-tailed), "higher" (one-tailed), or "two.tailed"
+#'   (default, two-tailed).
+#' @param tail Character. Specifies whether the test is one-tailed or
+#'   two-tailed. Options are "one.tailed" and "two.tailed" (default)
 #' @param dp Number of decimal places for rounding the results (default is 2).
 #'
 #' @return A list of statistical input, parameters, and results. Key outputs
@@ -59,76 +64,63 @@
 #'   - [abnorm_ci_t()]: For generating interval estimates for abnormality using the modified t test.
 #' @export
 #' @examples
-#' # Example 1: Basic usage
-#' result <- dissoc_single(
-#'   score = 75,
-#'   ctrl.mean = 70,
-#'   ctrl.sd = 10,
-#'   ctrl.n = 30
-#' )
-#' print(result)
+#' # Two-tailed test example: res <- dissoc_single(score = 130, ctrl.mean = 100,
+#' ctrl.sd = 15, ctrl.n = 30, conf.level = 0.95, direction = "lower", tail =
+#' "two.tailed", dp = 2) print(res)
 #'
-#' # Example 2: With a higher direction and different confidence level
-#' result <- dissoc_single(
-#'   score = 85,
-#'   ctrl.mean = 70,
-#'   ctrl.sd = 10,
-#'   ctrl.n = 30,
-#'   direction = "higher",
-#'   conf.level = 0.99
-#' )
-#' print(result)
+#' # One-tailed test example (higher): res <- dissoc_single(score = 130,
+#' ctrl.mean = 100, ctrl.sd = 15, ctrl.n = 30, conf.level = 0.95, direction =
+#' "higher", tail = "one.tailed", dp = 2) print(res)
 #'
-#' # Example 3: Using more decimal places
-#' result <- dissoc_single(
-#'   score = 85,
-#'   ctrl.mean = 70,
-#'   ctrl.sd = 10,
-#'   ctrl.n = 30,
-#'   dp = 4
-#' )
-#' print(result)
+#' # One-tailed test example (lower): res <- dissoc_single(score = 130,
+#' ctrl.mean = 100, ctrl.sd = 15, ctrl.n = 30, conf.level = 0.95, direction =
+#' "lower", tail = "one.tailed", dp = 2) print(res)
 dissoc_single <- function(score,
-                                ctrl.mean,
-                                ctrl.sd,
-                                ctrl.n,
-                                conf.level = 0.95,
-                                direction = "lower",
-                                dp = 2) {
+                          ctrl.mean,
+                          ctrl.sd,
+                          ctrl.n,
+                          direction = "lower",
+                          tail = "one.tailed",
+                          conf.level = 0.95,
+                          dp = 2) {
+
+  if (direction != "higher" & direction != "lower") {
+    stop("Invalid direction. Options are 'higher' or 'lower'.")
+  }
 
   t <- (score - ctrl.mean) / (ctrl.sd * sqrt((ctrl.n + 1) / ctrl.n))
   df <- ctrl.n - 1
 
-  if (direction == "lower") {
-    p.one.tailed <- pt(t, df = df, lower.tail = TRUE)
-  } else if (direction == "higher") {
-    p.one.tailed <- pt(t, df = df, lower.tail = FALSE)
+  # Determine p-value based on direction and tail
+  if (tail == "one.tailed") {
+    if (direction == "lower") {
+      p.value <- pt(t, df = df, lower.tail = TRUE)
+    } else if (direction == "higher") {
+      p.value <- pt(t, df = df, lower.tail = FALSE)
+    } else {
+      stop("Invalid direction. Use 'lower' or 'higher'.")
+    }
+  } else if (tail == "two.tailed") {
+    p.value <- 2 * pt(-abs(t), df = df)
   } else {
-    stop("Invalid direction. Use 'lower' or 'higher'.")
+    stop("Invalid tail. Use 'one.tailed' or 'two.tailed'.")
   }
 
-  p.two.tailed <- 2 * min(p.one.tailed, 1 - p.one.tailed)
-
-  abn <- (abs(1 - p.one.tailed)) * 100
-  if (direction == "higher") {
-    abn <- (1 - (abs(1 - p.one.tailed))) * 100
+  # Calculate abnormality based on one-tailed p-value
+  if (direction == "lower") {
+    abn <- pt(t, df = df, lower.tail = TRUE) * 100
+  } else if (direction == "higher") {
+    abn <- pt(t, df = df, lower.tail = FALSE) * 100
   }
 
   zcc <- (score - ctrl.mean) / ctrl.sd  # also the c1
   ncp <- neuropsytools::abnorm_ci_t(c = zcc, n = ctrl.n)
   zcc.ci.lb <- ncp$delta.lb$root / sqrt(ctrl.n)
   zcc.ci.ub <- ncp$delta.ub$root / sqrt(ctrl.n)
-  abn.ci.lb <- min(as.numeric(ncp$`2.5%`), as.numeric(ncp$`97.5%`))
-  abn.ci.ub <- max(as.numeric(ncp$`2.5%`), as.numeric(ncp$`97.5%`))
-
-  if (direction == "lower") {
-    abn <- 100 - abn
-  }
-
-  if (direction == "higher") {
-    abn.ci.lb <- 100 - abn.ci.lb
-    abn.ci.ub <- 100 - abn.ci.ub
-  }
+  abn.ci <- c(as.numeric(ncp$`2.5%`), as.numeric(ncp$`97.5%`))
+  if (direction == "higher") {abn.ci <- 100 - abn.ci}
+  abn.ci.lb <- min(abn.ci)
+  abn.ci.ub <- max(abn.ci)
 
   result <- list(
     score = score,
@@ -139,8 +131,7 @@ dissoc_single <- function(score,
     direction = direction,
     dp = dp,
     t = round(t, dp),
-    p.one.tailed = round(p.one.tailed, dp),
-    p.two.tailed = round(p.two.tailed, dp),
+    p.value = round(p.value, dp),
     zcc = round(zcc, dp),
     zcc.ci.lb = round(zcc.ci.lb, dp),
     zcc.ci.ub = round(zcc.ci.ub, dp),
@@ -156,26 +147,30 @@ dissoc_single <- function(score,
 #' @export
 print.dissoc_single <- function(x, ...) {
 
-    input_df <- data.frame(
+  input_df <- data.frame(
     item = c("Sample mean", "Sample SD", "Sample size", "Case's test score"),
     value = c(x$ctrl.mean, x$ctrl.sd, x$ctrl.n, x$score),
     stringsAsFactors = FALSE
   )
 
   output_df <- data.frame(
-    item = c("t value", paste("p-val (", x$direction, ")", sep = ""), "p-val (either direction)", "Effect size (z-cc)", "Abnormality"),
-    value = c(format(x$t, nsmall = x$dp), format(x$p.one.tailed, nsmall = x$dp), format(x$p.two.tailed, nsmall = x$dp), format(x$zcc, nsmall = x$dp), paste(format(x$abn, nsmall = x$dp), " %", sep = "")),
-    ci = c("", "","", paste(format(round(x$zcc.ci.lb, x$dp), nsmall = x$dp), "to",    format(round(x$zcc.ci.ub, x$dp), nsmall = x$dp), sep = " "), paste(format(round(x$abn.ci.lb, x$dp), nsmall = x$dp), " % to", format(round(x$abn.ci.ub, x$dp), nsmall = x$dp), "%", sep = " ")),
+    item = c("t value", "p-value", "Effect size (z-cc)", "Abnormality"),
+    value = c(format(x$t, nsmall = x$dp), format(x$p.value, nsmall = x$dp), format(x$zcc, nsmall = x$dp), paste(format(x$abn, nsmall = x$dp), " %", sep = "")),
+    ci = c("", "",
+           paste(
+             format(round(x$zcc.ci.lb, x$dp), nsmall = x$dp), "to",
+             format(round(x$zcc.ci.ub, x$dp), nsmall = x$dp), sep = " "), paste(format(round(x$abn.ci.lb, x$dp), nsmall = x$dp), " % to", format(round(x$abn.ci.ub, x$dp), nsmall = x$dp), "%", sep = " ")),
     stringsAsFactors = FALSE
   )
 
   input_table <- knitr::kable(input_df, format = "simple", col.names = c("Variable", "Value"))
-  output_table <- knitr::kable(output_df, format = "simple", col.names = c("Variable", "Value", glue::glue("{x$conf.level*100}% Confidence Interval")))
-  header <- "Frequentist Single Dissociation Between a Test Score and a Control Sample."
+  output_table <- knitr::kable(output_df, format = "simple", col.names = c("Variable", "Value", glue::glue("{x$conf.level*100}% Confidence Interval")
+  ))
+  header <- "Assessing For a Dissociation Between a Test Score and a Control Sample."
   footnote <- "See documentation for further information on how scores are computed."
 
   result <- paste(header, "\n\n",
-                  "INPUTS:",  paste(capture.output(input_table), collapse = "\n"), "\n\n",
+                  "INPUTS:", paste(capture.output(input_table), collapse = "\n"), "\n\n",
                   "OUTPUTS:", paste(capture.output(output_table), collapse = "\n"), "\n\n",
                   footnote, "\n",
                   sep = "")
@@ -186,3 +181,4 @@ print.dissoc_single <- function(x, ...) {
 # Example usage:
 # res <- dissoc_single(130, 100, 15, 30, conf.level = 0.95, direction = "lower", dp = 2)
 # res
+

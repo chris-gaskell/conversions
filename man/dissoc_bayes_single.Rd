@@ -21,14 +21,17 @@ dissoc_bayes_single(
 
 \item{ctrl.mean}{Numeric value representing the mean of the control group.}
 
-\item{ctrl.sd}{Numeric value representing the standard deviation of the control group.}
+\item{ctrl.sd}{Numeric value representing the standard deviation of the
+control group.}
 
-\item{ctrl.n}{Integer value representing the sample size of the control group.}
+\item{ctrl.n}{Integer value representing the sample size of the control
+group.}
 
 \item{conf.level}{Numeric value specifying the confidence level for the credible interval (default is 0.95 for 95\%).}
 
-\item{direction}{Direction of the test, either "lower" or "higher" (default
-is "lower").}
+\item{direction}{Character. Specifies the direction of the hypothesis.
+Options are "lower" (one-tailed), "higher" (one-tailed), or "two.tailed"
+(default, two-tailed).}
 
 \item{dp}{Number of decimal places for rounding the results (default is 2).}
 

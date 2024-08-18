@@ -2,16 +2,16 @@
 % Please edit documentation in R/dissoc_single.R
 \name{dissoc_single}
 \alias{dissoc_single}
-\title{Assessing For a Frequentist Single Dissociation Between a Test Score and a
-Control Sample.}
+\title{Assessing For a Dissociation Between a Test Score and a Control Sample.}
 \usage{
 dissoc_single(
   score,
   ctrl.mean,
   ctrl.sd,
   ctrl.n,
-  conf.level = 0.95,
   direction = "lower",
+  tail = "one.tailed",
+  conf.level = 0.95,
   dp = 2
 )
 }
@@ -20,14 +20,20 @@ dissoc_single(
 
 \item{ctrl.mean}{Numeric value representing the mean of the control group.}
 
-\item{ctrl.sd}{Numeric value representing the standard deviation of the control group.}
+\item{ctrl.sd}{Numeric value representing the standard deviation of the
+control group.}
 
-\item{ctrl.n}{Integer value representing the sample size of the control group.}
+\item{ctrl.n}{Integer value representing the sample size of the control
+group.}
+
+\item{direction}{Character. Specifies the direction of the hypothesis.
+Options are "lower" (one-tailed), "higher" (one-tailed), or "two.tailed"
+(default, two-tailed).}
+
+\item{tail}{Character. Specifies whether the test is one-tailed or
+two-tailed. Options are "one.tailed" and "two.tailed" (default)}
 
 \item{conf.level}{Confidence level (default is 0.95 for 95\%).}
-
-\item{direction}{Direction of the test, either "lower" or "higher" (default
-is "lower").}
 
 \item{dp}{Number of decimal places for rounding the results (default is 2).}
 }
@@ -42,9 +48,10 @@ include:
 }
 }
 \description{
-Assess for a dissociation between a single test score and a control sample
-using a modified t-test. An estimate of the abnormality of the test score is
-also provided.
+Utilises classical (frequentist) statistical methods to compare a single
+case’s score with scores from a control sample. It also provides an interval
+estimate of the effect size for the difference between the case and the
+control group.
 }
 \details{
 Assess for a dissociation between a single test score and a control
@@ -72,35 +79,17 @@ the estimate of abnormality are also provided (Crawford & Garthwaite,
 2002).
 }
 \examples{
-# Example 1: Basic usage
-result <- dissoc_single(
-  score = 75,
-  ctrl.mean = 70,
-  ctrl.sd = 10,
-  ctrl.n = 30
-)
-print(result)
+# Two-tailed test example:
+res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15, ctrl.n = 30, conf.level = 0.95, direction = "lower", tail = "two.tailed", dp = 2)
+print(res)
 
-# Example 2: With a higher direction and different confidence level
-result <- dissoc_single(
-  score = 85,
-  ctrl.mean = 70,
-  ctrl.sd = 10,
-  ctrl.n = 30,
-  direction = "higher",
-  conf.level = 0.99
-)
-print(result)
+# One-tailed test example (higher):
+res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15, ctrl.n = 30, conf.level = 0.95, direction = "higher", tail = "one.tailed", dp = 2)
+print(res)
 
-# Example 3: Using more decimal places
-result <- dissoc_single(
-  score = 85,
-  ctrl.mean = 70,
-  ctrl.sd = 10,
-  ctrl.n = 30,
-  dp = 4
-)
-print(result)
+# One-tailed test example (lower):
+res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15, ctrl.n = 30, conf.level = 0.95, direction = "lower", tail = "one.tailed", dp = 2)
+print(res)
 }
 \references{
 \itemize{

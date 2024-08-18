@@ -14,10 +14,11 @@ dissoc_discrep(
   ctrl.n,
   score.x,
   score.y,
-  conf.level = 0.95,
   direction = "lower",
-  dp = 2,
-  test.names = c("X", "Y")
+  tail = "one.tailed",
+  test.names = c("X", "Y"),
+  conf.level = 0.95,
+  dp = 2
 )
 }
 \arguments{
@@ -37,15 +38,19 @@ dissoc_discrep(
 
 \item{score.y}{Test score of the individual case for the second test.}
 
-\item{conf.level}{Confidence level (default is 0.95 for 95\%).}
+\item{direction}{Character. Specifies the direction of the hypothesis.
+Options are "lower" (one-tailed), "higher" (one-tailed), or "two.tailed"
+(default, two-tailed).}
 
-\item{direction}{Direction of the test, either "lower" or "higher" (default
-is "lower").}
-
-\item{dp}{Number of decimal places for rounding the results (default is 2).}
+\item{tail}{Character. Specifies whether the test is one-tailed or
+two-tailed. Options are "one.tailed" and "two.tailed" (default)}
 
 \item{test.names}{A vector of two strings representing the names of the tests
 (default is c("X", "Y")).}
+
+\item{conf.level}{Confidence level (default is 0.95 for 95\%).}
+
+\item{dp}{Number of decimal places for rounding the results (default is 2).}
 }
 \value{
 A list of statistical input, parameters, and results. Key outputs
@@ -58,9 +63,11 @@ include:
 }
 }
 \description{
-Assess for a dissociation between two test scores a for single case using a
-modified t-test. An estimate of the abnormality of the test score is also
-provided.
+Using the modified t-test approach Assesses whether the difference in scores
+between two tests for a patient is significantly larger than the differences
+found in a control or normative sample. The analysis yields a significance
+test, a point estimate of the abnormality of the score difference, and
+confidence intervals for the abnormality of the difference.
 }
 \details{
 Assess for a dissociation between two test scores for a single case
