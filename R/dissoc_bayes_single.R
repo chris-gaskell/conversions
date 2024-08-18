@@ -53,9 +53,14 @@ dissoc_bayes_single <- function(
     ctrl.n,
     conf.level = .95,
     direction = "lower",
+    tail = "one.tailed",
     dp = 2,
     sims = 10000,
     treshold = 0.1) {
+
+  if (direction != "higher" & direction != "lower") {
+    stop("Invalid direction. Options are 'higher' or 'lower'.")
+  }
 
   df <-  ctrl.n-1
   ctrl.var <- ctrl.sd^2
@@ -92,16 +97,18 @@ dissoc_bayes_single <- function(
   z <- (score - ctrl.mean) / ctrl.sd
   percentile <- pnorm(z)*100
   z.ci <- bayestestR::hdi(z.scores, ci = conf.level)
-  z.ci.lb <- z.ci$CI_low
-  z.ci.ub <- z.ci$CI_high
+  z.ci.lb <- min(z.ci$CI_low, z.ci$CI_high)
+  z.ci.ub <- max(z.ci$CI_high, z.ci$CI_low)
 
   p <- mean(p.sims)
-  p.two.tailed <- 2 * min(p, 1 - p)
 
   abn <- p * 100
   abn.ci <- bayestestR::hdi(p.sims, ci = conf.level)
   abn.ci.lb <- min(abn.ci$CI_low, abn.ci$CI_high) * 100
   abn.ci.ub <- max(abn.ci$CI_low, abn.ci$CI_high) * 100
+
+  if (tail == "two.tailed") {p <- 2 * min(p, 1 - p)}
+
 
   result <- list(
     score = score,
@@ -120,7 +127,7 @@ dissoc_bayes_single <- function(
     z.ci.ub = round(z.ci.ub, dp),
     percentile = round(percentile, dp),
     p = round(p, dp),
-    p.two.tailed = round(p.two.tailed, dp),
+    #p.two.tailed = round(p.two.tailed, dp),
     abn = round(abn, dp),
     abn.ci.lb = round(abn.ci.lb, dp),
     abn.ci.ub = round(abn.ci.ub, dp)
@@ -140,20 +147,17 @@ print.dissoc_bayes_single <- function(x, ...) {
   )
 
   output_df <- data.frame(
-    Item = c(
+    item = c(
       paste("p-val (", x$direction, ")", sep = ""),
-      "p-val (either direction)",
       "Effect size (z-cc)",
       "Abnormality"
     ),
-    Value = c(
+    value = c(
       format(x$p, nsmall = x$dp),
-      format(x$p.two.tailed, nsmall = x$dp),
       format(x$z, nsmall = x$dp),
       paste(format(x$abn, nsmall = x$dp), "%", sep = "")
     ),
-    CI = c(
-      "",
+    ci = c(
       "",
       paste(format(x$z.ci.lb, x$dp), "to", format(x$z.ci.ub, x$dp), sep = " "),
       paste(x$abn.ci.lb, "% to", x$abn.ci.ub, "%", sep = " ")

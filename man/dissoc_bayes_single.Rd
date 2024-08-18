@@ -11,6 +11,7 @@ dissoc_bayes_single(
   ctrl.n,
   conf.level = 0.95,
   direction = "lower",
+  tail = "one.tailed",
   dp = 2,
   sims = 10000,
   treshold = 0.1
@@ -32,6 +33,9 @@ group.}
 \item{direction}{Character. Specifies the direction of the hypothesis.
 Options are "lower" (one-tailed), "higher" (one-tailed), or "two.tailed"
 (default, two-tailed).}
+
+\item{tail}{Character. Specifies whether the test is one-tailed or
+two-tailed. Options are "one.tailed" and "two.tailed" (default)}
 
 \item{dp}{Number of decimal places for rounding the results (default is 2).}
 

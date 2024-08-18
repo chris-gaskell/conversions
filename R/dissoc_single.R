@@ -64,17 +64,23 @@
 #'   - [abnorm_ci_t()]: For generating interval estimates for abnormality using the modified t test.
 #' @export
 #' @examples
-#' # Two-tailed test example: res <- dissoc_single(score = 130, ctrl.mean = 100,
-#' ctrl.sd = 15, ctrl.n = 30, conf.level = 0.95, direction = "lower", tail =
-#' "two.tailed", dp = 2) print(res)
+#' # Two-tailed test example:
+#' res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15,
+#'           ctrl.n = 30, conf.level = 0.95, direction = "lower",
+#'           tail = "two.tailed", dp = 2)
+#' print(res)
 #'
-#' # One-tailed test example (higher): res <- dissoc_single(score = 130,
-#' ctrl.mean = 100, ctrl.sd = 15, ctrl.n = 30, conf.level = 0.95, direction =
-#' "higher", tail = "one.tailed", dp = 2) print(res)
+#' # One-tailed test example (higher):
+#' res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15,
+#'           ctrl.n = 30, conf.level = 0.95, direction = "higher",
+#'           tail = "one.tailed", dp = 2)
+#' print(res)
 #'
-#' # One-tailed test example (lower): res <- dissoc_single(score = 130,
-#' ctrl.mean = 100, ctrl.sd = 15, ctrl.n = 30, conf.level = 0.95, direction =
-#' "lower", tail = "one.tailed", dp = 2) print(res)
+#' # One-tailed test example (lower):
+#' res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15,
+#'           ctrl.n = 30, conf.level = 0.95, direction = "lower",
+#'           tail = "one.tailed", dp = 2)
+#' print(res)
 dissoc_single <- function(score,
                           ctrl.mean,
                           ctrl.sd,

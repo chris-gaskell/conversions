@@ -16,7 +16,7 @@ dissoc_discrep(
   score.y,
   direction = "lower",
   tail = "one.tailed",
-  test.names = c("X", "Y"),
+  test.names = c("test X", "test Y"),
   conf.level = 0.95,
   dp = 2
 )

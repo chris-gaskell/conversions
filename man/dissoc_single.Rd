@@ -80,15 +80,21 @@ the estimate of abnormality are also provided (Crawford & Garthwaite,
 }
 \examples{
 # Two-tailed test example:
-res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15, ctrl.n = 30, conf.level = 0.95, direction = "lower", tail = "two.tailed", dp = 2)
+res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15,
+          ctrl.n = 30, conf.level = 0.95, direction = "lower",
+          tail = "two.tailed", dp = 2)
 print(res)
 
 # One-tailed test example (higher):
-res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15, ctrl.n = 30, conf.level = 0.95, direction = "higher", tail = "one.tailed", dp = 2)
+res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15,
+          ctrl.n = 30, conf.level = 0.95, direction = "higher",
+          tail = "one.tailed", dp = 2)
 print(res)
 
 # One-tailed test example (lower):
-res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15, ctrl.n = 30, conf.level = 0.95, direction = "lower", tail = "one.tailed", dp = 2)
+res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15,
+          ctrl.n = 30, conf.level = 0.95, direction = "lower",
+          tail = "one.tailed", dp = 2)
 print(res)
 }
 \references{

@@ -73,7 +73,7 @@ dissoc_discrep <- function(ctrl.mean.x,
                                 score.y,
                                 direction = "lower",
                                 tail = "one.tailed",
-                                test.names = c("X", "Y"),
+                                test.names = c("test X", "test Y"),
                                 conf.level = 0.95,
                                 dp = 2
                            ) {
@@ -164,8 +164,8 @@ print.dissoc_discrep <- function(x, ...) {
   )
 
   output_df <- data.frame(
-    item = c(paste("Effect size (z) for test", x$test.names[1]),
-             paste("Effect size (z) for test", x$test.names[2]),
+    item = c(paste("Effect size (z) for ", x$test.names[1]),
+             paste("Effect size (z) for ", x$test.names[2]),
              paste("Effect size (z-dcc) between", x$test.names[1], "and", x$test.names[2]),
              "t value",
              "p-value",
