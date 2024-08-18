@@ -63,6 +63,7 @@ intervals, p-values, and abnormality percentages.</p>
 <span>  <span class="va">ctrl.n</span>,</span>
 <span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  direction <span class="op">=</span> <span class="st">"lower"</span>,</span>
+<span>  tail <span class="op">=</span> <span class="st">"one.tailed"</span>,</span>
 <span>  dp <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  sims <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  treshold <span class="op">=</span> <span class="fl">0.1</span></span>
@@ -99,6 +100,11 @@ group.</p></dd>
 <dd><p>Character. Specifies the direction of the hypothesis.
 Options are "lower" (one-tailed), "higher" (one-tailed), or "two.tailed"
 (default, two-tailed).</p></dd>
+
+
+<dt id="arg-tail">tail<a class="anchor" aria-label="anchor" href="#arg-tail"></a></dt>
+<dd><p>Character. Specifies whether the test is one-tailed or
+two-tailed. Options are "one.tailed" and "two.tailed" (default)</p></dd>
 
 
 <dt id="arg-dp">dp<a class="anchor" aria-label="anchor" href="#arg-dp"></a></dt>
@@ -167,12 +173,11 @@ include:</p><ul><li><p>t value: The t-value calculated for the test.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> OUTPUTS:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Outputs                    Value    95% Credible Interval </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------  -------  ----------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p-val (lower)              0.26                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p-val (either direction)   0.52                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z-cc)         -0.67    -1.06 to -0.27        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Abnormality                25.88%   13.96 % to 38.86 %    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Outputs              Value    95% Credible Interval </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------  -------  ----------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-val (lower)        0.26                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z-cc)   -0.67    -1.06 to -0.27        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Abnormality          25.88%   13.96 % to 38.86 %    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> See documentation for further information on how scores are computed.</span>
 <span class="r-in"><span></span></span>
