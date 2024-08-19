@@ -30,6 +30,8 @@ reference:
       - dissoc_bayes_single
       - dissoc_discrep
       - dissoc_single
+      - discrep_rsdt
+      - discrep_usdt
 
   - title: Supplementary Analyses
     desc: >
