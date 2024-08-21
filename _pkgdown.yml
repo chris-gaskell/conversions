@@ -27,11 +27,9 @@ reference:
     desc: >
       Analyse single-case dissociations to explore individual cognitive processes.
     contents:
-      - dissoc_bayes_single
-      - dissoc_discrep
-      - dissoc_single
-      - discrep_rsdt
-      - discrep_usdt
+      - deficit
+      - deficit_bayes
+      - discrep
 
   - title: Supplementary Analyses
     desc: >

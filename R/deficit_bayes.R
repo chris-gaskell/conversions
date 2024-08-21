@@ -8,7 +8,7 @@
 #'
 #' @details NEEDS WRITING
 #'
-#' @inheritParams dissoc_single
+#' @inheritParams deficit
 #' @param conf.level Numeric value specifying the confidence level for the credible interval (default is 0.95 for 95%).
 #' @param sims Integer specifying the number of simulations to perform. Default is 10000.
 #' @param treshold Numeric value for the abnormality threshold. Default is 0.1.
@@ -30,14 +30,14 @@
 #'   - NEEDS WRITING.
 #'   - NEEDS WRITING.
 #' @seealso
-#'   - [dissoc_single()]: Assessing For a frequentist single dissociation between a test score and a control sample.
-#'   - [dissoc_bayes_single()]: For a Bayesian approach to assessing for a dissociation between a single test score and a control sample for a single case.
-#'   - [dissoc_discrep()]: For assessing a dissociation between two test scores for a single case.
+#'   - [deficit()]: Assessing For a frequentist single dissociation between a test score and a control sample.
+#'   - [deficit_bayes()]: For a Bayesian approach to assessing for a dissociation between a single test score and a control sample for a single case.
+#'   - [discrep()]: For assessing a dissociation between two test scores for a single case.
 #'   - [abnorm_ci_t()]: For generating interval estimates for abnormality using the modified t test.
 #'   - [bayestestR::hdi()]
 #'
 #' @examples
-#' dissoc_bayes_single(
+#' deficit_bayes(
 #'   score = 90,
 #'   ctrl.mean = 100,
 #'   ctrl.sd = 15,
@@ -46,7 +46,7 @@
 #' )
 #'
 #' @export
-dissoc_bayes_single <- function(
+deficit_bayes <- function(
     score,
     ctrl.mean,
     ctrl.sd,
@@ -133,12 +133,12 @@ dissoc_bayes_single <- function(
     abn.ci.ub = round(abn.ci.ub, dp)
   )
 
-  class(result) <- 'dissoc_bayes_single'
+  class(result) <- 'deficit_bayes'
   return(result)
 }
 
 #' @export
-print.dissoc_bayes_single <- function(x, ...) {
+print.deficit_bayes <- function(x, ...) {
 
   input_df <- data.frame(
     Item = c("Sample mean", "Sample SD", "Sample size", "Case's test score"),
@@ -181,7 +181,7 @@ print.dissoc_bayes_single <- function(x, ...) {
 }
 
 # Example usage:
-# dissoc_bayes_single(
+# deficit_bayes(
 #   score = 90,
 #   ctrl.mean = 100,
 #   ctrl.sd = 15,

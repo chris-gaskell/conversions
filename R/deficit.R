@@ -1,4 +1,4 @@
-#' Assessing For a Dissociation Between a Test Score and a Control Sample.
+#' Assessing For a Deficit in Test Score When Compared to a Control Sample.
 #'
 #' Utilises classical (frequentist) statistical methods to compare a single
 #' case’s score with scores from a control sample. It also provides an interval
@@ -59,29 +59,29 @@
 #'   - Crawford, J.R., Garthwaite, P.H., & Porter, S. (2010). Point and interval estimates of effect sizes for the case-controls design in neuropsychology: Rationale, methods, implementations, and proposed reporting standards. *Cognitive Neuropsychology, 27*(3), 245-260.
 #'   - Payne, R. W., & Jones, G. (1957). Statistics for the investigation of individual cases. Journal of Clinical Psychology, 13, 115-121.
 #' @seealso
-#'   - [dissoc_bayes_single()]: For a Bayesian approach to assessing for a dissociation between a single test score and a control sample for a single case.
-#'   - [dissoc_discrep()]: For assessing a dissociation between two test scores for a single case.
+#'   - [deficit_bayes()]: For a Bayesian approach to assessing for a dissociation between a single test score and a control sample for a single case.
+#'   - [discrep()]: For assessing a dissociation between two test scores for a single case.
 #'   - [abnorm_ci_t()]: For generating interval estimates for abnormality using the modified t test.
 #' @export
 #' @examples
 #' # Two-tailed test example:
-#' res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15,
+#' res <- deficit(score = 130, ctrl.mean = 100, ctrl.sd = 15,
 #'           ctrl.n = 30, conf.level = 0.95, direction = "lower",
 #'           tail = "two.tailed", dp = 2)
 #' print(res)
 #'
 #' # One-tailed test example (higher):
-#' res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15,
+#' res <- deficit(score = 130, ctrl.mean = 100, ctrl.sd = 15,
 #'           ctrl.n = 30, conf.level = 0.95, direction = "higher",
 #'           tail = "one.tailed", dp = 2)
 #' print(res)
 #'
 #' # One-tailed test example (lower):
-#' res <- dissoc_single(score = 130, ctrl.mean = 100, ctrl.sd = 15,
+#' res <- deficit(score = 130, ctrl.mean = 100, ctrl.sd = 15,
 #'           ctrl.n = 30, conf.level = 0.95, direction = "lower",
 #'           tail = "one.tailed", dp = 2)
 #' print(res)
-dissoc_single <- function(score,
+deficit <- function(score,
                           ctrl.mean,
                           ctrl.sd,
                           ctrl.n,
@@ -146,12 +146,12 @@ dissoc_single <- function(score,
     abn.ci.ub = round(abn.ci.ub, dp)
   )
 
-  class(result) <- 'dissoc_single'
+  class(result) <- 'deficit'
   return(result)
 }
 
 #' @export
-print.dissoc_single <- function(x, ...) {
+print.deficit <- function(x, ...) {
 
   input_df <- data.frame(
     item = c("Sample mean", "Sample SD", "Sample size", "Case's test score"),
@@ -185,6 +185,6 @@ print.dissoc_single <- function(x, ...) {
 }
 
 # Example usage:
-# res <- dissoc_single(130, 100, 15, 30, conf.level = 0.95, direction = "lower", dp = 2)
+# res <- deficit(130, 100, 15, 30, conf.level = 0.95, direction = "lower", dp = 2)
 # res
 
