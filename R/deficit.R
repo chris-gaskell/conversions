@@ -94,8 +94,13 @@ deficit <- function(score,
     stop("Invalid direction. Options are 'higher' or 'lower'.")
   }
 
+# t -----------------------------------------------------------------------
+
+
   t <- (score - ctrl.mean) / (ctrl.sd * sqrt((ctrl.n + 1) / ctrl.n))
   df <- ctrl.n - 1
+
+# p -----------------------------------------------------------------------
 
   # Determine p-value based on direction and tail
   if (tail == "one.tailed") {
@@ -119,6 +124,8 @@ deficit <- function(score,
     abn <- pt(t, df = df, lower.tail = FALSE) * 100
   }
 
+# abn and z ---------------------------------------------------------------
+
   zcc <- (score - ctrl.mean) / ctrl.sd  # also the c1
   ncp <- neuropsytools::abnorm_ci_t(c = zcc, n = ctrl.n)
   zcc.ci.lb <- ncp$delta.lb$root / sqrt(ctrl.n)
@@ -128,6 +135,35 @@ deficit <- function(score,
   abn.ci.lb <- min(abn.ci)
   abn.ci.ub <- max(abn.ci)
 
+
+# rounding ----------------------------------------------------------------
+
+  p.value = round(p.value, dp)
+  zcc = round(zcc, dp)
+  zcc.ci.lb = round(zcc.ci.lb, dp)
+  zcc.ci.ub = round(zcc.ci.ub, dp)
+  abn = round(abn, dp)
+  abn.ci.lb = round(abn.ci.lb, dp)
+  abn.ci.ub = round(abn.ci.ub, dp)
+
+# output ------------------------------------------------------------------
+
+  input_df <- data.frame(
+    item = c("Sample mean", "Sample SD", "Sample size", "Case's test score"),
+    value = c(ctrl.mean, ctrl.sd, ctrl.n, score),
+    stringsAsFactors = FALSE
+  )
+
+  output_df <- data.frame(
+    item = c("t value", "p-value", "Effect size (z-cc)", "Abnormality"),
+    value = c(format(t, nsmall = dp), format(p.value, nsmall = dp), format(zcc, nsmall = dp), paste(format(abn, nsmall = dp), " %", sep = "")),
+    ci = c("", "",
+           paste(
+             format(round(zcc.ci.lb, dp), nsmall = dp), "to",
+             format(round(zcc.ci.ub, dp), nsmall = dp), sep = " "), paste(format(round(abn.ci.lb, dp), nsmall = dp), " % to", format(round(abn.ci.ub, dp), nsmall = dp), "%", sep = " ")),
+    stringsAsFactors = FALSE
+  )
+
   result <- list(
     score = score,
     ctrl.mean = ctrl.mean,
@@ -136,14 +172,16 @@ deficit <- function(score,
     conf.level = conf.level,
     direction = direction,
     dp = dp,
-    t = round(t, dp),
-    p.value = round(p.value, dp),
-    zcc = round(zcc, dp),
-    zcc.ci.lb = round(zcc.ci.lb, dp),
-    zcc.ci.ub = round(zcc.ci.ub, dp),
-    abn = round(abn, dp),
-    abn.ci.lb = round(abn.ci.lb, dp),
-    abn.ci.ub = round(abn.ci.ub, dp)
+    t = t,
+    p.value = p.value,
+    zcc = zcc,
+    zcc.ci.lb = zcc.ci.lb,
+    zcc.ci.ub = zcc.ci.ub,
+    abn = abn,
+    abn.ci.lb = abn.ci.lb,
+    abn.ci.ub = abn.ci.ub,
+    input_df = input_df,
+    output_df = output_df
   )
 
   class(result) <- 'deficit'
@@ -153,25 +191,10 @@ deficit <- function(score,
 #' @export
 print.deficit <- function(x, ...) {
 
-  input_df <- data.frame(
-    item = c("Sample mean", "Sample SD", "Sample size", "Case's test score"),
-    value = c(x$ctrl.mean, x$ctrl.sd, x$ctrl.n, x$score),
-    stringsAsFactors = FALSE
-  )
-
-  output_df <- data.frame(
-    item = c("t value", "p-value", "Effect size (z-cc)", "Abnormality"),
-    value = c(format(x$t, nsmall = x$dp), format(x$p.value, nsmall = x$dp), format(x$zcc, nsmall = x$dp), paste(format(x$abn, nsmall = x$dp), " %", sep = "")),
-    ci = c("", "",
-           paste(
-             format(round(x$zcc.ci.lb, x$dp), nsmall = x$dp), "to",
-             format(round(x$zcc.ci.ub, x$dp), nsmall = x$dp), sep = " "), paste(format(round(x$abn.ci.lb, x$dp), nsmall = x$dp), " % to", format(round(x$abn.ci.ub, x$dp), nsmall = x$dp), "%", sep = " ")),
-    stringsAsFactors = FALSE
-  )
-
-  input_table <- knitr::kable(input_df, format = "simple", col.names = c("Variable", "Value"))
-  output_table <- knitr::kable(output_df, format = "simple", col.names = c("Variable", "Value", glue::glue("{x$conf.level*100}% Confidence Interval")
+  input_table <- knitr::kable(x$input_df, format = "simple", col.names = c("Variable", "Value"))
+  output_table <- knitr::kable(x$output_df, format = "simple", col.names = c("Variable", "Value", glue::glue("{x$conf.level*100}% Confidence Interval")
   ))
+
   header <- "Assessing For a Dissociation Between a Test Score and a Control Sample."
   footnote <- "See documentation for further information on how scores are computed."
 
@@ -185,6 +208,9 @@ print.deficit <- function(x, ...) {
 }
 
 # Example usage:
+# res <- deficit(130, 100, 15, 30, conf.level = 0.95, direction = "lower", dp = 2)
+# res
+#
 # res <- deficit(130, 100, 15, 30, conf.level = 0.95, direction = "lower", dp = 2)
 # res
 

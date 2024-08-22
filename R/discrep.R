@@ -237,7 +237,7 @@ print.discrep <- function(x, ...) {
 
   result <- paste(header, "\n\n",
                   "INPUTS:", paste(capture.output(input_table), collapse = "\n"), "\n\n",
-                  "PARAMS:",  "\n\n", paste("Method:", x$method),"\n", paste("Confidence Intervals:", x$conf.level*100),"\n\n",
+                  "PARAMATERS:",  "\n\n", paste("Method:", x$method),"\n", paste("Confidence Intervals:", x$conf.level*100),"\n\n",
                   "OUTPUTS:", paste(capture.output(output_table), collapse = "\n"), "\n\n",
                   footnote, "\n",
                   sep = "")
