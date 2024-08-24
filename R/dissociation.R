@@ -180,6 +180,19 @@ print.dissociation <- function(x, ...) {
 
   header <- "Testing for a Frequentist Dissociation Between Two Test Scores Compared to a Control Sample"
   footnote <- "See documentation for further information on how scores are computed."
+  key <- paste("- Abnormality = The percentage of controls expected to show a higher deficit.", "\n",
+               "- z-cc = Z for the case control.", sep = ""
+  )
+
+  discrep.res.method <- if (x$discrep.res$method == "rsdt") {
+    "RSDT (Crawford & Garthwaite, 2005)"
+  } else if (method_class == "usdt") {
+    "USDT (Crawford & Garthwaite, 2005)"
+  } else if (method_class == "difflims") {
+    "Difflims (Crawford et al. 2002)"
+  } else {
+    "Unknown method"
+  }
 
   dissociation_statement <- if (x$dissociation_exists) {
     "A dissociation exists between the test scores."
@@ -191,8 +204,8 @@ print.dissociation <- function(x, ...) {
     header,"\n\n",
     "INPUTS:", "\n\n", paste(input_table, collapse = "\n"), "\n\n",
     "PARAMETERS:",  "\n\n",
-      paste("Deficit Method:", toupper(x$deficit_method)),"\n",
-      paste("Discrepancy Method:", toupper(x$discrep_method)),"\n",
+      paste("Deficit Method: Modified T (Crawford & Howell, 1998)"),"\n",
+      paste("Discrepancy Method:", toupper(discrep.res.method)),"\n",
       paste("Confidence Interval Method:", "Modified T"),"\n",
       paste("Confidence Intervals:", x$discrep.res$conf.level*100, "%"),"\n",
       paste("Direction Indicating Impairment ", "(", x$discrep.res$test.names[1], "): " , x$discrep.res$direction.x,  sep = ""),"\n",
@@ -202,6 +215,7 @@ print.dissociation <- function(x, ...) {
     "1) DEFICIT ANALYSIS:", "\n\n", paste(deficits_table, collapse = "\n"), "\n\n",
     "2) DISCREPANCY ANALYSIS:", "\n\n",paste(discrep_table, collapse = "\n"), "\n\n",
     "3) DISSOCIATION ANALYSIS:", "\n\n",dissociation_statement, "\n\n",
+    "Note.", "\n", key, "\n\n",
     footnote, "\n",
     sep = ""
   )
@@ -213,7 +227,7 @@ print.dissociation <- function(x, ...) {
 
 # test <- dissociation(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
 #         ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 140, score.y = 120,
-#         deficit_method = "t", direction = "higher",
+#           deficit_method = "t", direction.x = "higher", direction.y  = "higher",
 #         test.names = c("Fluency", "Sequencing"), dp = 2
 #         )
 # test

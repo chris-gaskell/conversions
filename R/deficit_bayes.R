@@ -118,6 +118,7 @@ deficit_bayes <- function(
     sims = sims,
     treshold = treshold,
     direction = direction,
+    tail = tail,
     dp = dp,
     df = df,
     ctrl.var = ctrl.var,
@@ -169,10 +170,19 @@ print.deficit_bayes <- function(x, ...) {
 
   header <- "Assessing For a Bayesian Deficit Between a Test Score and a Control Sample."
   footnote <- "See documentation for further information on how scores are computed."
-
+  key <- paste("- Abnormality = The percentage of controls expected to show a higher deficit.", "\n",
+               "- z-cc = Z for the case control.", sep = ""
+  )
   result <- paste(header, "\n\n",
                   "INPUTS:", paste(capture.output(input_table), collapse = "\n"), "\n\n",
+                  "PARAMETERS:",  "\n\n",
+                    paste("Deficit Method:", "Bayesian (Crawford & Garthwaite, 2007)"),"\n",
+                    paste("Confidence Interval Method:", "Bayesian"),"\n",
+                    paste("Confidence Intervals:", x$conf.level*100, "%"),"\n",
+                    paste("Hypothesis:", stringr::str_to_title(gsub("\\.", " ", x$tail))),"\n",
+                    paste("Direction Indicating Impairment: ", stringr::str_to_title(x$direction),  sep = ""),"\n\n",
                   "OUTPUTS:", paste(capture.output(output_table), collapse = "\n"), "\n\n",
+                  "Note.", "\n", key, "\n\n",
                   footnote, "\n",
                   sep = "")
 

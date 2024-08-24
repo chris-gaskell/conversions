@@ -208,7 +208,7 @@
                paste("Effect size (z-dcc) between", test.names[1], "and", test.names[2]),
                "t value",
                "p value",
-               "% of controls expected to show a higher discrepancy"
+               "Abnormality"
       ),
       value = c(format(z.x, nsmall = dp),
                 format(z.y, nsmall = dp),
@@ -251,6 +251,7 @@
       abn.ci.ub = round(abn.ci.ub, dp),
       dp = dp,
       method = method,
+      tail = tail,
       input_df = input_df,
       output_df = output_df
     )
@@ -266,38 +267,52 @@
     input_table <-  knitr::kable(x$input_df, format = "simple", col.names = c("Test", "Mean", "SD", "Sample size", "r", "Case score"))
     output_table <- knitr::kable(x$output_df, format = "simple", col.names = c("Variable", "Value", paste0(x$conf.level * 100, "% CI")))
 
-    method <- gsub("discrep_", "", class(x)[1])
-    header <- "Testing for a Frequentist Discrepency Between Two Test Scores Compared to a Control Sample"
+    method <- if (x$method == "rsdt") {
+      "RSDT (Crawford & Garthwaite, 2005)"
+    } else if (method_class == "usdt") {
+      "USDT (Crawford & Garthwaite, 2005)"
+    } else if (method_class == "difflims") {
+      "Difflims (Crawford et al. 2002)"
+    } else {
+      "Unknown method"
+    }
+
+    header <- "Testing for a Frequentist Discrepency Between Two Test Scores Compared to a Control Sample."
     footnote <- "See documentation for further information on how scores are computed and how to cite methods."
+    key <- paste("- Abnormality = The percentage of controls expected to show a higher deficit.", "\n",
+                 "- z-cc = Z for the case control.", sep = ""
+    )
 
     result <- paste(header, "\n\n",
                     "INPUTS:", paste(capture.output(input_table), collapse = "\n"), "\n\n",
                     "PARAMETERS:",  "\n\n",
-                      paste("Method:", toupper(x$method)),"\n",
+                      paste("Discrepancy Method:", method),"\n",
                       paste("Confidence Intervals:", x$conf.level*100, "%"),"\n",
+                      paste("Confidence Interval Method:", "Modified T (Crawford & Garthwaite, 2002)"),"\n",
+                      paste("Hypothesis:", stringr::str_to_title(gsub("\\.", " ", x$tail))),"\n",
                       paste("Direction Indicating Impairment ", "(", x$test.names[1], "): " , x$direction.x,  sep = ""),"\n",
                       paste("Direction Indicating Impairment ", "(", x$test.names[2], "): " , x$direction.y,  sep = ""),
                     "\n\n",
-
                     "OUTPUTS:", paste(capture.output(output_table), collapse = "\n"), "\n\n",
+                    "Note.", "\n", key, "\n\n",
                     footnote, "\n",
                     sep = "")
 
     cat(result)
   }
-
-  # usdt <- discrep(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
-  #              ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 130, score.y = 120,
-  #              test.names = c("Fluency", "Sequencing"),
-  #              direction = "lower", tail = "one.tailed", method = "usdt")
-  # rsdt <- discrep(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
-  #              ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 130, score.y = 120,
-  #              test.names = c("Fluency", "Sequencing"),
-  #              tail = "one.tailed", method = "rsdt")
-  # stand <- discrep(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
-  #              ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 130, score.y = 120,
-  #              test.names = c("Fluency", "Sequencing"),
-  #              direction = "lower", tail = "one.tailed", method = "difflims")
-  # usdt$output_df
-  #rsdt
-  # stand
+#
+#   # usdt <- discrep(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
+#   #              ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 130, score.y = 120,
+#   #              test.names = c("Fluency", "Sequencing"),
+#   #              direction = "lower", tail = "one.tailed", method = "usdt")
+#   rsdt <- discrep(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
+#                ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 130, score.y = 120,
+#                test.names = c("Fluency", "Sequencing"),
+#                 tail = "one.tailed", method = "rsdt")
+#   # stand <- discrep(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
+#   #              ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 130, score.y = 120,
+#   #              test.names = c("Fluency", "Sequencing"),
+#   #              direction = "lower", tail = "one.tailed", method = "difflims")
+#   # usdt$output_df
+#   rsdt
+#   # stand
