@@ -44,7 +44,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">abnorm_ci_t</span><span class="op">(</span><span class="va">c</span>, <span class="va">n</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">abnorm_ci_t</span><span class="op">(</span><span class="va">c</span>, <span class="va">n</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -57,6 +57,10 @@
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
 <dd><p>Size of the normative sample.</p></dd>
+
+
+<dt id="arg-conf-level">conf.level<a class="anchor" aria-label="anchor" href="#arg-conf-level"></a></dt>
+<dd><p>Confidence level (default is 0.95 for 95%).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -101,10 +105,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.103516e-05</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`2.5%`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lower</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 83.36749</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`97.5%`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $upper</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 97.82481</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">abnorm_ci_t</span><span class="op">(</span><span class="fl">2</span>, <span class="fl">10</span><span class="op">)</span></span></span>
@@ -142,10 +146,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.103516e-05</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`2.5%`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lower</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 81.16254</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`97.5%`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $upper</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 99.89765</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">abnorm_ci_t</span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">100</span><span class="op">)</span></span></span>
@@ -183,10 +187,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.103516e-05</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`2.5%`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lower</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61.44365</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`97.5%`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $upper</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 76.01689</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
