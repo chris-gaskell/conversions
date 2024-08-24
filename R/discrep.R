@@ -87,7 +87,8 @@
   #'   - [abnorm_ci_t()]: For generating interval estimates for abnormality using the modified t-test.
   #' @export
   #' @examples
-  #' discrep(100, 15, 110, 10, 0.5, 30, 130, 120, direction.x = "lower", direction.y = "higher", test.names = c("Fluency", "Sequencing"))
+  #' discrep(100, 15, 110, 10, 0.5, 30, 130, 120, direction.x = "lower",
+  #'   direction.y = "higher", test.names = c("Fluency", "Sequencing"))
   discrep <- function(ctrl.mean.x, ctrl.sd.x,
                       ctrl.mean.y, ctrl.sd.y,
                       ctrl.r.xy, ctrl.n,
@@ -166,11 +167,11 @@
     }
 
     zdcc <- (z.x - z.y) / sqrt(2 - 2*ctrl.r.xy)
-    ncp <- neuropsytools::abnorm_ci_t(c = zdcc, n = ctrl.n)
+    ncp <- neuropsytools::abnorm_ci_t(c = zdcc, n = ctrl.n, conf.level = conf.level)
     zdcc.ci.lb <- ncp$delta.lb$root / sqrt(ctrl.n)
     zdcc.ci.ub <- ncp$delta.ub$root / sqrt(ctrl.n)
 
-    abn.ci <- c(as.numeric(ncp$`2.5%`), as.numeric(ncp$`97.5%`))
+    abn.ci <- c(as.numeric(ncp$lower), as.numeric(ncp$upper))
     abn.ci <- 100 - abn.ci
     abn.ci.lb <- min(abn.ci)
     abn.ci.ub <- max(abn.ci)

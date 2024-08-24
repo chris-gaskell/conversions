@@ -33,7 +33,6 @@
 #'   - [deficit()]: Assessing For a frequentist single dissociation between a test score and a control sample.
 #'   - [deficit_bayes()]: For a Bayesian approach to assessing for a dissociation between a single test score and a control sample for a single case.
 #'   - [discrep()]: For assessing a dissociation between two test scores for a single case.
-#'   - [abnorm_ci_t()]: For generating interval estimates for abnormality using the modified t test.
 #'   - [bayestestR::hdi()]
 #'
 #' @examples

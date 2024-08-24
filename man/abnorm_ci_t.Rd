@@ -4,12 +4,14 @@
 \alias{abnorm_ci_t}
 \title{Confidence intervals for the abnormality of a test score using a modified t-test.}
 \usage{
-abnorm_ci_t(c, n)
+abnorm_ci_t(c, n, conf.level = 0.95)
 }
 \arguments{
 \item{c}{An observation from a non-central t-distribution on N − 1 d.f.}
 
 \item{n}{Size of the normative sample.}
+
+\item{conf.level}{Confidence level (default is 0.95 for 95\%).}
 }
 \value{
 A list containing the lower and upper bounds of the 95\% confidence interval for the abnormality of the test score.

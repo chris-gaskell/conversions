@@ -127,10 +127,10 @@ deficit <- function(score,
 # abn and z ---------------------------------------------------------------
 
   zcc <- (score - ctrl.mean) / ctrl.sd  # also the c1
-  ncp <- neuropsytools::abnorm_ci_t(c = zcc, n = ctrl.n)
+  ncp <- neuropsytools::abnorm_ci_t(c = zcc, n = ctrl.n, conf.level = conf.level)
   zcc.ci.lb <- ncp$delta.lb$root / sqrt(ctrl.n)
   zcc.ci.ub <- ncp$delta.ub$root / sqrt(ctrl.n)
-  abn.ci <- c(as.numeric(ncp$`2.5%`), as.numeric(ncp$`97.5%`))
+  abn.ci <- c(as.numeric(ncp$lower), as.numeric(ncp$upper))
   if (direction == "higher") {abn.ci <- 100 - abn.ci}
   abn.ci.lb <- min(abn.ci)
   abn.ci.ub <- max(abn.ci)

@@ -87,7 +87,6 @@ deficit_bayes(
 \item \code{\link[=deficit]{deficit()}}: Assessing For a frequentist single dissociation between a test score and a control sample.
 \item \code{\link[=deficit_bayes]{deficit_bayes()}}: For a Bayesian approach to assessing for a dissociation between a single test score and a control sample for a single case.
 \item \code{\link[=discrep]{discrep()}}: For assessing a dissociation between two test scores for a single case.
-\item \code{\link[=abnorm_ci_t]{abnorm_ci_t()}}: For generating interval estimates for abnormality using the modified t test.
 \item \code{\link[bayestestR:hdi]{bayestestR::hdi()}}
 }
 }

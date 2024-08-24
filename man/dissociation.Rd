@@ -26,11 +26,13 @@ dissociation(
 \arguments{
 \item{ctrl.mean.x}{Mean of the control group for the first test.}
 
-\item{ctrl.sd.x}{Standard deviation of the control group for the first test.}
+\item{ctrl.sd.x}{Standard deviation of the control group for the first
+test.}
 
 \item{ctrl.mean.y}{Mean of the control group for the second test.}
 
-\item{ctrl.sd.y}{Standard deviation of the control group for the second test.}
+\item{ctrl.sd.y}{Standard deviation of the control group for the second
+test.}
 
 \item{ctrl.r.xy}{Correlation between the two tests in the control group.}
 
@@ -41,19 +43,21 @@ group.}
 
 \item{score.y}{Test score of the individual case for the second test.}
 
-\item{direction.x}{Specifies the expected direction for the first test score.
-Use "lower" if a lower score indicates worse performance or "higher" if a
-higher score indicates worse performance (default: "lower").}
+\item{direction.x}{Specifies the expected direction for the first test
+score. Use "lower" if a lower score indicates worse performance or
+"higher" if a higher score indicates worse performance (default:
+"lower").}
 
-\item{direction.y}{Specifies the expected direction for the second test score.
-Use "lower" if a lower score indicates worse performance or "higher" if a
-higher score indicates worse performance (default: "lower").}
+\item{direction.y}{Specifies the expected direction for the second test
+score. Use "lower" if a lower score indicates worse performance or
+"higher" if a higher score indicates worse performance (default:
+"lower").}
 
 \item{tail}{Character. Specifies whether the test is one-tailed or
 two-tailed. Options are "one.tailed" and "two.tailed" (default)}
 
-\item{test.names}{A vector of two strings representing the names of the tests
-(default is c("X", "Y")).}
+\item{test.names}{A vector of two strings representing the names of the
+tests (default is c("X", "Y")).}
 
 \item{conf.level}{Confidence level (default is 0.95 for 95\%).}
 

@@ -26,11 +26,13 @@ discrep(
 \arguments{
 \item{ctrl.mean.x}{Mean of the control group for the first test.}
 
-\item{ctrl.sd.x}{Standard deviation of the control group for the first test.}
+\item{ctrl.sd.x}{Standard deviation of the control group for the first
+test.}
 
 \item{ctrl.mean.y}{Mean of the control group for the second test.}
 
-\item{ctrl.sd.y}{Standard deviation of the control group for the second test.}
+\item{ctrl.sd.y}{Standard deviation of the control group for the second
+test.}
 
 \item{ctrl.r.xy}{Correlation between the two tests in the control group.}
 
@@ -40,31 +42,34 @@ discrep(
 
 \item{score.y}{Test score of the individual case for the second test.}
 
-\item{direction.x}{Specifies the expected direction for the first test score.
-Use "lower" if a lower score indicates worse performance or "higher" if a
-higher score indicates worse performance (default: "lower").}
+\item{direction.x}{Specifies the expected direction for the first test
+score. Use "lower" if a lower score indicates worse performance or
+"higher" if a higher score indicates worse performance (default:
+"lower").}
 
-\item{direction.y}{Specifies the expected direction for the second test score.
-Use "lower" if a lower score indicates worse performance or "higher" if a
-higher score indicates worse performance (default: "lower").}
+\item{direction.y}{Specifies the expected direction for the second test
+score. Use "lower" if a lower score indicates worse performance or
+"higher" if a higher score indicates worse performance (default:
+"lower").}
 
 \item{tail}{Character. Specifies whether the test is one-tailed or
 two-tailed. Options are "one.tailed" and "two.tailed" (default)}
 
-\item{test.names}{A vector of two strings representing the names of the tests
-(default is c("X", "Y")).}
+\item{test.names}{A vector of two strings representing the names of the
+tests (default is c("X", "Y")).}
 
 \item{conf.level}{Confidence level (default is 0.95 for 95\%).}
 
 \item{dp}{Number of decimal places for rounding the results (default is 2).}
 
-\item{method}{Character string specifying the method used to calculate the discrepancy:
-"rsdt" (revised standardized difference test), "usdt" (uncorrected standardized
-difference test), or "difflims" (difference limits method). Default is "rsdt".}
+\item{method}{Character string specifying the method used to calculate the
+discrepancy: "rsdt" (revised standardized difference test), "usdt"
+(uncorrected standardized difference test), or "difflims" (difference
+limits method). Default is "rsdt".}
 }
 \value{
-A list containing statistical inputs, parameters, and results. Key outputs
-include:
+A list containing statistical inputs, parameters, and results. Key
+outputs include:
 \itemize{
 \item t value: The t-value calculated for the test.
 \item p value: The p-value for the test, indicating statistical significance.
@@ -73,47 +78,52 @@ include:
 }
 }
 \description{
-This function offers a range of approaches for assess whether the discrepancy
-in scores between two tests for a patient is significantly larger than that
-which would be expected for a control or normative sample. The analysis yields a
-significance test, a point estimate of the abnormality of the score difference,
-and confidence intervals for the abnormality of the difference.
+This function offers a range of approaches for assess whether the
+discrepancy in scores between two tests for a patient is significantly
+larger than that which would be expected for a control or normative sample.
+The analysis yields a significance test, a point estimate of the
+abnormality of the score difference, and confidence intervals for the
+abnormality of the difference.
 }
 \details{
-This function assesses a dissociation between two test scores for a
-single case using a range of methods.
+This function assesses a dissociation between two test scores for
+a single case using a range of methods.
 
-The modified paired samples t-test approach of Crawford et al. (1998) is used
-by comparison to a normative sample. Unlike earlier methods (e.g., Payne &
-Jones), this method treats data from the normative sample as sample statistics
-and not population parameters. The result provided is a t score and associated
-p value. This approach helps to address the problem associated with small
-normative samples.
+The modified paired samples t-test approach of Crawford et al. (1998) is
+used by comparison to a normative sample. Unlike earlier methods (e.g.,
+Payne & Jones), this method treats data from the normative sample as
+sample statistics and not population parameters. The result provided is a
+t score and associated p value. This approach helps to address the
+problem associated with small normative samples.
 
 RSDT
 
 USDT
 
-check this... "rsdt" (revised standardized difference test), "usdt" (uncorrected standardized
-difference test), or "difflims" (difference limits method).
+check this... "rsdt" (revised standardized difference test), "usdt"
+(uncorrected standardized difference test), or "difflims" (difference
+limits method).
 
-In addition to determining whether a difference exists, it is also important
-to understand the magnitude of that difference. Therefore, it is often
-recommended that effect sizes are provided alongside p-values to estimate the
-size of the observed effect. To this effect, Crawford et al. (1998) provided a
-method for deriving an effect size in single-case studies using the case-controls
-design (z-cc), where a single patient's cognitive performance is compared to a
-matched control group. The modified z-score (z-cc) is provided as both point
-and interval estimates.
+In addition to determining whether a difference exists, it is also
+important to understand the magnitude of that difference. Therefore, it
+is often recommended that effect sizes are provided alongside p-values to
+estimate the size of the observed effect. To this effect, Crawford et al.
+(1998) provided a method for deriving an effect size in single-case
+studies using the case-controls design (z-cc), where a single patient's
+cognitive performance is compared to a matched control group. The
+modified z-score (z-cc) is provided as both point and interval estimates.
 
-Finally, neuropsychologists often need to determine how abnormal a patient's test
-score is. In the case of the modified t-test, the abnormality can be easily estimated
-by multiplying the t-value by 100 (Crawford & Howell, 1998). This estimate quantifies
-the percentage of the population expected to exhibit a more extreme score. Confidence
-limits on the estimate of abnormality are also provided (Crawford & Garthwaite, 2002).
+Finally, neuropsychologists often need to determine how abnormal a
+patient's test score is. In the case of the modified t-test, the
+abnormality can be easily estimated by multiplying the t-value by 100
+(Crawford & Howell, 1998). This estimate quantifies the percentage of the
+population expected to exhibit a more extreme score. Confidence limits on
+the estimate of abnormality are also provided (Crawford & Garthwaite,
+2002).
 }
 \examples{
-discrep(100, 15, 110, 10, 0.5, 30, 130, 120, direction.x = "lower", direction.y = "higher", test.names = c("Fluency", "Sequencing"))
+discrep(100, 15, 110, 10, 0.5, 30, 130, 120, direction.x = "lower",
+  direction.y = "higher", test.names = c("Fluency", "Sequencing"))
 }
 \references{
 \itemize{
