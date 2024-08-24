@@ -155,7 +155,7 @@ deficit <- function(score,
   )
 
   output_df <- data.frame(
-    item = c("t value", "p-value", "Effect size (z-cc)", "Abnormality"),
+    item = c("t value", "p value", "Effect size (z-cc)", "Abnormality"),
     value = c(format(t, nsmall = dp), format(p.value, nsmall = dp), format(zcc, nsmall = dp), paste(format(abn, nsmall = dp), " %", sep = "")),
     ci = c("", "",
            paste(
@@ -195,11 +195,16 @@ print.deficit <- function(x, ...) {
   output_table <- knitr::kable(x$output_df, format = "simple", col.names = c("Variable", "Value", glue::glue("{x$conf.level*100}% Confidence Interval")
   ))
 
-  header <- "Assessing For a Dissociation Between a Test Score and a Control Sample."
+  header <- "Assessing For a Frequentist Deficit Between a Test Score and a Control Sample."
   footnote <- "See documentation for further information on how scores are computed."
 
   result <- paste(header, "\n\n",
                   "INPUTS:", paste(capture.output(input_table), collapse = "\n"), "\n\n",
+                  "PARAMETERS:",  "\n\n",
+                    paste("Deficit Method:", toupper(x$method)),"\n",
+                    paste("Confidence Interval Method:", "Modified T"),"\n",
+                    paste("Confidence Intervals:", x$conf.level*100, "%"),"\n",
+                    paste("Direction Indicating Impairment: ", x$direction.y,  sep = ""),"\n\n",
                   "OUTPUTS:", paste(capture.output(output_table), collapse = "\n"), "\n\n",
                   footnote, "\n",
                   sep = "")

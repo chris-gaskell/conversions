@@ -147,7 +147,7 @@ print.deficit_bayes <- function(x, ...) {
 
   output_df <- data.frame(
     item = c(
-      paste("p-val (", x$direction, ")", sep = ""),
+      paste("p value (", x$direction, ")", sep = ""),
       "Effect size (z-cc)",
       "Abnormality"
     ),
@@ -167,7 +167,7 @@ print.deficit_bayes <- function(x, ...) {
   input_table <- knitr::kable(input_df, format = "simple", col.names = c("Inputs", "Value"))
   output_table <- knitr::kable(output_df, format = "simple", col.names = c("Outputs", "Value", glue::glue("{x$conf.level*100}% Credible Interval")))
 
-  header <- "Bayesian Dissociation Between a Test Score and a Control Sample."
+  header <- "Assessing For a Bayesian Deficit Between a Test Score and a Control Sample."
   footnote <- "See documentation for further information on how scores are computed."
 
   result <- paste(header, "\n\n",

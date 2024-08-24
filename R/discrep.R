@@ -267,7 +267,7 @@
     output_table <- knitr::kable(x$output_df, format = "simple", col.names = c("Variable", "Value", paste0(x$conf.level * 100, "% CI")))
 
     method <- gsub("discrep_", "", class(x)[1])
-    header <- paste0("Testing for a Frequentist Discrepency Between Two Test Scores Compared to a Control Sample")
+    header <- "Testing for a Frequentist Discrepency Between Two Test Scores Compared to a Control Sample"
     footnote <- "See documentation for further information on how scores are computed and how to cite methods."
 
     result <- paste(header, "\n\n",
