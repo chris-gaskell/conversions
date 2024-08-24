@@ -269,9 +269,9 @@
 
     method <- if (x$method == "rsdt") {
       "RSDT (Crawford & Garthwaite, 2005)"
-    } else if (method_class == "usdt") {
+    } else if (x$method == "usdt") {
       "USDT (Crawford & Garthwaite, 2005)"
-    } else if (method_class == "difflims") {
+    } else if (x$method == "difflims") {
       "Difflims (Crawford et al. 2002)"
     } else {
       "Unknown method"
