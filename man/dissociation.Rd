@@ -13,7 +13,8 @@ dissociation(
   ctrl.n,
   score.x,
   score.y,
-  direction = "lower",
+  direction.x = "lower",
+  direction.y = "lower",
   tail = "one.tailed",
   test.names = c("test X", "test Y"),
   conf.level = 0.95,
@@ -25,11 +26,11 @@ dissociation(
 \arguments{
 \item{ctrl.mean.x}{Mean of the control group for the first test.}
 
-\item{ctrl.sd.x}{difflims deviation of the control group for the first test.}
+\item{ctrl.sd.x}{Standard deviation of the control group for the first test.}
 
 \item{ctrl.mean.y}{Mean of the control group for the second test.}
 
-\item{ctrl.sd.y}{difflims deviation of the control group for the second test.}
+\item{ctrl.sd.y}{Standard deviation of the control group for the second test.}
 
 \item{ctrl.r.xy}{Correlation between the two tests in the control group.}
 
@@ -40,9 +41,13 @@ group.}
 
 \item{score.y}{Test score of the individual case for the second test.}
 
-\item{direction}{Character. Specifies the direction of the hypothesis.
-Options are "lower" (one-tailed), "higher" (one-tailed), or "two.tailed"
-(default, two-tailed).}
+\item{direction.x}{Specifies the expected direction for the first test score.
+Use "lower" if a lower score indicates worse performance or "higher" if a
+higher score indicates worse performance (default: "lower").}
+
+\item{direction.y}{Specifies the expected direction for the second test score.
+Use "lower" if a lower score indicates worse performance or "higher" if a
+higher score indicates worse performance (default: "lower").}
 
 \item{tail}{Character. Specifies whether the test is one-tailed or
 two-tailed. Options are "one.tailed" and "two.tailed" (default)}
