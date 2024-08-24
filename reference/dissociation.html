@@ -59,7 +59,8 @@ Both frequentist (t-test) and Bayesian approaches are available for analysis.</p
 <span>  <span class="va">ctrl.n</span>,</span>
 <span>  <span class="va">score.x</span>,</span>
 <span>  <span class="va">score.y</span>,</span>
-<span>  direction <span class="op">=</span> <span class="st">"lower"</span>,</span>
+<span>  direction.x <span class="op">=</span> <span class="st">"lower"</span>,</span>
+<span>  direction.y <span class="op">=</span> <span class="st">"lower"</span>,</span>
 <span>  tail <span class="op">=</span> <span class="st">"one.tailed"</span>,</span>
 <span>  test.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"test X"</span>, <span class="st">"test Y"</span><span class="op">)</span>,</span>
 <span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
@@ -78,7 +79,7 @@ Both frequentist (t-test) and Bayesian approaches are available for analysis.</p
 
 
 <dt id="arg-ctrl-sd-x">ctrl.sd.x<a class="anchor" aria-label="anchor" href="#arg-ctrl-sd-x"></a></dt>
-<dd><p>difflims deviation of the control group for the first test.</p></dd>
+<dd><p>Standard deviation of the control group for the first test.</p></dd>
 
 
 <dt id="arg-ctrl-mean-y">ctrl.mean.y<a class="anchor" aria-label="anchor" href="#arg-ctrl-mean-y"></a></dt>
@@ -86,7 +87,7 @@ Both frequentist (t-test) and Bayesian approaches are available for analysis.</p
 
 
 <dt id="arg-ctrl-sd-y">ctrl.sd.y<a class="anchor" aria-label="anchor" href="#arg-ctrl-sd-y"></a></dt>
-<dd><p>difflims deviation of the control group for the second test.</p></dd>
+<dd><p>Standard deviation of the control group for the second test.</p></dd>
 
 
 <dt id="arg-ctrl-r-xy">ctrl.r.xy<a class="anchor" aria-label="anchor" href="#arg-ctrl-r-xy"></a></dt>
@@ -106,10 +107,16 @@ group.</p></dd>
 <dd><p>Test score of the individual case for the second test.</p></dd>
 
 
-<dt id="arg-direction">direction<a class="anchor" aria-label="anchor" href="#arg-direction"></a></dt>
-<dd><p>Character. Specifies the direction of the hypothesis.
-Options are "lower" (one-tailed), "higher" (one-tailed), or "two.tailed"
-(default, two-tailed).</p></dd>
+<dt id="arg-direction-x">direction.x<a class="anchor" aria-label="anchor" href="#arg-direction-x"></a></dt>
+<dd><p>Specifies the expected direction for the first test score.
+Use "lower" if a lower score indicates worse performance or "higher" if a
+higher score indicates worse performance (default: "lower").</p></dd>
+
+
+<dt id="arg-direction-y">direction.y<a class="anchor" aria-label="anchor" href="#arg-direction-y"></a></dt>
+<dd><p>Specifies the expected direction for the second test score.
+Use "lower" if a lower score indicates worse performance or "higher" if a
+higher score indicates worse performance (default: "lower").</p></dd>
 
 
 <dt id="arg-tail">tail<a class="anchor" aria-label="anchor" href="#arg-tail"></a></dt>
@@ -173,11 +180,14 @@ two-tailed. Options are "one.tailed" and "two.tailed" (default)</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> test X     100   15  30   0.8           130</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> test Y     105   10                      90</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PARAMATERS:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PARAMETERS:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Deficit Method: t</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Deficit Method: rsdt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deficit Method: T</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Discrepancy Method: RSDT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Confidence Interval Method: Modified T</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence Intervals: 95 %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Direction Indicating Impairment (test X): lower</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Direction Indicating Impairment (test Y): lower</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> OUTPUTS:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -190,14 +200,14 @@ two-tailed. Options are "one.tailed" and "two.tailed" (default)</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2) DISCREPANCY ANALYSIS:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Statistic                                       Value      95% CI         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------------------------  ---------  ---------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z) for  test X                     2.00                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z) for  test Y                     -1.50                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z-dcc) between test X and test Y   5.53       4.07 to 6.95   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t value                                         5.21                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p-value                                         1.00                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Abnormality                                     100.00 %   100 % to 100 % </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Statistic                                             Value    95% CI       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------------------------------  -------  -------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z) for  test X                           2.00                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z) for  test Y                           -1.50                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z-dcc) between test X and test Y         5.53     4.07 to 6.95 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t value                                               5.21                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p value                                               0.00                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> % of controls expected to show a higher discrepancy   0.00 %   0 % to 0 %   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3) DISSOCIATION ANALYSIS:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
