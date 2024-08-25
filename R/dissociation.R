@@ -123,31 +123,64 @@ dissociation <- function(
   )
 
   # Compile results into a data frame
-  deficits.df <- data.frame(
+  deficits.df <-
+    data.frame(
     test = test.names,
-    t =   round(c(x.res$t, y.res$t), dp),
-    p =   round(c(x.res$p, y.res$p), dp),
-    zcc = round(c(x.res$zcc, y.res$zcc), dp),
+    t =   c(x.res$t, y.res$t),
+    p =   c(x.res$p.value, y.res$p.value),
+    zcc = c(x.res$zcc, y.res$zcc),
     zcc.ci = c(
       paste(
-        format(round(x.res$zcc.ci.lb, dp), nsmall = dp), "to",
-        format(round(x.res$zcc.ci.ub, dp), nsmall = dp), sep = " "
+        format(x.res$zcc.ci.lb, nsmall = dp), "to",
+        format(x.res$zcc.ci.ub, nsmall = dp), sep = " "
       ),
       paste(
-        format(round(y.res$zcc.ci.lb, dp), nsmall = dp), "to",
-        format(round(y.res$zcc.ci.ub, dp), nsmall = dp), sep = " ")
+        format(y.res$zcc.ci.lb, nsmall = dp), "to",
+        format(y.res$zcc.ci.ub, nsmall = dp), sep = " ")
     ),
-    abn = round(c(x.res$abn, y.res$abn), dp),
+    abn = c(x.res$abn, y.res$abn),
     abn.ci = c(
       paste(
-        format(round(x.res$abn.ci.lb, dp), nsmall = dp), "to",
-        format(round(x.res$abn.ci.ub, dp), nsmall = dp), sep = " "
+        format(x.res$abn.ci.lb, nsmall = dp), "to",
+        format(x.res$abn.ci.ub, nsmall = dp), sep = " "
       ),
       paste(
-        format(round(y.res$abn.ci.lb, dp), nsmall = dp), "to",
-        format(round(y.res$abn.ci.ub, dp), nsmall = dp), sep = " ")
+        format(y.res$abn.ci.lb, nsmall = dp), "to",
+        format(y.res$abn.ci.ub, nsmall = dp), sep = " ")
     ),
-    deficit = c(x.res$p < 0.05, y.res$p < 0.05)
+    deficit = c(x.res$p.value < 0.05, y.res$p.value < 0.05)
+  )
+
+
+  adj_discrep_method <- if (discrep_method == "rsdt") {
+    "RSDT (Crawford & Garthwaite, 2005)"
+  } else if (discrep_method == "usdt") {
+    "USDT (Crawford & Garthwaite, 2005)"
+  } else if (discrep_method == "difflims") {
+    "Difflims (Crawford et al. 2002)"
+  } else {
+    "Unknown method"
+  }
+
+  parameters_df <- data.frame(
+    item = c("Deficit Method",
+             "Discrepancy Method",
+             "Confidence Interval Method",
+             "Confidence Intervals",
+             "Hypothesis",
+             paste("Direction Indicating Impairment ", "(", test.names[1], "): ",  sep = ""),
+             paste("Direction Indicating Impairment ", "(", test.names[2], "): ",  sep = "")
+    ),
+    value = c(
+      "Modified T (Crawford & Howell, 1998)",
+      adj_discrep_method,
+      "Modified T (Crawford & Garthwaite, 2002)",
+      paste(conf.level * 100, "%", sep = ""),
+      stringr::str_to_title(gsub("\\.", " ", tail)),
+      stringr::str_to_title(direction.x),
+      stringr::str_to_title(direction.y)
+    ),
+    stringsAsFactors = FALSE
   )
 
   # Determine if a dissociation exists
@@ -163,7 +196,8 @@ dissociation <- function(
     discrep.res = discrep.res,
     dissociation_exists = dissociation_exists,
     discrep_method = discrep_method,
-    deficit_method = deficit_method
+    deficit_method = deficit_method,
+    parameters_df = parameters_df
   )
 
   class(result) <- 'dissociation'
@@ -175,7 +209,12 @@ dissociation <- function(
 print.dissociation <- function(x, ...) {
 
   input_table    <- knitr::kable(x$discrep.res$input_df, format = "simple", col.names = c("Test", "Mean", "SD", "Sample size", "r", "Case score"))
-  deficits_table <- knitr::kable(x$deficits.df, format = "simple", col.names = c("Test", "t value", "p value", "zcc", glue::glue("{x$discrep.res$conf.level*100}% CI"), "Abnormality", glue::glue("{x$discrep.res$conf.level*100}% CI"), "Deficit"))
+  parameters_table <- knitr::kable(x$parameters_df, format = "simple",
+                                   #col.names = c("Parameter", "Value")
+                                   )
+  deficits_table <- knitr::kable(x$deficits.df, format = "simple",
+                                 col.names = c("Test", "t value", "p value", "zcc", glue::glue("{x$discrep.res$conf.level*100}% CI"), "Abnormality", glue::glue("{x$discrep.res$conf.level*100}% CI"), "Deficit")
+                                 )
   discrep_table  <- knitr::kable(x$discrep.res$output_df, format = "simple", col.names = c("Statistic", "Value", glue::glue("{x$discrep.res$conf.level*100}% CI")))
 
   header <- "Testing for a Frequentist Dissociation Between Two Test Scores Compared to a Control Sample"
@@ -184,15 +223,6 @@ print.dissociation <- function(x, ...) {
                "- z-cc = Z for the case control.", sep = ""
   )
 
-  discrep.res.method <- if (x$discrep.res$method == "rsdt") {
-    "RSDT (Crawford & Garthwaite, 2005)"
-  } else if (method_class == "usdt") {
-    "USDT (Crawford & Garthwaite, 2005)"
-  } else if (method_class == "difflims") {
-    "Difflims (Crawford et al. 2002)"
-  } else {
-    "Unknown method"
-  }
 
   dissociation_statement <- if (x$dissociation_exists) {
     "A dissociation exists between the test scores."
@@ -203,14 +233,7 @@ print.dissociation <- function(x, ...) {
   result <- paste(
     header,"\n\n",
     "INPUTS:", "\n\n", paste(input_table, collapse = "\n"), "\n\n",
-    "PARAMETERS:",  "\n\n",
-      paste("Deficit Method: Modified T (Crawford & Howell, 1998)"),"\n",
-      paste("Discrepancy Method:", toupper(discrep.res.method)),"\n",
-      paste("Confidence Interval Method:", "Modified T"),"\n",
-      paste("Confidence Intervals:", x$discrep.res$conf.level*100, "%"),"\n",
-      paste("Direction Indicating Impairment ", "(", x$discrep.res$test.names[1], "): " , x$discrep.res$direction.x,  sep = ""),"\n",
-      paste("Direction Indicating Impairment ", "(", x$discrep.res$test.names[2], "): " , x$discrep.res$direction.y,  sep = ""),"\n\n",
-
+    "PARAMETERS:", paste(capture.output(parameters_table), collapse = "\n"), "\n\n",
     "OUTPUTS:", "\n\n",
     "1) DEFICIT ANALYSIS:", "\n\n", paste(deficits_table, collapse = "\n"), "\n\n",
     "2) DISCREPANCY ANALYSIS:", "\n\n",paste(discrep_table, collapse = "\n"), "\n\n",
@@ -225,12 +248,12 @@ print.dissociation <- function(x, ...) {
 
 
 
-# test <- dissociation(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
+# dissociation(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
 #         ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 140, score.y = 120,
-#           deficit_method = "t", direction.x = "higher", direction.y  = "higher",
+#         deficit_method = "t", direction.x = "higher", direction.y  = "higher",
 #         test.names = c("Fluency", "Sequencing"), dp = 2
 #         )
-# test
+
 #print.default(test)
 
 

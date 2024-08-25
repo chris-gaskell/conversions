@@ -101,6 +101,9 @@ deficit_bayes <- function(
 
   p <- mean(p.sims)
 
+
+# abnormality -------------------------------------------------------------
+
   abn <- p * 100
   abn.ci <- bayestestR::hdi(p.sims, ci = conf.level)
   abn.ci.lb <- min(abn.ci$CI_low, abn.ci$CI_high) * 100
@@ -108,6 +111,61 @@ deficit_bayes <- function(
 
   if (tail == "two.tailed") {p <- 2 * min(p, 1 - p)}
 
+# rounding ----------------------------------------------------------------
+  z <- round(z, dp)
+  z.ci.lb <- round(z.ci.lb, dp)
+  z.ci.ub <- round(z.ci.ub, dp)
+  percentile <- round(percentile, dp)
+  p <- round(p, dp)
+  #p.two.tailed<-= round(p.two.tailed, dp)
+  abn <- round(abn, dp)
+  abn.ci.lb <- round(abn.ci.lb, dp)
+  abn.ci.ub <- round(abn.ci.ub, dp)
+
+# output ------------------------------------------------------------------
+
+  input_df <- data.frame(
+    Item = c("Sample mean", "Sample SD", "Sample size", "Case's test score"),
+    Value = c(ctrl.mean, ctrl.sd, ctrl.n, score),
+    stringsAsFactors = FALSE
+  )
+
+  #paste("Deficit Method:", "Bayesian (Crawford & Garthwaite, 2007)"),"\n",
+  #paste("Confidence Interval Method:", "Bayesian"),"\n",
+  #paste("Confidence Intervals:", x$conf.level*100, "%"),"\n",
+  #paste("Hypothesis:", stringr::str_to_title(gsub("\\.", " ", x$tail))),"\n",
+  #paste("Direction Indicating Impairment: ", stringr::str_to_title(x$direction),  sep = ""),"\n\n",
+
+  parameters_df <- data.frame(
+    item = c("Deficit Method", "Confidence Interval Method", "Confidence Intervals", "Hypothesis", "Direction Indicating Impairment"),
+    value = c(
+      "Bayesian (Crawford & Garthwaite, 2007)",
+      "Bayesian",
+      paste(conf.level * 100, "%", sep = ""),
+      stringr::str_to_title(gsub("\\.", " ", tail)),
+      stringr::str_to_title(direction)
+    ),
+    stringsAsFactors = FALSE
+  )
+
+  output_df <- data.frame(
+    item = c(
+      paste("p value (", direction, ")", sep = ""),
+      "Effect size (z-cc)",
+      "Abnormality"
+    ),
+    value = c(
+      format(p, nsmall = dp),
+      format(z, nsmall = dp),
+      paste(format(abn, nsmall = dp), "%", sep = "")
+    ),
+    ci = c(
+      "",
+      paste(format(z.ci.lb, dp), "to", format(z.ci.ub, dp), sep = " "),
+      paste(abn.ci.lb, "% to", abn.ci.ub, "%", sep = " ")
+    ),
+    stringsAsFactors = FALSE
+  )
 
   result <- list(
     score = score,
@@ -122,15 +180,17 @@ deficit_bayes <- function(
     dp = dp,
     df = df,
     ctrl.var = ctrl.var,
-    z = round(z, dp),
-    z.ci.lb = round(z.ci.lb, dp),
-    z.ci.ub = round(z.ci.ub, dp),
-    percentile = round(percentile, dp),
-    p = round(p, dp),
-    #p.two.tailed = round(p.two.tailed, dp),
-    abn = round(abn, dp),
-    abn.ci.lb = round(abn.ci.lb, dp),
-    abn.ci.ub = round(abn.ci.ub, dp)
+    z = z,
+    z.ci.lb = z.ci.lb,
+    z.ci.ub = z.ci.ub,
+    percentile = percentile,
+    p = p,
+    abn = abn,
+    abn.ci.lb = abn.ci.lb,
+    abn.ci.ub = abn.ci.ub,
+    input_df = input_df,
+    output_df = output_df,
+    parameters_df = parameters_df
   )
 
   class(result) <- 'deficit_bayes'
@@ -140,33 +200,9 @@ deficit_bayes <- function(
 #' @export
 print.deficit_bayes <- function(x, ...) {
 
-  input_df <- data.frame(
-    Item = c("Sample mean", "Sample SD", "Sample size", "Case's test score"),
-    Value = c(x$ctrl.mean, x$ctrl.sd, x$ctrl.n, x$score),
-    stringsAsFactors = FALSE
-  )
-
-  output_df <- data.frame(
-    item = c(
-      paste("p value (", x$direction, ")", sep = ""),
-      "Effect size (z-cc)",
-      "Abnormality"
-    ),
-    value = c(
-      format(x$p, nsmall = x$dp),
-      format(x$z, nsmall = x$dp),
-      paste(format(x$abn, nsmall = x$dp), "%", sep = "")
-    ),
-    ci = c(
-      "",
-      paste(format(x$z.ci.lb, x$dp), "to", format(x$z.ci.ub, x$dp), sep = " "),
-      paste(x$abn.ci.lb, "% to", x$abn.ci.ub, "%", sep = " ")
-    ),
-    stringsAsFactors = FALSE
-  )
-
-  input_table <- knitr::kable(input_df, format = "simple", col.names = c("Inputs", "Value"))
-  output_table <- knitr::kable(output_df, format = "simple", col.names = c("Outputs", "Value", glue::glue("{x$conf.level*100}% Credible Interval")))
+  input_table <- knitr::kable(x$input_df, format = "simple", col.names = c("Inputs", "Value"))
+  parameters_table <- knitr::kable(x$parameters_df, format = "simple", col.names = c("Parameter", "Value"))
+  output_table <- knitr::kable(x$output_df, format = "simple", col.names = c("Outputs", "Value", glue::glue("{x$conf.level*100}% Credible Interval")))
 
   header <- "Assessing For a Bayesian Deficit Between a Test Score and a Control Sample."
   footnote <- "See documentation for further information on how scores are computed."
@@ -175,12 +211,7 @@ print.deficit_bayes <- function(x, ...) {
   )
   result <- paste(header, "\n\n",
                   "INPUTS:", paste(capture.output(input_table), collapse = "\n"), "\n\n",
-                  "PARAMETERS:",  "\n\n",
-                    paste("Deficit Method:", "Bayesian (Crawford & Garthwaite, 2007)"),"\n",
-                    paste("Confidence Interval Method:", "Bayesian"),"\n",
-                    paste("Confidence Intervals:", x$conf.level*100, "%"),"\n",
-                    paste("Hypothesis:", stringr::str_to_title(gsub("\\.", " ", x$tail))),"\n",
-                    paste("Direction Indicating Impairment: ", stringr::str_to_title(x$direction),  sep = ""),"\n\n",
+                  "PARAMETERS:", paste(capture.output(parameters_table), collapse = "\n"), "\n\n",
                   "OUTPUTS:", paste(capture.output(output_table), collapse = "\n"), "\n\n",
                   "Note.", "\n", key, "\n\n",
                   footnote, "\n",

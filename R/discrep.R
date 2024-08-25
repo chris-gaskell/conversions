@@ -192,6 +192,16 @@
 
   # output ------------------------------------------------------------------
 
+    method <- if (method == "rsdt") {
+      "RSDT (Crawford & Garthwaite, 2005)"
+    } else if (method == "usdt") {
+      "USDT (Crawford & Garthwaite, 2005)"
+    } else if (method == "difflims") {
+      "Difflims (Crawford et al. 2002)"
+    } else {
+      "Unknown method"
+    }
+
     input_df <- data.frame(
       test =  test.names,
       mean =  c(ctrl.mean.x, ctrl.mean.y),
@@ -199,6 +209,22 @@
       n = c(ctrl.n, ""),
       r = c(ctrl.r.xy, ""),
       value = c(score.x, score.y),
+      stringsAsFactors = FALSE
+    )
+
+    parameters_df <- data.frame(
+      item = c("Discrepancy Method", "Confidence Interval Method", "Confidence Intervals", "Hypothesis",
+               paste("Direction Indicating Impairment ", "(", test.names[1], "): ",  sep = ""),
+               paste("Direction Indicating Impairment ", "(", test.names[2], "): ",  sep = "")
+               ),
+      value = c(
+        method,
+        "Modified T (Crawford & Garthwaite, 2002)",
+        paste(conf.level * 100, "%", sep = ""),
+        stringr::str_to_title(gsub("\\.", " ", tail)),
+        stringr::str_to_title(direction.x),
+        stringr::str_to_title(direction.y)
+      ),
       stringsAsFactors = FALSE
     )
 
@@ -253,7 +279,8 @@
       method = method,
       tail = tail,
       input_df = input_df,
-      output_df = output_df
+      output_df = output_df,
+      parameters_df = parameters_df
     )
 
     class(result) <- 'discrep'
@@ -265,17 +292,9 @@
 
 
     input_table <-  knitr::kable(x$input_df, format = "simple", col.names = c("Test", "Mean", "SD", "Sample size", "r", "Case score"))
+    parameters_table <- knitr::kable(x$parameters_df, format = "simple", col.names = c("Parameter", "Value"))
     output_table <- knitr::kable(x$output_df, format = "simple", col.names = c("Variable", "Value", paste0(x$conf.level * 100, "% CI")))
 
-    method <- if (x$method == "rsdt") {
-      "RSDT (Crawford & Garthwaite, 2005)"
-    } else if (x$method == "usdt") {
-      "USDT (Crawford & Garthwaite, 2005)"
-    } else if (x$method == "difflims") {
-      "Difflims (Crawford et al. 2002)"
-    } else {
-      "Unknown method"
-    }
 
     header <- "Testing for a Frequentist Discrepency Between Two Test Scores Compared to a Control Sample."
     footnote <- "See documentation for further information on how scores are computed and how to cite methods."
@@ -285,14 +304,7 @@
 
     result <- paste(header, "\n\n",
                     "INPUTS:", paste(capture.output(input_table), collapse = "\n"), "\n\n",
-                    "PARAMETERS:",  "\n\n",
-                      paste("Discrepancy Method:", method),"\n",
-                      paste("Confidence Intervals:", x$conf.level*100, "%"),"\n",
-                      paste("Confidence Interval Method:", "Modified T (Crawford & Garthwaite, 2002)"),"\n",
-                      paste("Hypothesis:", stringr::str_to_title(gsub("\\.", " ", x$tail))),"\n",
-                      paste("Direction Indicating Impairment ", "(", x$test.names[1], "): " , x$direction.x,  sep = ""),"\n",
-                      paste("Direction Indicating Impairment ", "(", x$test.names[2], "): " , x$direction.y,  sep = ""),
-                    "\n\n",
+                    "PARAMETERS:", paste(capture.output(parameters_table), collapse = "\n"), "\n\n",
                     "OUTPUTS:", paste(capture.output(output_table), collapse = "\n"), "\n\n",
                     "Note.", "\n", key, "\n\n",
                     footnote, "\n",
@@ -305,10 +317,10 @@
 #   #              ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 130, score.y = 120,
 #   #              test.names = c("Fluency", "Sequencing"),
 #   #              direction = "lower", tail = "one.tailed", method = "usdt")
-#   rsdt <- discrep(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
-#                ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 130, score.y = 120,
-#                test.names = c("Fluency", "Sequencing"),
-#                 tail = "one.tailed", method = "rsdt")
+  # rsdt <- discrep(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
+  #              ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 130, score.y = 120,
+  #              test.names = c("Fluency", "Sequencing"),
+  #               tail = "one.tailed", method = "rsdt")
 #   # stand <- discrep(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
 #   #              ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 130, score.y = 120,
 #   #              test.names = c("Fluency", "Sequencing"),
