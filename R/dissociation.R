@@ -176,7 +176,7 @@ dissociation <- function(
       adj_discrep_method,
       "Modified T (Crawford & Garthwaite, 2002)",
       paste(conf.level * 100, "%", sep = ""),
-      stringr::str_to_title(gsub("\\.", " ", tail)),
+      stringr::str_to_title(gsub("\\.", "-", tail)),
       stringr::str_to_title(direction.x),
       stringr::str_to_title(direction.y)
     ),
@@ -213,7 +213,7 @@ print.dissociation <- function(x, ...) {
                                    #col.names = c("Parameter", "Value")
                                    )
   deficits_table <- knitr::kable(x$deficits.df, format = "simple",
-                                 col.names = c("Test", "t value", "p value", "zcc", glue::glue("{x$discrep.res$conf.level*100}% CI"), "Abnormality", glue::glue("{x$discrep.res$conf.level*100}% CI"), "Deficit")
+                                 col.names = c("Test", "t-value", "p-value", "zcc", glue::glue("{x$discrep.res$conf.level*100}% CI"), "Abnormality", glue::glue("{x$discrep.res$conf.level*100}% CI"), "Deficit")
                                  )
   discrep_table  <- knitr::kable(x$discrep.res$output_df, format = "simple", col.names = c("Statistic", "Value", glue::glue("{x$discrep.res$conf.level*100}% CI")))
 
@@ -247,11 +247,12 @@ print.dissociation <- function(x, ...) {
 }
 
 
-
+# test.names = c("Fluency", "Sequencing")
+#
 # dissociation(ctrl.mean.x = 100, ctrl.sd.x = 15, ctrl.mean.y = 110, ctrl.sd.y = 10,
 #         ctrl.r.xy = 0.5, ctrl.n = 30, score.x = 140, score.y = 120,
 #         deficit_method = "t", direction.x = "higher", direction.y  = "higher",
-#         test.names = c("Fluency", "Sequencing"), dp = 2
+#         test.names = test.names, dp = 2
 #         )
 
 #print.default(test)

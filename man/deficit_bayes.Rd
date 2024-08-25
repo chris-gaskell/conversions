@@ -47,8 +47,8 @@ two-tailed. Options are "one.tailed" and "two.tailed" (default)}
 A list of statistical input, parameters, and results. Key outputs
 include:
 \itemize{
-\item t value: The t-value calculated for the test.
-\item p value: The p-value for the test, indicating statistical significance.
+\item t-value: The t-value calculated for the test.
+\item p-value: The p-value for the test, indicating statistical significance.
 \item effect-size (z-cc): The z-score (effect-size) corrected for the control group.
 \item abnormality: The percentage of the population expected to score a more extreme score.
 }

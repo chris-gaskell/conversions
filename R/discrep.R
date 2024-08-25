@@ -15,7 +15,7 @@
   #'   used by comparison to a normative sample. Unlike earlier methods (e.g.,
   #'   Payne & Jones), this method treats data from the normative sample as
   #'   sample statistics and not population parameters. The result provided is a
-  #'   t score and associated p value. This approach helps to address the
+  #'   t score and associated p-value. This approach helps to address the
   #'   problem associated with small normative samples.
   #'
   #'   RSDT
@@ -71,8 +71,8 @@
   #'
   #' @return A list containing statistical inputs, parameters, and results. Key
   #'   outputs include:
-  #'   - t value: The t-value calculated for the test.
-  #'   - p value: The p-value for the test, indicating statistical significance.
+  #'   - t-value: The t-value calculated for the test.
+  #'   - p-value: The p-value for the test, indicating statistical significance.
   #'   - effect size (z-cc): The z-score (effect size) corrected for the control group.
   #'   - abnormality: The percentage of the population expected to score a more extreme score.
   #' @references
@@ -221,7 +221,7 @@
         method,
         "Modified T (Crawford & Garthwaite, 2002)",
         paste(conf.level * 100, "%", sep = ""),
-        stringr::str_to_title(gsub("\\.", " ", tail)),
+        stringr::str_to_title(gsub("\\.", "-", tail)),
         stringr::str_to_title(direction.x),
         stringr::str_to_title(direction.y)
       ),
@@ -232,8 +232,8 @@
       item = c(paste("Effect size (z) for ", test.names[1]),
                paste("Effect size (z) for ", test.names[2]),
                paste("Effect size (z-dcc) between", test.names[1], "and", test.names[2]),
-               "t value",
-               "p value",
+               "t-value",
+               "p-value",
                "Abnormality"
       ),
       value = c(format(z.x, nsmall = dp),
@@ -296,7 +296,7 @@
     output_table <- knitr::kable(x$output_df, format = "simple", col.names = c("Variable", "Value", paste0(x$conf.level * 100, "% CI")))
 
 
-    header <- "Testing for a Frequentist Discrepency Between Two Test Scores Compared to a Control Sample."
+    header <- "Testing for a Frequentist Discrepancy Between Two Test Scores Compared to a Control Sample."
     footnote <- "See documentation for further information on how scores are computed and how to cite methods."
     key <- paste("- Abnormality = The percentage of controls expected to show a higher deficit.", "\n",
                  "- z-cc = Z for the case control.", sep = ""

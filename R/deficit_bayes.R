@@ -15,8 +15,8 @@
 #'
 #' @return A list of statistical input, parameters, and results. Key outputs
 #'   include:
-#'   - t value: The t-value calculated for the test.
-#'   - p value: The p-value for the test, indicating statistical significance.
+#'   - t-value: The t-value calculated for the test.
+#'   - p-value: The p-value for the test, indicating statistical significance.
 #'   - effect-size (z-cc): The z-score (effect-size) corrected for the control group.
 #'   - abnormality: The percentage of the population expected to score a more extreme score.
 #'
@@ -130,19 +130,13 @@ deficit_bayes <- function(
     stringsAsFactors = FALSE
   )
 
-  #paste("Deficit Method:", "Bayesian (Crawford & Garthwaite, 2007)"),"\n",
-  #paste("Confidence Interval Method:", "Bayesian"),"\n",
-  #paste("Confidence Intervals:", x$conf.level*100, "%"),"\n",
-  #paste("Hypothesis:", stringr::str_to_title(gsub("\\.", " ", x$tail))),"\n",
-  #paste("Direction Indicating Impairment: ", stringr::str_to_title(x$direction),  sep = ""),"\n\n",
-
   parameters_df <- data.frame(
     item = c("Deficit Method", "Confidence Interval Method", "Confidence Intervals", "Hypothesis", "Direction Indicating Impairment"),
     value = c(
       "Bayesian (Crawford & Garthwaite, 2007)",
       "Bayesian",
       paste(conf.level * 100, "%", sep = ""),
-      stringr::str_to_title(gsub("\\.", " ", tail)),
+      stringr::str_to_title(gsub("\\.", "-", tail)),
       stringr::str_to_title(direction)
     ),
     stringsAsFactors = FALSE
@@ -150,7 +144,7 @@ deficit_bayes <- function(
 
   output_df <- data.frame(
     item = c(
-      paste("p value (", direction, ")", sep = ""),
+      paste("p-value (", direction, ")", sep = ""),
       "Effect size (z-cc)",
       "Abnormality"
     ),

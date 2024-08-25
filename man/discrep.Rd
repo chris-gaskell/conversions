@@ -71,8 +71,8 @@ limits method). Default is "rsdt".}
 A list containing statistical inputs, parameters, and results. Key
 outputs include:
 \itemize{
-\item t value: The t-value calculated for the test.
-\item p value: The p-value for the test, indicating statistical significance.
+\item t-value: The t-value calculated for the test.
+\item p-value: The p-value for the test, indicating statistical significance.
 \item effect size (z-cc): The z-score (effect size) corrected for the control group.
 \item abnormality: The percentage of the population expected to score a more extreme score.
 }
@@ -93,7 +93,7 @@ The modified paired samples t-test approach of Crawford et al. (1998) is
 used by comparison to a normative sample. Unlike earlier methods (e.g.,
 Payne & Jones), this method treats data from the normative sample as
 sample statistics and not population parameters. The result provided is a
-t score and associated p value. This approach helps to address the
+t score and associated p-value. This approach helps to address the
 problem associated with small normative samples.
 
 RSDT

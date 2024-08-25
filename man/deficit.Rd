@@ -41,8 +41,8 @@ two-tailed. Options are "one.tailed" and "two.tailed" (default)}
 A list of statistical input, parameters, and results. Key outputs
 include:
 \itemize{
-\item t value: The t-value calculated for the test.
-\item p value: The p-value for the test, indicating statistical significance.
+\item t-value: The t-value calculated for the test.
+\item p-value: The p-value for the test, indicating statistical significance.
 \item effect-size (z-cc): The z-score (effect-size) corrected for the control group.
 \item abnormality: The percentage of the population expected to score a more extreme score.
 }
@@ -58,7 +58,7 @@ Assess for a dissociation between a single test score and a control
 sample using the modified paired samples t-test approach of Crawford et al.
 (1998). Unlike earlier methods (e.g. Payne & Jones) this method treats data
 from the normative same as sample statistics and not population parameters.
-The result provided is a t score and associated p value. This approach
+The result provided is a t score and associated p-value. This approach
 helps to reconcile the problem associated with small normative samples.
 
 In addition to determining whether a difference exists it is also important
