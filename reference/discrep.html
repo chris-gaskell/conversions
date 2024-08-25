@@ -158,8 +158,8 @@ limits method). Default is "rsdt".</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list containing statistical inputs, parameters, and results. Key
-outputs include:</p><ul><li><p>t value: The t-value calculated for the test.</p></li>
-<li><p>p value: The p-value for the test, indicating statistical significance.</p></li>
+outputs include:</p><ul><li><p>t-value: The t-value calculated for the test.</p></li>
+<li><p>p-value: The p-value for the test, indicating statistical significance.</p></li>
 <li><p>effect size (z-cc): The z-score (effect size) corrected for the control group.</p></li>
 <li><p>abnormality: The percentage of the population expected to score a more extreme score.</p></li>
 </ul></div>
@@ -171,7 +171,7 @@ a single case using a range of methods.</p>
 used by comparison to a normative sample. Unlike earlier methods (e.g.,
 Payne &amp; Jones), this method treats data from the normative sample as
 sample statistics and not population parameters. The result provided is a
-t score and associated p value. This approach helps to address the
+t score and associated p-value. This approach helps to address the
 problem associated with small normative samples.</p>
 <p>RSDT</p>
 <p>USDT</p>
@@ -216,7 +216,7 @@ the estimate of abnormality are also provided (Crawford &amp; Garthwaite,
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">discrep</span><span class="op">(</span><span class="fl">100</span>, <span class="fl">15</span>, <span class="fl">110</span>, <span class="fl">10</span>, <span class="fl">0.5</span>, <span class="fl">30</span>, <span class="fl">130</span>, <span class="fl">120</span>, direction.x <span class="op">=</span> <span class="st">"lower"</span>,</span></span>
 <span class="r-in"><span>  direction.y <span class="op">=</span> <span class="st">"higher"</span>, test.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Fluency"</span>, <span class="st">"Sequencing"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Testing for a Frequentist Discrepency Between Two Test Scores Compared to a Control Sample.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Testing for a Frequentist Discrepancy Between Two Test Scores Compared to a Control Sample.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> INPUTS:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -232,7 +232,7 @@ the estimate of abnormality are also provided (Crawford &amp; Garthwaite,
 <span class="r-out co"><span class="r-pr">#&gt;</span> Discrepancy Method                              RSDT (Crawford &amp; Garthwaite, 2005)       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence Interval Method                      Modified T (Crawford &amp; Garthwaite, 2002) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence Intervals                            95%                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypothesis                                      One Tailed                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypothesis                                      One-Tailed                               </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Direction Indicating Impairment (Fluency):      Lower                                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Direction Indicating Impairment (Sequencing):   Higher                                   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -243,8 +243,8 @@ the estimate of abnormality are also provided (Crawford &amp; Garthwaite,
 <span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z) for  Fluency                         2.00                      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z) for  Sequencing                      -1.00                     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z-dcc) between Fluency and Sequencing   3.00     2.15 to 3.84     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t value                                              2.87                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p value                                              0.00                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t-value                                              2.87                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value                                              0.00                      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Abnormality                                          0.38 %   0.01 % to 1.59 % </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Note.</span>

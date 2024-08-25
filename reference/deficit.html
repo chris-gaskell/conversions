@@ -109,8 +109,8 @@ two-tailed. Options are "one.tailed" and "two.tailed" (default)</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list of statistical input, parameters, and results. Key outputs
-include:</p><ul><li><p>t value: The t-value calculated for the test.</p></li>
-<li><p>p value: The p-value for the test, indicating statistical significance.</p></li>
+include:</p><ul><li><p>t-value: The t-value calculated for the test.</p></li>
+<li><p>p-value: The p-value for the test, indicating statistical significance.</p></li>
 <li><p>effect-size (z-cc): The z-score (effect-size) corrected for the control group.</p></li>
 <li><p>abnormality: The percentage of the population expected to score a more extreme score.</p></li>
 </ul></div>
@@ -120,7 +120,7 @@ include:</p><ul><li><p>t value: The t-value calculated for the test.</p></li>
 sample using the modified paired samples t-test approach of Crawford et al.
 (1998). Unlike earlier methods (e.g. Payne &amp; Jones) this method treats data
 from the normative same as sample statistics and not population parameters.
-The result provided is a t score and associated p value. This approach
+The result provided is a t score and associated p-value. This approach
 helps to reconcile the problem associated with small normative samples.</p>
 <p>In addition to determining whether a difference exists it is also important
 to understand the magnitude of that difference. Therefore, it is often
@@ -181,15 +181,15 @@ the estimate of abnormality are also provided (Crawford &amp; Garthwaite,
 <span class="r-out co"><span class="r-pr">#&gt;</span> Deficit Method                    Modified T (Crawford &amp; Howell, 1998)     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence Interval Method        Modified T (Crawford &amp; Garthwaite, 2002) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence Intervals              95%                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypothesis                        Two Tailed                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypothesis                        Two-Tailed                               </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Direction Indicating Impairment   Lower                                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> OUTPUTS:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variable             Value     95% Confidence Interval </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------  --------  ------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t value              1.97                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p value              0.06                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t-value              1.97                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value              0.06                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z-cc)   2.00      1.37 to 2.62            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Abnormality          97.06 %   91.45  % to 99.56 %     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -222,15 +222,15 @@ the estimate of abnormality are also provided (Crawford &amp; Garthwaite,
 <span class="r-out co"><span class="r-pr">#&gt;</span> Deficit Method                    Modified T (Crawford &amp; Howell, 1998)     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence Interval Method        Modified T (Crawford &amp; Garthwaite, 2002) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence Intervals              95%                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypothesis                        One Tailed                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypothesis                        One-Tailed                               </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Direction Indicating Impairment   Higher                                   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> OUTPUTS:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variable             Value    95% Confidence Interval </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------  -------  ------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t value              1.97                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p value              0.03                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t-value              1.97                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value              0.03                             </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z-cc)   2.00     1.37 to 2.62            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Abnormality          2.94 %   0.44  % to 8.55 %       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -263,15 +263,15 @@ the estimate of abnormality are also provided (Crawford &amp; Garthwaite,
 <span class="r-out co"><span class="r-pr">#&gt;</span> Deficit Method                    Modified T (Crawford &amp; Howell, 1998)     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence Interval Method        Modified T (Crawford &amp; Garthwaite, 2002) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence Intervals              95%                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypothesis                        One Tailed                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypothesis                        One-Tailed                               </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Direction Indicating Impairment   Lower                                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> OUTPUTS:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variable             Value     95% Confidence Interval </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------  --------  ------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t value              1.97                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p value              0.97                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t-value              1.97                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value              0.97                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Effect size (z-cc)   2.00      1.37 to 2.62            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Abnormality          97.06 %   91.45  % to 99.56 %     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
