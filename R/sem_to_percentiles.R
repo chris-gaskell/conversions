@@ -31,7 +31,7 @@
 #' sem <- c(3.000000, 3.354102, 3.674235, 4.743416)
 #' scores <- c(118, 107, 77, 68)
 #' sem_to_percentiles(scores, R = R, sem = sem, conf.level = 0.90)
-sem_to_percentiles <- function(x, R = NULL, sem, dp = 2, names = NULL, conf.level = 0.90, abnorm_level = 5, threshold = -1.645, abnormality = TRUE) {
+sem_to_percentiles <- function(x, R = NULL, sem, dp = 2, names = NULL, conf.level = 0.90, threshold = -1.645, abnormality = TRUE) {
   k <- length(x)
   if (is.null(names)) {
     names <- as.character(seq(1, k))
@@ -46,7 +46,7 @@ sem_to_percentiles <- function(x, R = NULL, sem, dp = 2, names = NULL, conf.leve
   rank.ci.lb <- neuropsytools::convert_standard(score = ci.lb, metric = "index", metric.new = "percentile")
   rank.ci.ub <- neuropsytools::convert_standard(score = ci.ub, metric = "index", metric.new = "percentile")
 
-  abn.k <- sum(rank < abnorm_level)
+  abn.k <- sum(rank < round(pnorm(threshold)*100, 2) )
 
   if (abnormality) {
     if (is.null(R)) stop("Correlation matrix R is required when abnormality is TRUE.")

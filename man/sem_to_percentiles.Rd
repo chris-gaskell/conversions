@@ -11,7 +11,6 @@ sem_to_percentiles(
   dp = 2,
   names = NULL,
   conf.level = 0.9,
-  abnorm_level = 5,
   threshold = -1.645,
   abnormality = TRUE
 )
@@ -29,11 +28,11 @@ sem_to_percentiles(
 
 \item{conf.level}{Confidence level for the confidence interval. Default is 0.90.}
 
-\item{abnorm_level}{Threshold percentile for classifying scores as abnormally low. Default is 5.}
-
 \item{threshold}{Z-score threshold for classifying abnormal scores. Default is -1.645.}
 
 \item{abnormality}{Logical, whether to calculate abnormality statistics. Default is TRUE.}
+
+\item{abnorm_level}{Threshold percentile for classifying scores as abnormally low. Default is 5.}
 }
 \value{
 A list containing various statistics including:

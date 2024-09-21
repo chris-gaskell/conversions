@@ -214,8 +214,8 @@
 
     parameters_df <- data.frame(
       item = c("Discrepancy Method", "Confidence Interval Method", "Confidence Intervals", "Hypothesis",
-               paste("Direction Indicating Impairment ", "(", test.names[1], "): ",  sep = ""),
-               paste("Direction Indicating Impairment ", "(", test.names[2], "): ",  sep = "")
+               paste("Direction Indicating Impairment ", "(", test.names[1], ")",  sep = ""),
+               paste("Direction Indicating Impairment ", "(", test.names[2], ")",  sep = "")
                ),
       value = c(
         method,
@@ -299,7 +299,7 @@
     header <- "Testing for a Frequentist Discrepancy Between Two Test Scores Compared to a Control Sample."
     footnote <- "See documentation for further information on how scores are computed and how to cite methods."
     key <- paste("- Abnormality = The percentage of controls expected to show a higher deficit.", "\n",
-                 "- z-cc = Z for the case control.", sep = ""
+                 "- z-dcc = Z  discrepancy for the case control.", sep = ""
     )
 
     result <- paste(header, "\n\n",

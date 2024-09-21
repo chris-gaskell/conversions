@@ -168,8 +168,8 @@ dissociation <- function(
              "Confidence Interval Method",
              "Confidence Intervals",
              "Hypothesis",
-             paste("Direction Indicating Impairment ", "(", test.names[1], "): ",  sep = ""),
-             paste("Direction Indicating Impairment ", "(", test.names[2], "): ",  sep = "")
+             paste("Direction Indicating Impairment ", "(", test.names[1], ")",  sep = ""),
+             paste("Direction Indicating Impairment ", "(", test.names[2], ")",  sep = "")
     ),
     value = c(
       "Modified T (Crawford & Howell, 1998)",
@@ -213,14 +213,14 @@ print.dissociation <- function(x, ...) {
                                    #col.names = c("Parameter", "Value")
                                    )
   deficits_table <- knitr::kable(x$deficits.df, format = "simple",
-                                 col.names = c("Test", "t-value", "p-value", "zcc", glue::glue("{x$discrep.res$conf.level*100}% CI"), "Abnormality", glue::glue("{x$discrep.res$conf.level*100}% CI"), "Deficit")
+                                 col.names = c("Test", "t-value", "p-value", "z-dcc", glue::glue("{x$discrep.res$conf.level*100}% CI"), "Abnormality", glue::glue("{x$discrep.res$conf.level*100}% CI"), "Deficit")
                                  )
   discrep_table  <- knitr::kable(x$discrep.res$output_df, format = "simple", col.names = c("Statistic", "Value", glue::glue("{x$discrep.res$conf.level*100}% CI")))
 
-  header <- "Testing for a Frequentist Dissociation Between Two Test Scores Compared to a Control Sample"
+  header <- "Testing for a Frequentist Dissociation Between Two Test Scores Compared to a Control Sample."
   footnote <- "See documentation for further information on how scores are computed."
   key <- paste("- Abnormality = The percentage of controls expected to show a higher deficit.", "\n",
-               "- z-cc = Z for the case control.", sep = ""
+               "- z-dcc = Z  discrepancy for the case control.", sep = ""
   )
 
 
