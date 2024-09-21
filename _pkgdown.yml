@@ -40,6 +40,7 @@ reference:
       - discreps_from_mean
       - sem_to_percentiles
       - aborm_j_battery
+      - mdi
 
   - title: Normative Data
     desc: >
