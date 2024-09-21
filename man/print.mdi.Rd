@@ -4,11 +4,18 @@
 \alias{print.mdi}
 \title{Custom Print Method for MDI}
 \usage{
-\method{print}{mdi}(obj)
+\method{print}{mdi}(x, ...)
 }
 \arguments{
-\item{obj}{An object of class 'mdi'.}
+\item{x}{An object containing the MDI results, which includes the
+chi-square value, degrees of freedom (df), and p-value.}
+
+\item{...}{Additional arguments passed to other methods (currently not used).}
+}
+\value{
+The function prints the formatted MDI result but does not return a value.
 }
 \description{
-Custom Print Method for MDI
+This function provides a custom print method for displaying the results
+of the Mahalanobis Distance Index (MDI) calculation in a formatted way.
 }

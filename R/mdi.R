@@ -48,19 +48,25 @@ mdi <- function(R, x, norm.m, norm.sd, dp = 7) {
   return(result)
 }
 
+
 #' Custom Print Method for MDI
 #'
-#' @param obj An object of class 'mdi'.
+#' This function provides a custom print method for displaying the results
+#' of the Mahalanobis Distance Index (MDI) calculation in a formatted way.
+#'
+#' @param x An object containing the MDI results, which includes the
+#' chi-square value, degrees of freedom (df), and p-value.
+#' @param ... Additional arguments passed to other methods (currently not used).
+#'
+#' @return The function prints the formatted MDI result but does not return a value.
 #' @export
-print.mdi <- function(obj) {
+print.mdi <- function(x, ...) {
   # Print the results
   name <- "MAHALANOBIS DISTANCE Index of the overall abnormality of the case's Index score profile: "
-  mdi_str <- glue::glue("Chi-square = {obj$mdi_value} on {obj$df} df, p value = {obj$p_value}")
-  p_value_str <- glue::glue("Percentage of normative population expected to exhibit a more unusual profile = {obj$prev}%")
+  mdi_str <- glue::glue("Chi-square = {x} on {x$df} df, p value = {x$p_value}")
+  p_value_str <- glue::glue("Percentage of normative population expected to exhibit a more unusual profile = {x$prev}%")
 
   # Combine everything into the final result string
   result <- paste(name, mdi_str, p_value_str, sep = "\n\n")
   cat(result)
 }
-
-
