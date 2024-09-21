@@ -31,8 +31,6 @@ sem_to_percentiles(
 \item{threshold}{Z-score threshold for classifying abnormal scores. Default is -1.645.}
 
 \item{abnormality}{Logical, whether to calculate abnormality statistics. Default is TRUE.}
-
-\item{abnorm_level}{Threshold percentile for classifying scores as abnormally low. Default is 5.}
 }
 \value{
 A list containing various statistics including:

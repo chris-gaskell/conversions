@@ -8,7 +8,6 @@
 #' @param dp Number of decimal places for rounding in the results. Default is 2.
 #' @param names Optional character vector of names for the test scores. If not provided, default names will be used.
 #' @param conf.level Confidence level for the confidence interval. Default is 0.90.
-#' @param abnorm_level Threshold percentile for classifying scores as abnormally low. Default is 5.
 #' @param threshold Z-score threshold for classifying abnormal scores. Default is -1.645.
 #' @param abnormality Logical, whether to calculate abnormality statistics. Default is TRUE.
 #'
