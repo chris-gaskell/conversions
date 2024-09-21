@@ -19,7 +19,8 @@ mdi(R, x, norm.m, norm.sd, dp = 7)
 }
 \value{
 A list containing:
-\item{mdi}{The Mahalanobis Distance Index.}
+\item{mdi_value}{The Mahalanobis Distance Index.}
+\item{df}{Degrees of freedom used in the calculation.}
 \item{p_value}{The p-value associated with the MDI.}
 \item{prev}{The percentage of the normative population expected to exhibit a more unusual profile.}
 }
