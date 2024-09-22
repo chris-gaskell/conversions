@@ -139,16 +139,16 @@ print.sem_to_percentiles <- function(x, ...) {
 }
 
 
-#Example usage
-sem <- c(3.000000, 3.354102, 3.674235, 4.743416)
-R <- matrix(c(1.00, 0.61, 0.64, 0.45, # correlation matrix for WAIS-IV comps
-              0.61, 1.00, 0.62, 0.52,
-              0.64, 0.62, 1.00, 0.51,
-              0.45, 0.52, 0.51, 1.00), nrow = 4, byrow = TRUE)
-scores <- c(118, 107, 77, 68)
-names <- c("verbal comprehension", "perceptual reasoning",
-           "working memory", "processing speed")
-
-result <- sem_to_percentiles(scores, sem = sem, conf.level = 0.90, abnormality = TRUE, R = R, dp = 4)
-print(result)
-#print.default(result)
+# #Example usage
+# sem <- c(3.000000, 3.354102, 3.674235, 4.743416)
+# R <- matrix(c(1.00, 0.61, 0.64, 0.45, # correlation matrix for WAIS-IV comps
+#               0.61, 1.00, 0.62, 0.52,
+#               0.64, 0.62, 1.00, 0.51,
+#               0.45, 0.52, 0.51, 1.00), nrow = 4, byrow = TRUE)
+# scores <- c(118, 107, 77, 68)
+# names <- c("verbal comprehension", "perceptual reasoning",
+#            "working memory", "processing speed")
+#
+# result <- sem_to_percentiles(scores, sem = sem, conf.level = 0.90, abnormality = TRUE, R = R, dp = 4)
+# print(result)
+# #print.default(result)
