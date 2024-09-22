@@ -58,6 +58,42 @@ sem_to_percentiles <- function(x, R = NULL, sem, dp = 2, names = NULL, conf.leve
     abn <- NULL
   }
 
+  # output ------------------------------------------------------------------
+
+  input_df <- data.frame(
+    tests = c(names),
+    score = c(x),
+    stringsAsFactors = FALSE
+  )
+
+  parameters_df <- data.frame(
+  )
+
+  if (abnormality) {
+    abnorms_df <- data.frame(
+      Item = "Number of abnormally low scores",
+      Value = abn.k,
+      Abnormality = paste(format(abn, nsmall = 2), "%"),
+      stringsAsFactors = FALSE
+    )
+  } else {
+    abnorms_df <- data.frame(
+      Item = "Number of abnormally low scores",
+      Value = abn.k,
+      stringsAsFactors = FALSE
+    )
+  }
+
+
+  output_df <- data.frame(
+    Test = names,
+    Score = format(round(x, 2), nsmall = 2),
+    CI = paste0(format(round(ci.lb, 2), nsmall = 2), " - ", format(round(ci.ub, 2), nsmall = 2)),
+    Rank = format(round(rank, 2), nsmall = 2),
+    `Rank CI` = paste0(format(round(rank.ci.lb, 2), nsmall = 2), " - ", format(round(rank.ci.ub, 2), nsmall = 2)),
+    stringsAsFactors = FALSE
+  )
+
   result <- list(
     x = round(x, 2),
     k = round(k, 2),
@@ -71,7 +107,11 @@ sem_to_percentiles <- function(x, R = NULL, sem, dp = 2, names = NULL, conf.leve
     rank.ci.lb = round(rank.ci.lb, 2),
     rank.ci.ub = round(rank.ci.ub, 2),
     conf.level = round(conf.level, 2),
-    abnormality = abnormality
+    abnormality = abnormality,
+    input_df = input_df,
+    abnorms_df = abnorms_df,
+    parameters_df = parameters_df,
+    output_df = output_df
   )
 
   class(result) <- 'sem_to_percentiles'
@@ -81,46 +121,15 @@ sem_to_percentiles <- function(x, R = NULL, sem, dp = 2, names = NULL, conf.leve
 #' @export
 print.sem_to_percentiles <- function(x, ...) {
 
-  # Create input data frame
-  input_df <- data.frame(
-    stringsAsFactors = FALSE
-  )
-
-  # Create output data frame
-  output_df <- data.frame(
-    Test = x$names,
-    Score = format(round(x$x, 2), nsmall = 2),
-    CI = paste0(format(round(x$ci.lb, 2), nsmall = 2), " - ", format(round(x$ci.ub, 2), nsmall = 2)),
-    Rank = format(round(x$rank, 2), nsmall = 2),
-    `Rank CI` = paste0(format(round(x$rank.ci.lb, 2), nsmall = 2), " - ", format(round(x$rank.ci.ub, 2), nsmall = 2)),
-    stringsAsFactors = FALSE
-  )
-
-  # Create abnormality data frame if abnormality is TRUE
-  if (x$abnormality) {
-    abnorms_text <- data.frame(
-      Item = "Number of abnormally low scores",
-      Value = x$abn.k,
-      Abnormality = paste(format(x$abn, nsmall = 2), "%"),
-      stringsAsFactors = FALSE
-    )
-  } else {
-    abnorms_text <- data.frame(
-      Item = "Number of abnormally low scores",
-      Value = x$abn.k,
-      stringsAsFactors = FALSE
-    )
-  }
-
-  #input_table <- knitr::kable(input_df, format = "simple", col.names = c("Test", "Score", "Score CI"))
-  output_table <- knitr::kable(output_df, format = "simple", col.names = c("Test",  "Score", paste(x$conf.level*100, "% CI", sep = ""), "Rank",  paste(x$conf.level*100, "% CI", sep = "")))
-  abnorm_table <- knitr::kable(abnorms_text, format = "simple", col.names = c("", "Value", ifelse(x$abnormality, "Population Abnormality (%)", "")))
+  input_table <- knitr::kable(x$input_df, format = "simple", col.names = c("Test", "Score"))
+  abnorm_table <- knitr::kable(x$abnorms_df, format = "simple", col.names = c("", "Value", ifelse(x$abnormality, "Population Abnormality (%)", "")))
+  output_table <- knitr::kable(x$output_df, format = "simple", col.names = c("Test",  "Score", paste(x$conf.level*100, "% CI", sep = ""), "Rank",  paste(x$conf.level*100, "% CI", sep = "")))
 
   header <- "Confidence Intervals as Percentile Ranks"
 
   result <- paste(
     header, "\n\n",
-    #"INPUTS:\n", paste(capture.output(input_table), collapse = "\n"), "\n\n",
+    "INPUTS:\n", paste(capture.output(input_table), collapse = "\n"), "\n\n",
     "OUTPUTS:", paste(capture.output(output_table), collapse = "\n"), "\n\n",
     if (x$abnormality) "ABNORMALITY:" else "", paste(capture.output(abnorm_table), collapse = "\n"), "\n\n",
     sep = ""
@@ -142,4 +151,4 @@ print.sem_to_percentiles <- function(x, ...) {
 #
 # result <- sem_to_percentiles(scores, sem = sem, conf.level = 0.90, abnormality = TRUE, R = R)
 # print(result)
-# print.default(result)
+# #print.default(result)

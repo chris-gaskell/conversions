@@ -53,20 +53,6 @@ discreps_from_mean <- function(x, R = NULL, sem, sd = 15, dp = 2, names = NULL, 
   signif.below <- dev < -crit.vals
   signif.either <- abs(dev) > crit.vals
 
-  result <- list(
-    k = k,
-    z.sd = z.sd,
-    names = names,
-    mean.x = mean.x,
-    dev = round(dev, dp),
-    dev.ci.lb = round(dev.ci.lb, dp),
-    dev.ci.ub = round(dev.ci.ub, dp),
-    sem.dev = round(sem.dev, dp),
-    crit.vals = round(crit.vals, dp),
-    signif.below = signif.below,
-    signif.either = signif.either
-  )
-
   if (!is.null(R)) {
     G.bar <- mean(R)  # Mean of all elements in the correlation matrix
     h.a.bar <- rowMeans(R)  # Mean of each row of the matrix
@@ -92,22 +78,50 @@ discreps_from_mean <- function(x, R = NULL, sem, sd = 15, dp = 2, names = NULL, 
     abn.2t <- round(100 - pnorm(abs(dev) / sd.dev) * 100, 4) * 2
     abn.k <- sum(abn.2t < 5)
 
-    # Assuming abnormal_rate_j_battery function is defined elsewhere
     abn.rates <- neuropsytools::aborm_j_battery(R = R, threshold = threshold)
     abn <- abn.rates$props[abn.k]
 
-    # Add additional items to the result
-    result <- c(result, list(
+
+# output ------------------------------------------------------------------
+
+    output_df <- data.frame(
+      Test = names,
+      Deviation = format(round(dev, dp), nsmall = dp),
+      CI = paste0(
+        format(round(dev.ci.lb, 2), nsmall = dp),
+        " to ",
+        format(round(dev.ci.ub, 2), nsmall = dp)
+      ),
+      `p-val 2t` = format.pval(p.vals.2t, digits = dp, eps = .0001),
+      `p-val 1t` = format.pval(p.vals.1t, digits = dp, eps = .0001),
+      `Abnormal 2d` = format(round(abn.2t, 2), nsmall = dp),
+      `Abnormal 1d` = format(round(abn.1t, 2), nsmall = dp),
+      stringsAsFactors = FALSE
+    )
+
+
+    result <- list(
+      k = k,
+      z.sd = z.sd,
+      names =  names,
+      mean.x = round(mean.x, dp),
+      dev =       round(dev, dp),
+      dev.ci.lb = round(dev.ci.lb, dp),
+      dev.ci.ub = round(dev.ci.ub, dp),
+      sem.dev = round(sem.dev, dp),
+      crit.vals = round(crit.vals, dp),
+      signif.below = signif.below,
+      signif.either = signif.either,
       conf.level = conf.level,
       prev.1t = round(abn.1t, dp),
       prev.2t = round(abn.2t, dp),
-      pval.1t = round(p.vals.1t, dp),
-      pval.2t = round(p.vals.2t, dp),
       abn.k = abn.k,
-      abn = abn,
+      abn = round(abn, dp),
       abn.rates = abn.rates,
-      sig.diffs = sig.diffs
-    ))
+      sig.diffs = sig.diffs,
+      output_df = output_df,
+      dp = dp
+    )
   }
 
   class(result) <- 'mean_devs'
@@ -117,36 +131,27 @@ discreps_from_mean <- function(x, R = NULL, sem, sd = 15, dp = 2, names = NULL, 
 
 #' @export
 print.mean_devs <- function(x, ...) {
-  # Create a data frame with all the relevant statistics
-  result_df <- data.frame(
-    Test = x$names,
-    Deviation = x$dev,
-    CI = paste0(x$dev.ci.lb, " to ", x$dev.ci.ub),
-    `p-val 2t` = format.pval(x$pval.2t, digits = x$dp, eps = .0001),
-    `p-val 1t` = format.pval(x$pval.1t, digits = x$dp, eps = .0001),
-    `Abnormal 2d` = x$prev.2t,
-    `Abnormal 1d` = x$prev.1t,
-    stringsAsFactors = FALSE
-  )
+
+    output_table <- knitr::kable(x$output_df, format = "simple", align = "c",
+                                 col.names = c("Test",
+                                               "Discrep",
+                                               paste(x$conf.level*100, "% CI"),
+                                               "p-val 2t", "p-val 1t",
+                                               "Abnormal 2d", "Abnormal 1d")
+    )
+
 
   # Print the header
   header <- paste(
     "ABNORMALITY of Index score deviations from the case's mean Index score:\n",
-    "Case's mean Index score: ", x$mean.x, "\n\n", sep = ""
+    "Case's mean Index score: ", format(x$mean.x, nsmall = x$dp), "\n\n", sep = ""
   )
   cat(header)
 
-  # Use knitr::kable to print the data frame as a table
-  output_table <- knitr::kable(result_df, format = "simple", align = "c",
-                               col.names = c("Test",
-                                             "Discrep",
-                                             paste(x$conf.level*100, "% CI"),
-                                             "p-val 2t", "p-val 1t",
-                                             "Abnormal 2d", "Abnormal 1d")
-                               )
+  output_table
+
   cat(output_table, sep = "\n")
 
-  # Additional information about abnormality
   if (!is.null(x$abn.rates)) {
     abn_k <- glue::glue("NUMBER of case's deviation scores that meet criterion for abnormality = {x$abn.k}")
     abn <- glue::glue("\n\nPERCENTAGE of normal population expected to exhibit this number or more of abnormally low scores = {x$abn}%")
@@ -154,8 +159,8 @@ print.mean_devs <- function(x, ...) {
   }
 }
 
-#
-# # # Example Usage
+
+# # Example Usage
 # sem <- c(3.000000, 3.354102, 3.674235, 4.743416)
 # R <- matrix(c(1.00, 0.61, 0.64, 0.45,
 #               0.61, 1.00, 0.62, 0.52,
@@ -169,8 +174,9 @@ print.mean_devs <- function(x, ...) {
 # # Generate the results
 # results <- discreps_from_mean(x = c(60, 100, 100, 100), R = R, sem = sem,
 #                                        conf.level = 0.95, names = names,
-#                                        apply.bonferroni = F, dp = 3
+#                                        apply.bonferroni = F, dp = 4
 #                                        )
 #
 # # Print the results using the custom print method
 # print(results)
+#print.default(results)
